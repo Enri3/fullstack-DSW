@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD de Clientes</title>
+</head>
+<body>
+
+  <h1>CRUD de Clientes</h1>
+
+  <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="apellido" placeholder="Apellido">
+    <input type="text" id="direccion" placeholder="Dirección">
+    <button onclick="agregarCliente()">Guardar</button>
+
+    <h2>Listado</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dirección</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaClientes">
+            <!-- aca se agregan los clientes -->
+        </tbody>
+    </table>
+
+
+    <script src="crud-clientes.js"></script>
+</body>
+</html>
