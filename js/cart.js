@@ -65,6 +65,14 @@ function actualizarTotales() {
   
 }
 
+document.getElementById("reiniciar").addEventListener("click", () => {
+  contenedorTarjetas.innerHTML = "";
+  reiniciarCarrito();
+  mostrarProductos();
+  actualizarTotales();
+  carritoVacio();
+});
+
 function carritoVacio() {
   const prods = JSON.parse(localStorage.getItem("productos"));
   vacioElement.classList.toggle("escondido", prods && prods.length > 0  );

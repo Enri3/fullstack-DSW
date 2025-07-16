@@ -1,4 +1,6 @@
 
+
+
 function agregarAlCarrito(producto) {
   const memoria=JSON.parse(localStorage.getItem("productos"));
   console.log(memoria);
@@ -59,11 +61,23 @@ const numeroCarrito = document.getElementById("cuenta_carrito");
 
 /*Actualizo el carrito con la cantidad de productos que tengo en memoria*/
 function actualizarCarrito(){
-    const memoria = JSON.parse(localStorage.getItem("productos"));
 
+    const memoria = JSON.parse(localStorage.getItem("productos"));
+    if(memoria && memoria.length > 0){
     /*Lo que hago con reduce es convertir lo que  etengo en la memoria (array con los productos que fui seleccionando) en un solo valor que es el que quiero que el carrito muestre*/
     const cuenta = memoria.reduce((acum, current) => acum + current.cantidad, 0);
-    numeroCarrito.innerText = cuenta;
+    numeroCarrito.innerText = cuenta;}
+    else{
+        numeroCarrito.innerText = 0;
+    }
 }
 
+
 actualizarCarrito();
+
+/* Reinicia el carrito */
+function reiniciarCarrito(){
+  localStorage.removeItem("productos");
+  actualizarCarrito();
+
+}
