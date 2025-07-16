@@ -41,6 +41,5 @@ function actualizarCarrito(){
 
     /*Lo que hago con reduce es convertir lo que  etengo en la memoria (array con los productos que fui seleccionando) en un solo valor que es el que quiero que el carrito muestre*/
     const cuenta = memoria.reduce((acum, current) => acum + current.cantidad, 0);
-    console.log("Elemento cuenta_carrito:", numeroCarrito);
     numeroCarrito.innerText = cuenta;
 }
