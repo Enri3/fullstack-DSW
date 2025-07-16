@@ -20,6 +20,9 @@
     width: 150 px;
 }
 
-#totales{
+#totales, #carrito-vacio{
     text-align: center;
 }
+
+
+

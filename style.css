@@ -87,3 +87,7 @@ button{
 button:hover{
     background-color: var(--click);
 }
+
+.escondido{
+    display: none;
+}

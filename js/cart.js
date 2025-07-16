@@ -1,5 +1,8 @@
 const contenedorTarjetas = document.getElementById("productos-container");
-
+const cantidadElement = document.getElementById("cantidad");
+const precioElement = document.getElementById("precio");
+const vacioElement = document.getElementById("carrito-vacio");
+const totalElement = document.getElementById("totales");
 
 function mostrarProductos(){
     /*al arrancar siempre vacio*/
@@ -26,7 +29,10 @@ function mostrarProductos(){
         .addEventListener("click", (e) => { 
             /*resta al carrito y actualiza la cantidad*/
             restarAlCarrito(producto);
+            actualizarTotales();
+            carritoVacio();
             mostrarProductos();
+            
         })
     nuevoProd
         .getElementsByTagName("button")[1]
@@ -34,7 +40,35 @@ function mostrarProductos(){
             /*agrego al carrito y actualizo la cantidad*/
             const cantidadElement = e.target.parentElement.getElementsByClassName("cantidad")[0];
             cantidadElement.innerText = agregarAlCarrito(producto);
+            actualizarTotales();
+            carritoVacio();
   });})
   }
 }
+
 mostrarProductos();
+actualizarTotales();
+
+
+function actualizarTotales() {
+  const prods = JSON.parse(localStorage.getItem("productos"));
+  let unidades = 0;
+  let precio = 0;
+  if (prods && prods.length > 0) {
+    prods.forEach(producto => {
+      unidades += producto.cantidad;
+      precio += producto.precio * producto.cantidad;
+    });
+    cantidadElement.innerText = unidades;
+    precioElement.innerText = `${precio.toFixed(2)}`;
+  }
+  
+}
+
+function carritoVacio() {
+  const prods = JSON.parse(localStorage.getItem("productos"));
+  vacioElement.classList.toggle("escondido", prods && prods.length > 0  );
+  totalElement.classList.toggle("escondido", !(prods && prods.length > 0));
+}
+
+carritoVacio();
