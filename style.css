@@ -5,6 +5,8 @@
     --icono: #333;
     --texto: #000;
     --contador: #d34c4c;
+    --tarjeta: #cbc9b6;
+    --oscuro: #342c26;
 }
 #logo{
     height: 70px;
@@ -47,7 +49,9 @@ a{
 a:hover{
     color: var(--click);
 }
-
+h3,p{
+    margin: 5px 0;
+}
 header{
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
     padding: 10px 0;
@@ -68,4 +72,18 @@ footer{
     text-align: center;
     padding: 30px 0;
     box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
+}
+
+button{
+    background-color: var(--oscuro);
+    cursor: pointer;
+    color: var(--principal);
+    border: unset;
+    border-radius: 5px;
+    padding: 5px 10px;
+ 
+}
+
+button:hover{
+    background-color: var(--click);
 }
