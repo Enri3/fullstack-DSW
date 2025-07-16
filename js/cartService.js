@@ -2,11 +2,12 @@
 function agregarAlCarrito(producto) {
   const memoria=JSON.parse(localStorage.getItem("productos"));
   console.log(memoria);
+  let cuenta = 0;
   /*Si no hay nada en memoria, creo un nuevo producto y lo guardo en memoria*/
   if(!memoria){
     const nuevoProducto = getNuevoProducto(producto);
     localStorage.setItem("productos", JSON.stringify([nuevoProducto]));
-
+    cuenta=1;
  /*Si ya hay algo en memoria, busco si el producto que quiero agregar ya existe*/
 }else{
 
@@ -17,13 +18,32 @@ function agregarAlCarrito(producto) {
     /*Si no existe, lo agrego con cantidad 1, si ya existe, le sumo 1 a la cantidad*/
     if (indiceProducto === -1) {
       nuevaMemoria.push(getNuevoProducto(producto));
+      cuenta = 1;
     } else {
       nuevaMemoria[indiceProducto].cantidad += 1;
+      cuenta = nuevaMemoria[indiceProducto].cantidad;
     }
     localStorage.setItem("productos", JSON.stringify(nuevaMemoria));
+    return cuenta;
 }
 actualizarCarrito();
 }
+
+/*Le resto 1 al producto que seleccione*/
+function restarAlCarrito(producto) {
+    const memoria=JSON.parse(localStorage.getItem("productos"));
+    const indiceProducto = memoria.findIndex((prod) => prod.id === producto.id);
+    if(memoria[indiceProducto].cantidad === 1){
+        /*con splice saco el elemento si era el unico de ese en el carrito*/
+        memoria.splice(indiceProducto, 1);
+        
+    }else{
+        memoria[indiceProducto].cantidad -= 1;
+
+    }
+    localStorage.setItem("productos", JSON.stringify(memoria));   
+}
+
 
 /*Le agrego cantidad 1 al producto que  agarro y devuelvo*/
 function getNuevoProducto(producto) {
@@ -43,3 +63,5 @@ function actualizarCarrito(){
     const cuenta = memoria.reduce((acum, current) => acum + current.cantidad, 0);
     numeroCarrito.innerText = cuenta;
 }
+
+actualizarCarrito();

@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carrito</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+    <script src="js/cart.js" defer></script>
     <script src="js/cartService.js" defer></script>
     <script src="js/productos.js" defer></script>
-    <script src="js/index.js" defer></script>
+    
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
@@ -23,7 +25,13 @@
         </nav>
     </header>
     <main>
-        <p>carrito de compras</p>
+        <section id="productos-container"></section>
+        <section id="totales">
+            <p>Total unidades: <span id="cantidad">0</span></p>
+            <p>Total precio: $<span id="precio">0</span></p>
+            <button disabled>Comprar</button>
+            <button id="reiniciar">Reiniciar</button>
+    </section>
     </main>
     <footer>
         <div>
