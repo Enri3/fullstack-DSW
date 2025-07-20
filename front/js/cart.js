@@ -14,7 +14,7 @@ function mostrarProductos(){
     const nuevoProd = document.createElement("div");
     nuevoProd.classList = "tarjeta-producto"
     nuevoProd.innerHTML = `
-    <img src="${producto.img}" alt="${producto.nombre}">
+    <img src="${producto.urlImg}" alt="${producto.nombre}">
     <h3>${producto.nombre}</h3>
     <p class="precio">$${producto.precio}</p>
     <div>

@@ -17,6 +17,12 @@
   text-align: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   transition: 200ms;
+  
+}
+.tarjeta-producto img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 .tarjeta-producto:hover{
     translate: 0 -10px;

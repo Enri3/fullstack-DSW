@@ -1,0 +1,29 @@
+{
+  "name": "fullstack-dsw",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enri3/fullstack-DSW.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Enri3/fullstack-DSW/issues"
+  },
+  "homepage": "https://github.com/Enri3/fullstack-DSW#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "promise-mysql": "^5.2.0",
+    "save-dev": "^0.0.1-security"
+  }
+}
