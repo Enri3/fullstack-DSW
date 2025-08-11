@@ -1,7 +1,7 @@
 
 
 
-function agregarAlCarrito(producto) {
+export function agregarAlCarrito(producto) {
   const memoria=JSON.parse(localStorage.getItem("productos"));
   console.log(memoria);
   let cuenta = 0;
@@ -33,7 +33,7 @@ actualizarCarrito();
 }
 
 /*Le resto 1 al producto que seleccione*/
-function restarAlCarrito(producto) {
+export function restarAlCarrito(producto) {
     const memoria=JSON.parse(localStorage.getItem("productos"));
     const indiceProducto = memoria.findIndex((prod) => prod.id === producto.id);
     if(memoria[indiceProducto].cantidad === 1){
@@ -48,9 +48,13 @@ function restarAlCarrito(producto) {
     actualizarCarrito();   
 }
 
+/*Obtengo los productos del carrito que tengo en memoria*/
+export function obtenerProductosCarrito() {
+  return JSON.parse(localStorage.getItem("productos")) || [];
+}
 
 /*Le agrego cantidad 1 al producto que  agarro y devuelvo*/
-function getNuevoProducto(producto) {
+export function getNuevoProducto(producto) {
     const nuevoProducto = producto;
     nuevoProducto.cantidad = 1;
     return nuevoProducto;
@@ -60,23 +64,28 @@ function getNuevoProducto(producto) {
 const numeroCarrito = document.getElementById("cuenta_carrito");
 
 /*Actualizo el carrito con la cantidad de productos que tengo en memoria*/
-function actualizarCarrito(){
-
-    const memoria = JSON.parse(localStorage.getItem("productos"));
-    if(memoria && memoria.length > 0){
+export function actualizarCarrito() {
+  const memoria = JSON.parse(localStorage.getItem("productos"));
+  if (memoria && memoria.length > 0) {
     /*Lo que hago con reduce es convertir lo que  etengo en la memoria (array con los productos que fui seleccionando) en un solo valor que es el que quiero que el carrito muestre*/
-    const cuenta = memoria.reduce((acum, current) => acum + current.cantidad, 0);
-    numeroCarrito.innerText = cuenta;}
-    else{
-        numeroCarrito.innerText = 0;
-    }
+
+    return memoria.reduce((acum, current) => acum + current.cantidad, 0);
+  }
+  return 0;
 }
 
+export function obtenerCantidadCarrito() {
+  const memoria = JSON.parse(localStorage.getItem("productos"));
+  if (memoria && memoria.length > 0) {
+    return memoria.reduce((acum, current) => acum + current.cantidad, 0);
+  }
+  return 0;
+}
 
 actualizarCarrito();
 
 /* Reinicia el carrito */
-function reiniciarCarrito(){
+export function reiniciarCarrito(){
   localStorage.removeItem("productos");
   actualizarCarrito();
 

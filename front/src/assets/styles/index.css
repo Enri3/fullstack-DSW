@@ -1,5 +1,5 @@
 
-#productos-container {
+#productos-container-display {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   max-width: 1500px;
@@ -10,7 +10,7 @@
   margin-bottom: 10px;
 
 }
-.tarjeta-producto {
+.tarjeta-producto-display {
   max-width: 300px;
   padding: 10px;
   background-color: var(--tarjeta);
@@ -19,16 +19,16 @@
   transition: 200ms;
   
 }
-.tarjeta-producto img {
+.tarjeta-producto-display img {
   max-width: 100%;
   height: auto;
   display: block;
 }
-.tarjeta-producto:hover{
+.tarjeta-producto-display:hover{
     translate: 0 -10px;
     box-shadow: 0 10px 5px rgba(0, 0, 0, 0.1);
 }
-.tarjeta-producto img {
+.tarjeta-producto-display img {
   width: 100%;
   height: auto;
   aspect-ratio: 1.35;
