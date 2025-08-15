@@ -33,3 +33,14 @@
   height: auto;
   aspect-ratio: 1.35;
 }
+.tarjeta-add {
+  max-width: 300px;
+  padding: 10px;
+  background-color: var(--tarjeta);
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: 200ms;
+  align-items: center;
+  justify-content: center;
+  
+}

@@ -2,6 +2,8 @@ const express= require('express');
 const morgan = require('morgan');
 const database= require('./database');
 const cors = require('cors');
+const productosRoutes = require('../routes/productos');
+
 
 //Configuracion inicial
 /*creo instancia de express*/
@@ -19,16 +21,9 @@ app.use(cors({
 app.listen(app.get("port"));
 console.log("Escuchando con el puerto"+ app.get("port"));
 
-
+app.use(express.json());
 app.use(morgan('dev'));
 
 
 //Rutas
-app.get("/productos", async (req, res)=>{
-    //res.json()
-      const connection = await database.getConnection();
-      const result = await connection.query("SELECT * FROM productos");
-      res.json(result);
-      
-    
-})
+app.use('/productos', productosRoutes);
