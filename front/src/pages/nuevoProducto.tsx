@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
-import Header_sinCarrito from "../components/header_sinCarrito.jsx";
-import Footer from "../components/footer.jsx";
-import { getProductos } from "../services/productosService.js";
+import Header_sinCarrito from "../components/header_sinCarrito";
+import Footer from "../components/footer";
+import { getProductos } from "../services/productosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 
-import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService.js";
+import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 
 
 export default function NuevoProducto() {

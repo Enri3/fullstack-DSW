@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/header.jsx";
-import Footer from "../components/footer.jsx";
-import { getProductos } from "../services/productosService.js";
-import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService.js";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import { getProductos } from "../services/productosService";
+import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
@@ -77,6 +77,7 @@ export default function DisplayProductos() {
               <button onClick={() => handleAgregar(producto)}>
                 Agregar al carrito
               </button>
+
             </div>
           ))}
 

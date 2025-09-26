@@ -5,7 +5,11 @@ import "../assets/styles/style.css";
 import "../assets/styles/index.css";
 
 
-export default function Header_sinCarrito({ cantidad }) {
+interface HeaderProps {
+  cantidad: number;
+}
+
+export default function Header({ cantidad }: HeaderProps) {
 
 
   return (
@@ -15,8 +19,10 @@ export default function Header_sinCarrito({ cantidad }) {
           <img src={logo} id="logo" alt="Logo" />
         </Link>
         <div id="menu">
-        <Link to="/">
-            <p >volver</p>
+          <a href="./clientes-crud/index.html">Ingresar</a>
+        <Link to="/carrito">
+            <i className="material-icons icono">shopping_cart</i>
+            <span id="cuenta_carrito">{cantidad}</span>
           </Link>
         </div>
       </nav>

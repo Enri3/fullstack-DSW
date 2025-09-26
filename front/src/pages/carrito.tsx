@@ -1,33 +1,48 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/header.jsx";
-import Footer from "../components/footer.jsx";
+import Header from "../components/header";
+import Footer from "../components/footer";
 import "../assets/styles/cart.css";
 import "../assets/styles/style.css";
-import { obtenerCantidadCarrito, agregarAlCarrito, restarAlCarrito, reiniciarCarrito, obtenerProductosCarrito } from "../services/cartService.js";
+import { obtenerCantidadCarrito, agregarAlCarrito, restarAlCarrito, reiniciarCarrito, obtenerProductosCarrito } from "../services/cartService";
+
+type ProductoCarrito = {
+  id: number;
+  nombre: string;
+  precio: number;
+  cantidad: number;
+  urlImg: string;
+};
 
 export default function MostrarCarrito() {
     const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   // Estado local con los productos en el carrito (del localStorage)
-  const [productos, setProductos] = useState([]);
+  const [productos, setProductos] = useState<ProductoCarrito[]>([]);
 
   // Cada vez que cargue el componente, traigo los productos del carrito
   useEffect(() => {
-    const prods = obtenerProductosCarrito();
+    const prods = obtenerProductosCarrito().map((p: any) => ({
+      ...p,
+      id: typeof p.id === "string" ? Number(p.id) : p.id,
+    }));
     setProductos(prods);
   }, []);
 
-  // Manejo el click para sumar cantidad
-  function handleAgregar(producto) {
+  function handleAgregar(producto: ProductoCarrito) {
     agregarAlCarrito(producto);
-    const prods = obtenerProductosCarrito();
+    const prods = obtenerProductosCarrito().map((p: any) => ({
+      ...p,
+      id: typeof p.id === "string" ? Number(p.id) : p.id,
+    }));
     setProductos(prods);
     setCantidad(obtenerCantidadCarrito());
   }
 
-  // Manejo el click para restar cantidad
-  function handleRestar(producto) {
+  function handleRestar(producto: ProductoCarrito) {
     restarAlCarrito(producto);
-    const prods = obtenerProductosCarrito();
+    const prods = obtenerProductosCarrito().map((p: any) => ({
+      ...p,
+      id: typeof p.id === "string" ? Number(p.id) : p.id,
+    }));
     setProductos(prods);
     setCantidad(obtenerCantidadCarrito());
   }

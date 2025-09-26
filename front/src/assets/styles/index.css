@@ -44,3 +44,8 @@
   justify-content: center;
   
 }
+
+.botones {
+  display: flex;
+  gap: 10px; /* separación horizontal */
+}

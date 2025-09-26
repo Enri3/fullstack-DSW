@@ -1,9 +1,9 @@
 
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DisplayProductos from "./pages/productos.jsx";
-import MostrarCarrito from "./pages/carrito.jsx";
-import NuevoProducto from "./pages/nuevoProducto.jsx";
+import DisplayProductos from "./pages/productos_Admin";
+import MostrarCarrito from "./pages/carrito";
+import NuevoProducto from "./pages/nuevoProducto";
 function App() {
   return (
     <BrowserRouter>

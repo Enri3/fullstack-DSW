@@ -5,7 +5,7 @@ import "../assets/styles/style.css";
 import "../assets/styles/index.css";
 
 
-export default function Header({ cantidad }) {
+export default function Header_sinCarrito() {
 
 
   return (
@@ -15,10 +15,8 @@ export default function Header({ cantidad }) {
           <img src={logo} id="logo" alt="Logo" />
         </Link>
         <div id="menu">
-          <a href="./clientes-crud/index.html">Ingresar</a>
-        <Link to="/carrito">
-            <i className="material-icons icono">shopping_cart</i>
-            <span id="cuenta_carrito">{cantidad}</span>
+        <Link to="/">
+            <p >volver</p>
           </Link>
         </div>
       </nav>
