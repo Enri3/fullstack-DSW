@@ -12,7 +12,6 @@ const registrarCliente = async (req, res) => {
   try {
     const conn = await getConnection();
 
-    // Verificamos si ya existe un cliente con ese email
     const existe = await conn.query("SELECT * FROM clientes WHERE email = ?", [email]);
     if (existe.length > 0) {
       return res.status(400).json({ message: "El cliente que se intenta registrar ya existe" });
