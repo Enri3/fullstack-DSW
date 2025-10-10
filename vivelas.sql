@@ -35,7 +35,7 @@ CREATE TABLE `clientes` (
   UNIQUE KEY `email` (`email`),
   KEY `idTipoCli` (`idTipoCli`),
   CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`idTipoCli`) REFERENCES `tipo_clientes` (`idTipoCli`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,6 +44,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+INSERT INTO `clientes` VALUES (1,'lauti','ponce','amenabar','lauti@gmail.com','$2b$10$FwgRBHhMpMkci9wVM3YX3Omg3NIUJa/Kc1w3zpfWV9exNnFqAk7Ba',1,'2025-10-10 14:15:55'),(2,'el pepe ','jaja','9dejulio','lauti03@gmail.com','$2b$10$vqsAtQpHQWLeBEBKqaJiK.mW7C2qWASumtYiAJ5jst3ByQITpGt2m',1,'2025-10-10 14:45:08'),(3,'aaa','aaa','aaa','aaa@gmail.com','$2b$10$yINt.xYriHanb6tb83qKCOtARqCSsBxlGjEqw2OEa6tOwmz3Hxlhm',1,'2025-10-10 15:34:17'),(4,'pepe','pepe','pepe','pepe@gmail.com','$2b$10$D.G/ajWDF07sw6.S/HGkLecDFCKt/aHjH3QwoAVR8cCF6dT2951e.',1,'2025-10-10 18:02:19');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,4 +110,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-09 17:53:29
+-- Dump completed on 2025-10-10 16:05:23
