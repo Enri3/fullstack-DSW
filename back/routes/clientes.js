@@ -1,9 +1,9 @@
-import express from "express";
-import { registrarCliente, loginCliente } from "../controllers/clientesController.js";
-
+const express = require('express');
 const router = express.Router();
+const { registrarCliente, loginCliente } = require('../controllers/clientesController');
 
-router.post("/register", registrarCliente);
-router.post("/login", loginCliente);
+// Rutas para clientes
+router.post('/register', registrarCliente);
+router.post('/login', loginCliente);
 
-export default router;
+module.exports = router;

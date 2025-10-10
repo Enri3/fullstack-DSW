@@ -9,11 +9,10 @@
     "moduleResolution": "node",
     "target": "esnext",
     
-    // Configuración para el navegador:
+    // Configuración para el navegador
     "lib": ["esnext", "dom", "dom.iterable"], 
-    
-    // "types": ["node"] fue ELIMINADO de esta sección.
 
+    
     // Other Outputs
     "sourceMap": true,
     "declaration": true,

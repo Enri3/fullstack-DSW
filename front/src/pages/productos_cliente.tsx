@@ -6,9 +6,11 @@ import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartServic
 import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
+import type { Producto } from "../interfaces";
 
 export default function DisplayProductos() {
-  const [productos, setProductos] = useState([]);
+  const [productos, setProductos] = useState<Producto[]>([]); 
+  
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -18,7 +20,7 @@ export default function DisplayProductos() {
       try {
         const data = await getProductos();
         console.log("Productos recibidos del backend:", data);
-        setProductos(Array.isArray(data) ? data : [data]); // Garantiza que sea array
+        setProductos(Array.isArray(data) ? data : [data]); 
       } catch (err) {
         console.error("Error al obtener productos:", err);
         setError("No se pudo conectar con el servidor.");
@@ -31,7 +33,7 @@ export default function DisplayProductos() {
     fetchProductos();
   }, []);
 
-  const handleAgregar = (producto) => {
+  const handleAgregar = (producto: Producto) => {
     agregarAlCarrito(producto);
     setCantidad(obtenerCantidadCarrito());
   };
@@ -77,7 +79,6 @@ export default function DisplayProductos() {
               <button onClick={() => handleAgregar(producto)}>
                 Agregar al carrito
               </button>
-
             </div>
           ))}
 
