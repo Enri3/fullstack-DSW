@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../assets/styles/login.css";
+import Header_sinCarrito from "../components/header_sinCarrito";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,11 @@ export default function Login() {
   };
 
   return (
+
+    <>
+    
+    <Header_sinCarrito />
+
     <div className="login-page">
       <div className="login-container">
         <img src="/logo.png" alt="Vivelas" className="login-logo" />
@@ -40,5 +46,7 @@ export default function Login() {
         </a>
       </div>
     </div>
+
+    </>
   );
 }

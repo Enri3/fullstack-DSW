@@ -15,9 +15,6 @@ export default function Header_sinCarrito() {
           <img src={logo} id="logo" alt="Logo" />
         </Link>
         <div id="menu">
-        <Link to="/">
-            <p >volver</p>
-          </Link>
         </div>
       </nav>
     </header>

@@ -5,7 +5,7 @@ const { getConnection } = require("../src/database");
 const registrarCliente = async (req, res) => {
   const { nombre, apellido, direccion, email, password } = req.body;
 
-  if (!nombre || !email || !password)
+  if (!nombre || !email || !password || !direccion)
     return res.status(400).json({ message: "Faltan completar campos obligatorios" });
 
   try {
