@@ -13,6 +13,7 @@ export default function Header_sinCarrito() {
       <nav>
         <Link to="/">
           <img src={logo} id="logo" alt="Logo" />
+          <span id="logo-text">ViveLas</span>
         </Link>
         <div id="menu">
         </div>
