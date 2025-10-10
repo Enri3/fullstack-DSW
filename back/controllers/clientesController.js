@@ -39,7 +39,7 @@ const loginCliente = async (req, res) => {
 
     const rows = await conn.query("SELECT * FROM clientes WHERE email = ?", [email]);
     if (rows.length === 0) {
-      return res.status(400).json({ message: "Cliente ingresado no ha sido encontrado" });
+      return res.status(400).json({ message: "El cliente ingresado no existe" });
     }
 
     const cliente = rows[0];

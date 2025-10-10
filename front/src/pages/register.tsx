@@ -14,7 +14,7 @@ export default function Register() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Las contraseñas no coinciden");
+      alert("Las contraseñas ingresadas no coinciden");
       return;
     }
 
@@ -28,7 +28,7 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Registro exitoso. Ahora podés iniciar sesión.");
+        alert("¡Te registraste correctamente!. Ahora podés iniciar sesión.");
         window.location.href = "/login";
       } else {
         alert(data.message || "Error al registrarse");

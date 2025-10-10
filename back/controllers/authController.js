@@ -38,12 +38,12 @@ const loginCliente = async (req, res) => {
     const conn = await getConnection();
     const rows = await conn.query("SELECT * FROM clientes WHERE email = ?", [email]);
     if (rows.length === 0)
-      return res.status(400).json({ message: "Cliente no encontrado" });
+      return res.status(400).json({ message: "El cliente ingresado no existe" });
 
     const cliente = rows[0];
     const coincide = await bcrypt.compare(password, cliente.password);
     if (!coincide)
-      return res.status(400).json({ message: "Contraseña incorrecta" });
+      return res.status(400).json({ message: "La contraseña ingresada es incorrecta" });
 
     const token = jwt.sign(
       { id: cliente.idCli, nombre: cliente.nombre, tipo: cliente.idTipoCli },
