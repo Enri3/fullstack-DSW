@@ -4,14 +4,11 @@ import logo from "../assets/img/logo.png";
 import "../assets/styles/style.css"; 
 import "../assets/styles/index.css";
 
-
 interface HeaderProps {
   cantidad: number;
 }
 
 export default function Header({ cantidad }: HeaderProps) {
-
-
   return (
     <header>
       <nav>
@@ -19,8 +16,10 @@ export default function Header({ cantidad }: HeaderProps) {
           <img src={logo} id="logo" alt="Logo" />
         </Link>
         <div id="menu">
-          <a href="./clientes-crud/index.html">Ingresar</a>
-        <Link to="/carrito">
+          {/* 👇 Cambiado a Link para navegación interna */}
+          <Link to="/login">Ingresar</Link>
+          
+          <Link to="/carrito">
             <i className="material-icons icono">shopping_cart</i>
             <span id="cuenta_carrito">{cantidad}</span>
           </Link>
