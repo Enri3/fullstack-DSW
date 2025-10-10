@@ -27,6 +27,3 @@ build/
 # Coverage
 coverage/
 .nyc_output/
-
-# Database files
-.env
