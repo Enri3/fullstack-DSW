@@ -11,7 +11,6 @@ const registrarCliente = async (req, res) => {
   try {
     const conn = await getConnection();
 
-    // 🚨 FIX: promise-mysql devuelve directamente un array de filas, no [rows]
     const existe = await conn.query("SELECT * FROM clientes WHERE email = ?", [email]);
 
     if (existe.length > 0) {
