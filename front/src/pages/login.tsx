@@ -3,8 +3,10 @@ import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import { loginUsuario } from "../services/authService";
 import logo from "../assets/img/logo.png";
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,7 @@ export default function Login() {
 
         // Redirigir a clienteIngresado
         window.location.href = "./clienteIngresado";
+
       } else {
         setError("Respuesta inesperada del servidor.");
       }

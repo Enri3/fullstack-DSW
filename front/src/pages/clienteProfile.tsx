@@ -3,15 +3,30 @@ import Header_sinCarrito from "../components/header_sinCarrito";
 import logo from "../assets/img/logo.png";
 import { getNombreTipo } from "../services/tipo_usuarioService";
 import "../assets/styles/profile.css";
+import { useNavigate } from "react-router-dom";
 
 export default function ClienteProfile() {
-  const [email, setEmail] = useState<string | null>(null);
-  const [tipoCliente, setTipoCliente] = useState<string | null>(null);
-  const [id, setId] = useState<string | null>(null);
-  const [nombreTipo, setNombreTipo] = useState<string | null>(null);
-  const [nombre, setNombre] = useState<string | null>(null);
-  const [apellido, setApellido] = useState<string | null>(null);
-  const [direccion, setDireccion] = useState<string | null>(null);
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState<string | null>(null);
+    const [tipoCliente, setTipoCliente] = useState<string | null>(null);
+    const [id, setId] = useState<string | null>(null);
+    const [nombreTipo, setNombreTipo] = useState<string | null>(null);
+    const [nombre, setNombre] = useState<string | null>(null);
+    const [apellido, setApellido] = useState<string | null>(null);
+    const [direccion, setDireccion] = useState<string | null>(null);
+
+    const handleGoBack = () => {
+        // Esto le dice a React Router que vaya al historial anterior
+        navigate(-1); 
+    };
+
+    const handleEdit = () => {
+        // Aquí iría la lógica para navegar a la página de edición
+        // O abrir un modal de edición. 
+        // Por ahora, solo navegaremos a una ruta (ej: /editar-cliente)
+        navigate('/editar-cliente'); 
+    };
 
     useEffect(() => {
         const storedEmail = localStorage.getItem("email");
@@ -49,17 +64,27 @@ export default function ClienteProfile() {
   return (
     <>
       <Header_sinCarrito />
-        <div className="profile-page-container"> {/* Contenedor principal */}
-            
-            <div className="profile-card"> {/* Tarjeta del Perfil */}
-               <h2>Perfil de Cliente</h2>
+        <div className="profile-page-container"> 
+            <div className="profile-card">
                 
-                {/* Avatar / Icono */}
+                <div className="profile-actions-header">
+                
+                <button onClick={handleGoBack} className="btn-action-left">
+                    &larr; Volver
+                </button>
+
+                <h2>Perfil de Cliente</h2>
+                    
+                    <button onClick={handleEdit} className="btn-action-right">
+                        Editar ✎
+                    </button>
+                </div>
+                
                 <div className="profile-icon">
                     👤
                 </div>
 
-                {/* Sección de Identidad */}
+            
                 <div className="profile-section identity-section">
                     <h3>Identidad</h3>
                     <div className="profile-info-grid">
@@ -69,7 +94,7 @@ export default function ClienteProfile() {
                     </div>
                 </div>
 
-                {/* Sección de Estatus / Roles */}
+                
                 <div className="profile-section status-section">
                     <h3>Estatus y Acceso</h3>
                     <div className="profile-info-grid">
