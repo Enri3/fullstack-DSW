@@ -45,6 +45,49 @@ export default function DisplayProductos() {
     setCantidad(obtenerCantidadCarrito());
   };
 
+  const abrirModalEliminar = (producto: Producto) => {
+    setProductoAEliminar(producto);
+    setModalVisible(true);
+  };
+
+  // Confirmar eliminación
+  const confirmarEliminar = async () => {
+    if (!productoAEliminar) return;
+
+    try {
+      const res = await fetch(`http://localhost:4000/productos/${productoAEliminar.id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Error al eliminar el producto");
+        return;
+      }
+
+      // Eliminar del estado
+      setProductos((prev) => prev.filter((p) => p.id !== productoAEliminar.id));
+    } catch (err) {
+      console.error(err);
+      alert("No se pudo conectar con el servidor");
+    } finally {
+      setModalVisible(false);
+      setProductoAEliminar(null);
+    }
+  };
+    // Estado para manejar el modal de confirmación
+  const [modalVisible, setModalVisible] = useState(false);
+  const [productoAEliminar, setProductoAEliminar] = useState<Producto | null>(null);
+
+  // Función que abre el modal
+  const handleEliminar = (productoId: number) => {
+    const producto = productos.find((p) => p.id === productoId);
+    if (!producto) return;
+    setProductoAEliminar(producto);
+    setModalVisible(true);
+  };
+
+
   return (
     <>
       <Header cantidad={cantidad} />
@@ -83,14 +126,14 @@ export default function DisplayProductos() {
                 {producto.nombre} - {producto.medida || "N/A"} grs
               </h3>
               <p className="precio">${producto.precio}</p>
-
-              <Link to={`/modificarProducto/${producto.id}`}>
-                <button>
-                  Modificar Producto 
-                </button>
-              </Link>
-
-
+             
+              <div className="botones-admin">
+                <Link to={`/modificarProducto/${producto.id}`}>
+                  <button>Modificar</button>
+                </Link>
+                <button onClick={() => handleEliminar(producto.id)}>Eliminar</button>
+              </div>
+              
 
             </div>
           ))}
@@ -101,6 +144,19 @@ export default function DisplayProductos() {
         </section>
       </main>
       <Footer />
+
+       {/* Modal de confirmación */}
+      {modalVisible && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <p>¿Estás seguro de eliminar {productoAEliminar?.nombre}?</p>
+            <div className="modal-buttons botones-admin">
+              <button onClick={confirmarEliminar}>Sí, eliminar</button>
+              <button onClick={() => setModalVisible(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

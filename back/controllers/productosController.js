@@ -86,3 +86,22 @@ exports.update = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 };
+
+exports.delete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const connection = await database.getConnection();
+
+    const query = "DELETE FROM productos WHERE id = ?";
+    const result = await connection.query(query, [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    res.json({ message: "Producto eliminado correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar producto:", error);
+    res.status(500).json({ error: "Error al eliminar producto" });
+  }
+};
