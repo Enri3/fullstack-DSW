@@ -54,7 +54,17 @@ const loginCliente = async (req, res) => {
       { expiresIn: "2h" }
     );
 
-    res.json({ message: "Login exitoso", token, tipoCliente: cliente.idTipoCli });
+    const { idCli, nombre, apellido, direccion, idTipoCli } = cliente;
+
+    res.json({ 
+    message: "Login exitoso", 
+    token, 
+    idTipoCli,
+    idCliente: idCli,
+    nombre,
+    apellido,
+    direccion
+    });
   } catch (error) {
     console.error("Error en loginCliente:", error);
     res.status(500).json({ message: "Error al iniciar sesión" });

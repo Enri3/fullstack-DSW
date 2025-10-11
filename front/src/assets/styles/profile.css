@@ -1,0 +1,109 @@
+/* ------------------------------------------- */
+/* 1. Estilos del Contenedor Principal (Centrado) */
+/* ------------------------------------------- */
+.profile-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea arriba */
+    padding: 40px 20px;
+    background-color: #f4f7f6; /* Fondo suave */
+    min-height: calc(100vh - 60px); /* Ocupa el resto de la pantalla */
+}
+
+/* ------------------------------------------- */
+/* 2. Estilos de la Tarjeta del Perfil */
+/* ------------------------------------------- */
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px; /* Ancho máximo para que no se estire mucho */
+    padding: 30px;
+    text-align: center;
+}
+
+.profile-card h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 600;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* ------------------------------------------- */
+/* 3. Icono / Avatar */
+/* ------------------------------------------- */
+.profile-icon {
+    font-size: 60px;
+    color: #007bff; /* Color primario */
+    margin-bottom: 20px;
+}
+
+/* ------------------------------------------- */
+/* 4. Secciones de Información */
+/* ------------------------------------------- */
+.profile-section {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.profile-section h3 {
+    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* ------------------------------------------- */
+/* 5. Estilos de la Cuadrícula de Información */
+/* ------------------------------------------- */
+.profile-info-grid {
+    display: grid;
+    /* Dos columnas para información */
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px 30px; 
+}
+
+.profile-info-grid p {
+    margin: 0;
+    font-size: 0.95em;
+    line-height: 1.4;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-info-grid strong {
+    color: #333;
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+.profile-info-grid span {
+    font-weight: 400;
+}
+
+/* ------------------------------------------- */
+/* 6. Estilo del Rol (Tag) */
+/* ------------------------------------------- */
+.tag-tipo {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-weight: 700 !important;
+    font-size: 0.9em;
+    background-color: #e6f7ff; /* Fondo azul claro */
+    color: #007bff; /* Texto azul */
+}
+
+/* Media Query para pantallas pequeñas (se convierte a una sola columna) */
+@media (max-width: 500px) {
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+}

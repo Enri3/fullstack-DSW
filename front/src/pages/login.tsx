@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import { loginUsuario } from "../services/authService";
+import logo from "../assets/img/logo.png";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,13 +21,21 @@ export default function Login() {
 
       // data debería contener token y tipoCliente segun tu backend
       if (data && data.token) {
+
         localStorage.setItem("token", data.token);
-        if (data.tipoCliente !== undefined) {
-          localStorage.setItem("tipoCliente", String(data.tipoCliente));
+        localStorage.setItem("email", email);
+        localStorage.setItem("idCliente", String(data.idCliente));
+        
+        if (data.nombre) localStorage.setItem("nombre", String(data.nombre));
+        if (data.apellido) localStorage.setItem("apellido", String(data.apellido));
+        if (data.direccion) localStorage.setItem("direccion", String(data.direccion));
+
+        if (data.idTipoCli !== undefined) {
+          localStorage.setItem("tipoCliente", String(data.idTipoCli));
         }
 
-        // redirigir a home (o a la ruta que quieras)
-        window.location.href = "/";
+        // Redirigir a clienteIngresado
+        window.location.href = "./clienteIngresado";
       } else {
         setError("Respuesta inesperada del servidor.");
       }
@@ -44,7 +53,7 @@ export default function Login() {
 
       <div className="login-page">
         <div className="login-container">
-          <img src="/logo.png" alt="Vivelas" className="login-logo" />
+          <img src={logo} id="logo" alt="Logo" />
           <h2>Iniciar sesión</h2>
 
           <form onSubmit={handleSubmit}>
