@@ -84,11 +84,12 @@ export default function DisplayProductos() {
               </h3>
               <p className="precio">${producto.precio}</p>
 
-              <Link to="/nuevoProducto">
+              <Link to={`/modificarProducto/${producto.id}`}>
                 <button>
                   Modificar Producto 
                 </button>
               </Link>
+
 
 
             </div>
