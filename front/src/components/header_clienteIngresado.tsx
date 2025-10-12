@@ -15,6 +15,7 @@ export default function HeaderClienteIngresado({ cantidad }: HeaderProps) {
         <Link to="/">
           <img src={logo} id="logo" alt="Logo" />
         </Link>
+        <Link to="/cerrar-sesion">Cerrar Sesión</Link>
         <div id="menu">
           
         </div>

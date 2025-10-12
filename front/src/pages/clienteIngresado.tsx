@@ -11,6 +11,7 @@ import { clienteVacio } from "../../../entidades/cliente";
 export default function ClienteIngresado() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
+  const [tipoNombre, setTipoNombre] = useState("");
 
   useEffect(() => {
     const storedCliente = localStorage.getItem("cliente");
@@ -19,6 +20,7 @@ export default function ClienteIngresado() {
     }
   }, []);
 
+
   return (
     <>
       <HeaderClienteIngresado cantidad={cantidad} />
@@ -26,7 +28,7 @@ export default function ClienteIngresado() {
         <h1>Bienvenido, {cliente.nombreCli} {cliente.apellidoCli}</h1>
         <p><strong>Email:</strong> {cliente.email}</p>
         <p><strong>Dirección:</strong> {cliente.direccion}</p>
-        <p><strong>Tipo de Cliente:</strong> {cliente.idTipoCli}</p>
+        <p><strong>Id tipo cliente:</strong> {cliente.idTipoCli}</p>
         <Link to="/editar-cliente" className="edit-button">Editar Perfil</Link>
       </div>
     </>

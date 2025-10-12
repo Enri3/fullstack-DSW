@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import ClienteIngresado from "./pages/clienteIngresado";
 import ProductosEspeciales from './pages/productosEspeciales';
 import AdminPanel from './pages/adminPanel';
+import CerrarSesion from './pages/cerrarSesion';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/clienteIngresado" element={<ClienteIngresado />} />
         <Route path="/productos-especiales" element={<ProductosEspeciales />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
+        <Route path="/cerrar-sesion" element={<CerrarSesion />} />
       </Routes>
     </BrowserRouter>
   );
