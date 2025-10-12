@@ -4,6 +4,7 @@ const cors = require("cors");
 const database = require("./database");
 const productosRoutes = require("../routes/productos");
 const authRoutes = require("../routes/auth");
+const tipoUsuariosRoutes = require("../routes/tipo_clientes");
 
 const app = express();
 app.set("port", 4000);
@@ -19,6 +20,8 @@ app.use(morgan("dev"));
 
 app.use("/productos", productosRoutes);
 app.use("/auth", authRoutes);
+
+app.use("/tipo_usuarios", tipoUsuariosRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Ruta no encontrada" });

@@ -24,3 +24,36 @@ export const loginUsuario = async (credentials: LoginCredenciales) => {
   // Si es exitoso, devuelve los datos
   return response.json();
 };
+
+export const getAllClientes = async () => {
+  try {
+    const res = await fetch(`${API_URL}/getAllClientes`);
+    if (!res.ok) throw new Error("Error al obtener clientes");
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const deleteMultipleClientes = async (ids: number[]) => {
+  try {
+    const res = await fetch(`${API_URL}/eliminar-multiple`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Error al eliminar clientes");
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error("Error en deleteMultipleClientes:", error);
+    throw error;
+  }
+};
