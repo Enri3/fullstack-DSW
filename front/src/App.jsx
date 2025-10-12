@@ -6,7 +6,6 @@ import NuevoProducto from "./pages/nuevoProducto";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ClienteIngresado from "./pages/clienteIngresado";
-import ClienteProfile from "./pages/clienteProfile";
 import ProductosEspeciales from './pages/productosEspeciales';
 import AdminPanel from './pages/adminPanel';
 
@@ -20,7 +19,6 @@ function App() {
         <Route path="/login" element={<Login />} /> 
         <Route path="/register" element={<Register />} />
         <Route path="/clienteIngresado" element={<ClienteIngresado />} />
-        <Route path="/clienteProfile" element={<ClienteProfile />} />
         <Route path="/productos-especiales" element={<ProductosEspeciales />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
       </Routes>

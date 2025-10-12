@@ -31,16 +31,15 @@ export default function Login() {
 
         switch (data.cliente.idTipoCli) {
           case 1:
-            // Redirigir a la página del cliente tipo 1
-            window.location.href = "./clienteIngresado";
+            navigate('/clienteIngresado');
             break;
           case 2:
             // Redirigir a la página del cliente tipo 2
-            window.location.href = "./productos-especiales";
+            navigate('/productos-especiales');
             break;
           default:
             // Redirigir a una página por defecto
-            window.location.href = "./admin-panel";
+            navigate('/admin-panel');
             break;
         }
 
