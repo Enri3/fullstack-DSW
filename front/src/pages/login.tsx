@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
+import MensajeAlerta from "../components/mensajesAlerta";
 import { loginUsuario } from "../services/authService";
 import logo from "../assets/img/logo.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import type { Cliente } from "../../../entidades/cliente";
 import { clienteVacio } from "../../../entidades/cliente";
 
@@ -13,45 +14,50 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [mensaje, setMensaje] = useState<{ tipo: "success" | "error" | "info"; texto: string } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
+    setMensaje(null);
     setLoading(true);
 
     try {
       const data = await loginUsuario({ email, password });
 
       if (data && data.token) {
-        
+        // Guardar token y cliente en el navegador
         localStorage.setItem("token", data.token);
         localStorage.setItem("cliente", JSON.stringify(data.cliente));
         setCliente(data.cliente);
 
-        switch (data.cliente.idTipoCli) {
-          case 1:
-            navigate('/clienteIngresado');
-            break;
-          case 2:
-            // Redirigir a la página del cliente tipo 2
-            navigate('/productos-especiales');
-            break;
-          case 3:
-            // Redirigir a una página por defecto
-            navigate('/admin');
-            break;
-        }
+        // Mostrar mensaje de éxito
+        setMensaje({ tipo: "success", texto: "Inicio de sesión exitoso ✅" });
 
-        // Redirigir a clienteIngresado
-        //window.location.href = "./clienteIngresado";
-
+        // Redirigir según tipo de cliente
+        setTimeout(() => {
+          switch (data.cliente.idTipoCli) {
+            case 1:
+              navigate("/clienteIngresado");
+              break;
+            case 2:
+              navigate("/productos-especiales");
+              break;
+            case 3:
+              navigate("/admin");
+              break;
+            default:
+              navigate("/");
+          }
+        });
       } else {
-        setError("Respuesta inesperada del servidor.");
+        setMensaje({ tipo: "error", texto: "Respuesta inesperada del servidor." });
       }
     } catch (err: any) {
       console.error("Error al iniciar sesión:", err);
-      setError(err.message || "Error al conectar con el servidor.");
+      setMensaje({
+        tipo: "error",
+        texto: err.message || "Error al conectar con el servidor.",
+      });
     } finally {
       setLoading(false);
     }
@@ -66,10 +72,12 @@ export default function Login() {
           <img src={logo} id="logo" alt="Logo" />
           <h2>Iniciar sesión</h2>
 
+          {mensaje && <MensajeAlerta tipo={mensaje.tipo} texto={mensaje.texto} />}
+
           <form onSubmit={handleSubmit}>
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -86,10 +94,8 @@ export default function Login() {
             </button>
           </form>
 
-          {error && <div className="login-error">{error}</div>}
-
           <a href="/register" className="register-link">
-            ¿No tienes cuenta? Regístrate
+            ¿No tenés cuenta? Registrate
           </a>
         </div>
       </div>

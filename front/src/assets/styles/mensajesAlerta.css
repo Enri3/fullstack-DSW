@@ -1,0 +1,51 @@
+.mensaje-alerta {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  animation: fadeInOut 3s ease-in-out forwards;
+  text-align: center;
+  min-width: 300px;
+  max-width: 80%;
+  opacity: 0;
+}
+
+/* Colores por tipo */
+.mensaje-alerta.success {
+  background-color: #4caf50;
+}
+
+.mensaje-alerta.error {
+  background-color: #e74c3c;
+}
+
+.mensaje-alerta.info {
+  background-color: #3498db;
+}
+
+/* Animación de aparición y desvanecido */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+}

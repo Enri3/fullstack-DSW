@@ -109,7 +109,6 @@ const eliminarClientes = async (req, res) => {
   try {
     const conn = await getConnection();
 
-    // Eliminamos todos los IDs de una vez
     const result = await conn.query(
       `DELETE FROM clientes WHERE idCli IN (?)`,
       [ids]
