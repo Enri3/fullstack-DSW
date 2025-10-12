@@ -29,21 +29,19 @@ export default function Login() {
         localStorage.setItem("cliente", JSON.stringify(data.cliente));
         setCliente(data.cliente);
 
-        if (cliente && cliente.idTipoCli !== undefined) {
-          switch (cliente.idTipoCli) {
-            case 1:
-              // Redirigir a la página del cliente tipo 1
-              window.location.href = "./clienteIngresado";
-              break;
-            case 2:
-              // Redirigir a la página del cliente tipo 2
-              window.location.href = "./productos-especiales";
-              break;
-            default:
-              // Redirigir a una página por defecto
-              window.location.href = "./admin-panel";
-              break;
-          } 
+        switch (data.cliente.idTipoCli) {
+          case 1:
+            // Redirigir a la página del cliente tipo 1
+            window.location.href = "./clienteIngresado";
+            break;
+          case 2:
+            // Redirigir a la página del cliente tipo 2
+            window.location.href = "./productos-especiales";
+            break;
+          default:
+            // Redirigir a una página por defecto
+            window.location.href = "./admin-panel";
+            break;
         }
 
         // Redirigir a clienteIngresado

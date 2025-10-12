@@ -17,11 +17,11 @@ const registrarCliente = async (req, res) => {
       return res.status(400).json({ message: "El cliente ya existe" });
     }
 
-    //const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await conn.query(
       "INSERT INTO clientes (nombre, apellido, direccion, email, password, idTipoCli) VALUES (?, ?, ?, ?, ?, ?)",
-      [nombre, apellido, direccion, email, password, 1]
+      [nombre, apellido, direccion, email, hashedPassword, 1]
     );
 
     res.json({ message: "Cliente registrado con éxito" });
