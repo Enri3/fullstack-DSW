@@ -1,7 +1,7 @@
 export interface Cliente {
   idCli: number;
-  nombreCli: string;
-  apellidoCli: string;
+  nombre: string;
+  apellido: string;
   direccion: string;
   email: string;
   password: string;
@@ -26,8 +26,8 @@ export interface Productos {
 
 export const clienteVacio: Cliente = {
   idCli: 0,
-  nombreCli: "",
-  apellidoCli: "",
+  nombre: "",
+  apellido: "",
   direccion: "",
   email: "",
   password: "",

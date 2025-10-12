@@ -190,7 +190,7 @@ h1, h2, h3 {
 /* Botones */
 .btn-secondary {
     display: block;
-    width: 100%; /* Ocupa todo el ancho */
+    width: 90%; /* Ocupa todo el ancho */
     text-align: center;
     padding: 8px 15px;
     margin-top: 10px;

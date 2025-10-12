@@ -11,7 +11,7 @@ import { clienteVacio } from "../../../entidades/cliente";
 export default function ClienteIngresado() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
-  const [tipoNombre, setTipoNombre] = useState("");
+  const [tipoNombre, setTipoNombre] = useState<string>("");
 
   useEffect(() => {
     const storedCliente = localStorage.getItem("cliente");
@@ -19,6 +19,25 @@ export default function ClienteIngresado() {
       setCliente(JSON.parse(storedCliente));
     }
   }, []);
+
+  useEffect(() => {
+    if (!cliente.idTipoCli) return;
+
+    switch (cliente.idTipoCli) {
+      case 1:
+        setTipoNombre("Inicial");
+        break;
+      case 2:
+        setTipoNombre("Premium");
+        break;
+      case 3:
+        setTipoNombre("Administrador");
+        break;
+      default:
+        setTipoNombre("Desconocido");
+        break;
+    }
+  }, [cliente]);
 
 
   return (
@@ -28,7 +47,7 @@ export default function ClienteIngresado() {
                 
                 {/* 1. SECCIÓN DE BIENVENIDA */}
                 <section className="welcome-section">
-                    <h1 className="welcome-title">Bienvenido, {cliente.nombreCli} {cliente.apellidoCli}!</h1>
+                    <h1 className="welcome-title">Bienvenido, {cliente.nombre} {cliente.apellido}!</h1>
                     <p className="client-status">
                         <strong>Tipo de Cliente:</strong> {tipoNombre}
                     </p>
