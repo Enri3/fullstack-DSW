@@ -37,7 +37,7 @@ export default function Login() {
             // Redirigir a la página del cliente tipo 2
             navigate('/productos-especiales');
             break;
-          default:
+          case 3:
             // Redirigir a una página por defecto
             navigate('/admin-panel');
             break;

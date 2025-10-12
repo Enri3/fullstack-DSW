@@ -49,21 +49,15 @@ const loginCliente = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: cliente.idCli, nombre: cliente.nombre, tipo: cliente.idTipoCli },
+      { id: cliente.idCli, nombre: cliente.nombreCli, tipo: cliente.idTipoCli },
       "clave_secreta_super_segura",
       { expiresIn: "2h" }
     );
-
-    const { idCli, nombre, apellido, direccion, idTipoCli } = cliente;
-
+    
     res.json({ 
     message: "Login exitoso", 
     token, 
-    idTipoCli,
-    idCliente: idCli,
-    nombre,
-    apellido,
-    direccion
+    cliente
     });
   } catch (error) {
     console.error("Error en loginCliente:", error);
