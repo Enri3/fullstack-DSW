@@ -5,10 +5,13 @@ export default function AdminPanel() {
   return (
     <>
       <Header_sinCarrito />
-      <div className="page-content">
-        <h1>Panel de Administración (Tipo Cliente 3)</h1>
-        {/* Aquí irían las herramientas de gestión de la aplicación */}
-      </div>
+        <div className="profile-container">
+          <h1>Bienvenido, {cliente.nombreCli} {cliente.apellidoCli}</h1>
+          <p><strong>Email:</strong> {cliente.email}</p>
+          <p><strong>Dirección:</strong> {cliente.direccion}</p>
+          <p><strong>Tipo de Cliente:</strong> {cliente.idTipoCli}</p>
+          <Link to="/editar-cliente" className="edit-button">Editar Perfil</Link>
+        </div>
     </>
   );
 }

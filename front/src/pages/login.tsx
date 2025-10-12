@@ -4,11 +4,14 @@ import Header_sinCarrito from "../components/header_sinCarrito";
 import { loginUsuario } from "../services/authService";
 import logo from "../assets/img/logo.png";
 import { useNavigate } from 'react-router-dom';
+import type { Cliente } from "../../../entidades/cliente";
+import { clienteVacio } from "../../../entidades/cliente";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,26 +21,33 @@ export default function Login() {
     setLoading(true);
 
     try {
-      console.log("Intentando iniciar sesión con:", email);
       const data = await loginUsuario({ email, password });
 
-      // data debería contener token y tipoCliente segun tu backend
       if (data && data.token) {
-
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("email", email);
-        localStorage.setItem("idCliente", String(data.idCliente));
         
-        if (data.nombre) localStorage.setItem("nombre", String(data.nombre));
-        if (data.apellido) localStorage.setItem("apellido", String(data.apellido));
-        if (data.direccion) localStorage.setItem("direccion", String(data.direccion));
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("cliente", JSON.stringify(data.cliente));
+        setCliente(data.cliente);
 
-        if (data.idTipoCli !== undefined) {
-          localStorage.setItem("tipoCliente", data.idTipoCli);
+        if (cliente && cliente.idTipoCli !== undefined) {
+          switch (cliente.idTipoCli) {
+            case 1:
+              // Redirigir a la página del cliente tipo 1
+              window.location.href = "./clienteIngresado";
+              break;
+            case 2:
+              // Redirigir a la página del cliente tipo 2
+              window.location.href = "./productos-especiales";
+              break;
+            default:
+              // Redirigir a una página por defecto
+              window.location.href = "./admin-panel";
+              break;
+          } 
         }
 
         // Redirigir a clienteIngresado
-        window.location.href = "./clienteIngresado";
+        //window.location.href = "./clienteIngresado";
 
       } else {
         setError("Respuesta inesperada del servidor.");

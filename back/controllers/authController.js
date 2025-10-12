@@ -17,11 +17,11 @@ const registrarCliente = async (req, res) => {
       return res.status(400).json({ message: "El cliente ya existe" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
 
     await conn.query(
       "INSERT INTO clientes (nombre, apellido, direccion, email, password, idTipoCli) VALUES (?, ?, ?, ?, ?, ?)",
-      [nombre, apellido, direccion, email, hashedPassword, 1]
+      [nombre, apellido, direccion, email, password, 1]
     );
 
     res.json({ message: "Cliente registrado con éxito" });
@@ -51,7 +51,7 @@ const loginCliente = async (req, res) => {
       { expiresIn: "2h" }
     );
 
-    res.json({ message: "Login exitoso", token, tipoCliente: cliente.idTipoCli, idCliente: cliente.idCli });
+    res.json({ message: "Login exitoso", token, cliente});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error al iniciar sesión" });
