@@ -2,6 +2,17 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { getConnection } = require("../src/database");
 
+const getAllClientes = async (req, res) => {
+  try {
+    const conn = await getConnection();
+    const rows = await conn.query("SELECT idCli, nombre, apellido, email, direccion, email FROM clientes WHERE idTipoCli = 1");
+    res.json(rows);
+  } catch (error) {
+    console.error("Error al obtener clientes:", error);
+    res.status(500).json({ message: "Error al obtener clientes" });
+  }
+};
+
 const registrarCliente = async (req, res) => {
   const { nombre, apellido, direccion, email, password } = req.body;
 
@@ -88,4 +99,29 @@ const editarCliente = async (req, res) => {
   }
 };
 
-module.exports = { registrarCliente, loginCliente, editarCliente };
+const eliminarClientes = async (req, res) => {
+  const { ids } = req.body;
+
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: "Debe enviar un array de IDs válido" });
+  }
+
+  try {
+    const conn = await getConnection();
+
+    // Eliminamos todos los IDs de una vez
+    const result = await conn.query(
+      `DELETE FROM clientes WHERE idCli IN (?)`,
+      [ids]
+    );
+
+    res.json({
+      message: `Se eliminaron ${result.affectedRows} clientes correctamente.`,
+    });
+  } catch (error) {
+    console.error("Error al eliminar clientes:", error);
+    res.status(500).json({ message: "Error al eliminar clientes" });
+  }
+};
+
+module.exports = { getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes };

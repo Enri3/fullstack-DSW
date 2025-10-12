@@ -39,7 +39,7 @@ export default function Login() {
             break;
           case 3:
             // Redirigir a una página por defecto
-            navigate('/admin-panel');
+            navigate('/admin');
             break;
         }
 
