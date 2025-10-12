@@ -55,17 +55,18 @@ export default function ClienteIngresado() {
 
                 {/* 2. GRID DE LLAMADAS A LA ACCIÓN (CTAs) */}
                 <div className="cta-grid">
-                    <Link to="/productos" className="cta-card cta-new">
+                    <Link to="/productosCliente" className="cta-card cta-new">
                         <i className="icon">🛒</i>
                         <h3>Realizar Nuevo Pedido</h3>
                         <p>Explora nuestros productos y comienza a comprar.</p>
                     </Link>
+                    
                     <Link to="/mis-facturas" className="cta-card cta-invoice">
                         <i className="icon">🧾</i>
                         <h3>Ver Mis Facturas</h3>
                         <p>Accede y descarga tu historial de pagos.</p>
                     </Link>
-                    <Link to="/historial-pedidos" className="cta-card cta-history">
+                    <Link to="/carrito" className="cta-card cta-history">
                         <i className="icon">📦</i>
                         <h3>Historial de Pedidos</h3>
                         <p>Revisa el estado de tus compras pasadas.</p>

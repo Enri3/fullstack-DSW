@@ -16,13 +16,13 @@ export default function Header({ cantidad }: HeaderProps) {
           <img src={logo} id="logo" alt="Logo" />
         </Link>
         <div id="menu">
-          {/* 👇 Cambiado a Link para navegación interna */}
-          <Link to="/login">Ingresar</Link>
           
+          <Link to="/login">Ingresar</Link>
+          {/*}
           <Link to="/carrito">
             <i className="material-icons icono">shopping_cart</i>
             <span id="cuenta_carrito">{cantidad}</span>
-          </Link>
+          </Link>*/}
         </div>
       </nav>
     </header>

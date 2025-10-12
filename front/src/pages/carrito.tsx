@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/header";
+import HeaderClienteIngresado from "../components/header_clienteIngresado";
 import Footer from "../components/footer";
 import "../assets/styles/cart.css";
 import "../assets/styles/style.css";
@@ -61,7 +61,7 @@ export default function MostrarCarrito() {
 
   return (
     <>
-      <Header cantidad={cantidad} />
+      <HeaderClienteIngresado cantidad={cantidad} />
       <main>
         {productos.length === 0 ? (
           <div id="carrito-vacio">
@@ -87,7 +87,7 @@ export default function MostrarCarrito() {
             <section id="totales">
               <p>Total unidades: <span id="cantidad">{totalUnidades}</span></p>
               <p>Total precio: $<span id="precio">{totalPrecio.toFixed(2)}</span></p>
-              <p><a href="/">Volver a la selección de productos</a></p>
+              <p><a href="/productosCliente">Volver a la selección de productos</a></p>
               <button disabled>Comprar</button>
               <button id="reiniciar" onClick={handleReiniciar}>Reiniciar</button>
             </section>

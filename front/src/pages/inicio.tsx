@@ -106,15 +106,11 @@ export default function Inicio() {
             <p>No hay productos disponibles.</p>
           )}
         </section>
+
+     
           <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-            <Link to="/productosCliente" >
-                <button className="but"> Ver más  CLIENTE</button>
-            </Link>
-          </div>
-          
-            <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-            <Link to="/productosAdmin" >
-                <button className="but"> Ver más  ADMIN</button>
+            <Link to="/login" >
+                <button className="but"> Ver más </button>
             </Link>
           </div>
        

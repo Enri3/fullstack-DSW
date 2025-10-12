@@ -5,7 +5,8 @@ import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartServic
 import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
-import Header_sinCarrito from "../components/header_sinCarrito";
+import HeaderAdmin from "../components/header_admin";
+
 
 
 type Producto = {
@@ -76,7 +77,7 @@ export default function DisplayProductos() {
 
   return (
     <>
-      <Header_sinCarrito />
+      <HeaderAdmin cantidad={cantidad}/>
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>

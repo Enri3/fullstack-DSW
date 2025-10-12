@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/header";
+import HeaderClienteIngresado from "../components/header_clienteIngresado";
 import Footer from "../components/footer";
 import { getProductos } from "../services/productosService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
@@ -40,7 +40,7 @@ export default function DisplayProductos_C() {
 
   return (
     <>
-      <Header cantidad={cantidad} />
+      <HeaderClienteIngresado cantidad={cantidad} />
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>

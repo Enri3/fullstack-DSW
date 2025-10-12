@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
+import HeaderAdmin from "../components/header_admin";
 import logo from "../assets/img/logo.png";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import type { Cliente } from "../../../entidades/cliente";
 import { clienteVacio } from "../../../entidades/cliente";
 import "../assets/styles/admin.css";
+
 
 export default function Admin() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
@@ -20,7 +21,7 @@ export default function Admin() {
 
   return (
     <>
-      <HeaderClienteIngresado cantidad={cantidad} />
+      <HeaderAdmin cantidad={cantidad} />
             <div className="dashboard-container admin-dashboard">
                 
                 {/* 1. SECCIÓN DE BIENVENIDA Y ESTADÍSTICAS */}
@@ -37,11 +38,11 @@ export default function Admin() {
                         <h3>Gestionar Pedidos</h3>
                         <p>Ver y procesar órdenes de compra.</p>
                     </a>
-                    <a href="/admin/productos" className="cta-card cta-productos">
+                    <Link to="/productosAdmin" className="cta-card cta-productos">
                         <i className="icon">📦</i>
                         <h3>Inventario y Productos</h3>
                         <p>Añadir, editar o eliminar productos.</p>
-                    </a>
+                    </Link>
                     <Link to="/eliminar-clientes" className="cta-card cta-clientes">
                         <i className="icon">👤</i>
                         <h3>Gestión de Clientes</h3>

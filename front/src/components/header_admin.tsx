@@ -8,24 +8,19 @@ interface HeaderProps {
   cantidad: number;
 }
 
-export default function HeaderClienteIngresado({ cantidad }: HeaderProps) {
+export default function HeaderAdmin({ cantidad }: HeaderProps) {
+  
   return (
     <header>
       <nav>
-        <Link to="/clienteIngresado">
+        <Link to="/admin">
           <img src={logo} id="logo" alt="Logo" />
         </Link>
         
               <div id="menu">
                 <Link to="/cerrar-sesion">Cerrar Sesión</Link>
-                          <Link to="/carrito">
-                            <i className="material-icons icono">shopping_cart</i>
-                            <span id="cuenta_carrito">{cantidad}</span>
-                          </Link>
               </div>
 
-          
-        
       </nav>
 
 
