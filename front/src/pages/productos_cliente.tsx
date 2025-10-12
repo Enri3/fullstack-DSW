@@ -8,7 +8,7 @@ import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import type { Producto } from "../interfaces";
 
-export default function DisplayProductos() {
+export default function DisplayProductos_C() {
   const [productos, setProductos] = useState<Producto[]>([]); 
   
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
@@ -48,20 +48,7 @@ export default function DisplayProductos() {
         </div>
 
         <section id="productos-container-display">
-          <div className="tarjeta-add">
-            <div className="mensaje">
-              <br />
-              <br />
-              <h2>Nuevos productos</h2>
-              <p>Haz clic en el botón para agregar un nuevo producto.</p>
-              <br />
-              <Link to="/nuevoProducto">
-                <button>
-                  Agregar Producto <i className="material-icons">library_add</i>
-                </button>
-              </Link>
-            </div>
-          </div>
+          
 
           {loading && <p>Cargando productos...</p>}
           {error && <p style={{ color: "red" }}>{error}</p>}

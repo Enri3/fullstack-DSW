@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/header";
 import Footer from "../components/footer";
 import { getProductos } from "../services/productosService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
+import Header_sinCarrito from "../components/header_sinCarrito";
 
 type Producto = {
   id: number;
@@ -90,7 +90,7 @@ export default function DisplayProductos() {
 
   return (
     <>
-      <Header cantidad={cantidad} />
+      <Header_sinCarrito />
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>

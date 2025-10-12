@@ -5,6 +5,7 @@ import Footer from "../components/footer";
 import { getProductos } from "../services/productosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
+import { Link } from "react-router-dom";
 
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 
@@ -120,7 +121,12 @@ export default function NuevoProducto() {
 
             <div className="botones-formulario">
               <button type="submit">Agregar Producto</button>
+            <Link to= '/productosAdmin' >
+                <button>Volver </button>
+            </Link>
             </div>
+
+  
           </form>
         </div>
       </main>

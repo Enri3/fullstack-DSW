@@ -148,7 +148,7 @@ export default function ModificarProducto() {
 
             <div className="botones-formulario">
               <button type="submit">Guardar Cambios</button>
-            <Link to= '/' >
+            <Link to= '/productosAdmin' >
                 <button>Volver </button>
             </Link>
             </div>
