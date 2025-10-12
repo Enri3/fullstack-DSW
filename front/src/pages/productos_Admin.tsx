@@ -7,7 +7,7 @@ import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 
-// 🔹 Tipo de producto
+
 type Producto = {
   id: number | string;
   nombre: string;
@@ -17,17 +17,17 @@ type Producto = {
 };
 
 export default function DisplayProductos() {
-  // 🔹 Estados
+  // Estados
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cantidad, setCantidad] = useState<number>(obtenerCantidadCarrito());
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  // 🔹 Modal y producto seleccionado
+  //  Modal y producto seleccionado
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [productoAEliminar, setProductoAEliminar] = useState<Producto | null>(null);
 
-  // 🔹 Cargar productos al montar
+  // Cargar productos al montar
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -45,13 +45,13 @@ export default function DisplayProductos() {
     fetchProductos();
   }, []);
 
-  // 🔹 Agregar al carrito
-  const handleAgregar = (producto: Producto) => {
+  // Agregar al carrito
+  /*const handleAgregar = (producto: Producto) => {
     agregarAlCarrito(producto);
     setCantidad(obtenerCantidadCarrito());
-  };
+  };*/
 
-  // 🔹 Abrir modal de eliminación
+  // Abrir modal de eliminación
   const handleEliminar = (productoId: number | string) => {
     const producto = productos.find((p) => p.id === productoId);
     if (!producto) return;
@@ -59,7 +59,7 @@ export default function DisplayProductos() {
     setModalVisible(true);
   };
 
-  // 🔹 Confirmar eliminación
+  //Confirmar eliminación
   const confirmarEliminar = async () => {
     if (!productoAEliminar) return;
     try {
@@ -73,7 +73,7 @@ export default function DisplayProductos() {
     }
   };
 
-  // 🔹 Render
+
   return (
     <>
       <Header_sinCarrito />
@@ -105,25 +105,25 @@ export default function DisplayProductos() {
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           {/* Listado de productos */}
+          
           {!loading && productos.length > 0 && productos.map((producto) => (
-            <div key={producto.id} className="tarjeta-producto-display">
-              <img
-                src={producto.urlImg || "/placeholder.png"}
-                alt={producto.nombre}
-              />
-              <h3>
-                {producto.nombre} - {producto.medida || "N/A"} grs
-              </h3>
-              <p className="precio">${producto.precio}</p>
-
-              <div className="botones-admin">
-                <Link to={`/modificarProducto/${producto.id}`}>
-                  <button>Modificar</button>
-                </Link>
-                <button onClick={() => handleEliminar(producto.id)}>Eliminar</button>
+          <div key={producto.id} className="tarjeta-producto-display">
+            <Link to="/detalleProducto" state={{ id: producto.id }}>
+              <div className="tarjeta-clickable">
+                <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombre} />
+                <h3>{producto.nombre} - {producto.medida || "N/A"} grs</h3>
+                <p className="precio">${producto.precio}</p>
               </div>
+            </Link>
+
+            <div className="botones-admin">
+              <Link to={`/modificarProducto/${producto.id}`}>
+                <button>Modificar</button>
+              </Link>
+              <button onClick={() => handleEliminar(producto.id)}>Eliminar</button>
             </div>
-          ))}
+          </div>
+        ))}
 
           {!loading && productos.length === 0 && !error && (
             <p>No hay productos disponibles.</p>

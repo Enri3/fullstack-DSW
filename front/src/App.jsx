@@ -8,6 +8,7 @@ import ModificarProducto from "./pages/modificarProducto";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Inicio from "./pages/Inicio";
+import Detalle from "./components/detalleProducto";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/modificarProducto/:id" element={<ModificarProducto />} />
         <Route path="/login" element={<Login />} /> 
         <Route path="/register" element={<Register />} />
+        <Route path="/detalleProducto" element={<Detalle />} />
       </Routes>
     </BrowserRouter>
   );
