@@ -58,4 +58,34 @@ const loginCliente = async (req, res) => {
   }
 };
 
-module.exports = { registrarCliente, loginCliente };
+const editarCliente = async (req, res) => {
+  const { idCli, nombre, apellido, direccion, email, password } = req.body;
+
+  if (!idCli) {
+    return res.status(400).json({ message: "Falta el ID del cliente" });
+  }
+
+  try {
+    const conn = await getConnection();
+    let hashedPassword;
+
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    await conn.query(
+      `UPDATE clientes 
+       SET nombre = ?, apellido = ?, direccion = ?, email = ?, 
+           password = COALESCE(?, password)
+       WHERE idCli = ?`,
+      [nombre, apellido, direccion, email, hashedPassword, idCli]
+    );
+
+    res.json({ message: "Cliente actualizado correctamente" });
+  } catch (error) {
+    console.error("Error en editarCliente:", error);
+    res.status(500).json({ message: "Error al actualizar el cliente" });
+  }
+};
+
+module.exports = { registrarCliente, loginCliente, editarCliente };

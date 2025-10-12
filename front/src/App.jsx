@@ -9,6 +9,7 @@ import ClienteIngresado from "./pages/clienteIngresado";
 import ProductosEspeciales from './pages/productosEspeciales';
 import AdminPanel from './pages/adminPanel';
 import CerrarSesion from './pages/cerrarSesion';
+import EditarCliente from './pages/editar-cliente';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/productos-especiales" element={<ProductosEspeciales />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
         <Route path="/cerrar-sesion" element={<CerrarSesion />} />
+        <Route path="/editar-cliente" element={<EditarCliente />} />
       </Routes>
     </BrowserRouter>
   );
