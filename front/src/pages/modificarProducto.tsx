@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; 
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import Footer from "../components/footer";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
+import { getProductoById, updateProducto } from "../services/productosService";
 
 export default function ModificarProducto() {
-  const { id } = useParams(); // id del producto desde la URL
+  const { id } = useParams<{ id: string }>();
   const [inputs, setInputs] = useState({
     nombre: "",
     medida: "",
@@ -18,42 +18,40 @@ export default function ModificarProducto() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Cargar datos del producto al montar
+ 
+  if (!id) {
+    return <p>Error: ID de producto no válido.</p>;
+  }
+
+  
   useEffect(() => {
-    const fetchProducto = async () => {
+    const cargarProducto = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/productos/${id}`);
-        const data = await response.json();
-
-        if (!response.ok) {
-          setError(data.error || "Error al cargar producto");
-          setLoading(false);
-          return;
-        }
-
+        const data = await getProductoById(id);
         setInputs({
           nombre: data.nombre || "",
           medida: data.medida || "",
-          precio: data.precio || "",
+          precio: data.precio?.toString() || "",
           urlImg: data.urlImg || "",
         });
       } catch (err) {
         console.error(err);
-        setError("No se pudo conectar con el servidor");
+        setError("No se pudo conectar con el servidor.");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchProducto();
+    cargarProducto();
   }, [id]);
 
-  const handleChange = (e) => {
+ 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+ 
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -70,23 +68,14 @@ export default function ModificarProducto() {
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/productos/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...inputs, precio: precioNum }),
+      await updateProducto(id, {
+        ...inputs, precio: precioNum,
+        id: ""
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Error al actualizar producto");
-        return;
-      }
-
-      setSuccess("Producto actualizado correctamente!");
+      setSuccess("✅ Producto actualizado correctamente!");
     } catch (err) {
-      setError("No se pudo conectar con el servidor");
       console.error(err);
+      setError("❌ Error al actualizar el producto.");
     }
   };
 
@@ -148,9 +137,9 @@ export default function ModificarProducto() {
 
             <div className="botones-formulario">
               <button type="submit">Guardar Cambios</button>
-            <Link to= '/productosAdmin' >
-                <button>Volver </button>
-            </Link>
+              <Link to="/productosAdmin">
+                <button type="button">Volver</button>
+              </Link>
             </div>
           </form>
         </div>
