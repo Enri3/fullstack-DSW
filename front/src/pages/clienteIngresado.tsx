@@ -8,36 +8,39 @@ import { Link } from "react-router-dom";
 
 export default function ClienteIngresado() {
   const [email, setEmail] = useState<string | null>(null);
-  const [tipoCliente, setTipoCliente] = useState<string | null>(null);
   const [nombreTipo, setNombreTipo] = useState<string | null>(null);
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
 
+  const [clientTypeName, setClientTypeName] = useState("Cargando...");
+  const idTipoCli = Number(localStorage.getItem("tipoCliente"));
+
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    const storedTipoCliente = localStorage.getItem("tipoCliente");
-
+  
     setEmail(storedEmail);
-    setTipoCliente(storedTipoCliente);
 
-    let fetchNombreTipo = async (idTipo: string) => {
-        try{
-            const nombre = await getNombreTipo({ id: Number(idTipo) });
-            setNombreTipo(nombre);
-            localStorage.setItem("nombreTipo", nombre);
+    const fetchClientType = async () => {
+      if (idTipoCli) {
+        try {
+          const name = await getNombreTipo(idTipoCli); 
+          setNombreTipo(name);
         } catch (error) {
-        console.error("Error al obtener el nombre del tipo de cliente:", error);
+          console.error(error);
+          setNombreTipo("Error al cargar el tipo");
+        }
+      } else {
+        setNombreTipo("ID de tipo no disponible");
       }
-    };
-    fetchNombreTipo(storedTipoCliente || "");
+    };fetchClientType();
   }, []);
-  switch (tipoCliente) {
-    case "1":
+  switch (idTipoCli) {
+    case 1:
       window.location.href = "./clienteProfile";
       break;
-    case "2":
+    case 2:
       window.location.href = "./productos-especiales";
       break;
-    case "3":
+    case 3:
       window.location.href = "./admin-panel";
       break;
   }

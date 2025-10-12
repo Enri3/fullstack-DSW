@@ -33,7 +33,7 @@ export default function Login() {
         if (data.direccion) localStorage.setItem("direccion", String(data.direccion));
 
         if (data.idTipoCli !== undefined) {
-          localStorage.setItem("tipoCliente", String(data.idTipoCli));
+          localStorage.setItem("tipoCliente", data.idTipoCli);
         }
 
         // Redirigir a clienteIngresado

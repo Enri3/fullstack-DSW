@@ -27,7 +27,7 @@ export default function ClienteProfile() {
         // Por ahora, solo navegaremos a una ruta (ej: /editar-cliente)
         navigate('/editar-cliente'); 
     };
-
+    const idTipoCli = Number(localStorage.getItem("tipoCliente"));
     useEffect(() => {
         const storedEmail = localStorage.getItem("email");
         const storedTipoCliente = localStorage.getItem("tipoCliente");
@@ -46,18 +46,19 @@ export default function ClienteProfile() {
         setApellido(storedApellido);
         setDireccion(storedDireccion);
 
-        if (!storedNombreTipo && storedTipoCliente) {
-            const fetchNombreTipo = async (idTipo: string) => {
-                try {
-                    const nombre = await getNombreTipo({ id: Number(idTipo) });
-                    setNombreTipo(nombre);
-                    localStorage.setItem("nombreTipo", nombre);
-                } catch (error) {
-                    setNombreTipo("Error al cargar");
-                }
-            };
-            fetchNombreTipo(storedTipoCliente);
+        const fetchClientType = async () => {
+      if (idTipoCli) {
+        try {
+          const name = await getNombreTipo(idTipoCli); 
+          setNombreTipo(name);
+        } catch (error) {
+          console.error(error);
+          setNombreTipo("Error al cargar el tipo");
         }
+      } else {
+        setNombreTipo("ID de tipo no disponible");
+      }
+    };fetchClientType();
         
     }, []);
 
