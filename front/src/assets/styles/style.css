@@ -173,3 +173,36 @@ button:hover{
         margin-top: 20px;
         color: var(--principal);
     }
+    .botones-admin {
+        display: flex;     
+        gap: 10px;           
+        flex-wrap: nowrap;
+        justify-content: center;
+    }
+       
+        .botones-admin button {
+        flex: 1;               
+        padding: 10px 20px;     
+        min-width: 120px;      }
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Importante para que esté por encima */
+        }
+
+        .modal {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        z-index: 1001;
+        }

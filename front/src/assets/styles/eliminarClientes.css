@@ -1,0 +1,192 @@
+/* * Variables de Color Reutilizadas de la Estética Vivelas
+ * --color-fondo-principal: #f5f3ed; (Crema muy claro)
+ * --color-fondo-secundario: #e8e3d3; (Crema un poco más oscuro, para contrastes sutiles)
+ * --color-texto-principal: #3c3c3c; (Gris oscuro)
+ * --color-accent: #8b5e3c; (Marrón/Tierra)
+ * --color-borde-suave: #d3ccc0; (Borde sutil)
+ * --font-serif: 'Playfair Display', Georgia, serif; 
+ * --font-sans: 'Montserrat', 'Helvetica Neue', sans-serif; 
+ */
+
+/* ---------------------------------
+ * CONTENEDOR Y TÍTULO
+ * ---------------------------------
+ */
+
+.admin-page-container {
+    max-width: 1000px;
+    margin: 40px auto; 
+    padding: 0 20px;
+    background-color: var(--color-fondo-principal); /* Fondo crema general */
+    min-height: 80vh;
+    font-family: var(--font-sans);
+}
+
+.admin-page-title {
+    font-family: var(--font-serif);
+    font-size: 2.2em;
+    font-weight: 700;
+    text-align: center;
+    color: var(--color-texto-principal);
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-borde-suave);
+}
+
+/* ---------------------------------
+ * BARRA DE ACCIONES Y BOTONES
+ * ---------------------------------
+ */
+
+.admin-actions-bar {
+    margin-bottom: 20px;
+    text-align: right; /* Alineamos los botones a la derecha */
+}
+
+.admin-actions-bar button {
+    padding: 10px 20px;
+    border: 1px solid var(--color-accent);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    font-family: var(--font-sans);
+}
+
+/* Estilo para el botón Seleccionar/Deseleccionar */
+.btn-select-all {
+    background-color: white;
+    color: var(--color-accent);
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-select-all:hover {
+    background-color: var(--color-fondo-secundario);
+}
+
+/* Estilo para el botón Eliminar (color de alerta) */
+.btn-delete-selected {
+    background-color: #d15d5d; /* Rojo más apagado/tierra */
+    border-color: #d15d5d;
+    color: white;
+}
+
+.btn-delete-selected:hover {
+    background-color: #b54a4a;
+    border-color: #b54a4a;
+}
+
+
+/* ---------------------------------
+ * TABLA DE DATOS
+ * ---------------------------------
+ */
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra suave */
+}
+
+/* Encabezado de la tabla */
+.admin-table thead {
+    background-color: var(--color-fondo-secundario); /* Color crema oscuro para el header */
+    color: var(--color-texto-principal);
+    border-bottom: 2px solid var(--color-borde-suave);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 15px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-borde-suave);
+}
+
+.admin-table th {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+/* Filas del cuerpo */
+.admin-table tbody tr:last-child td {
+    border-bottom: none; /* Eliminar borde de la última fila */
+}
+
+.admin-table tbody tr:nth-child(even) {
+    background-color: #fcfcfc; /* Alternar el color de fondo sutilmente */
+}
+
+.admin-table tbody tr:hover {
+    background-color: var(--color-fondo-secundario); /* Resaltar al pasar el ratón */
+}
+
+/* Checkboxes (Estilo por defecto del navegador, solo ajustes de tamaño) */
+.admin-table input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--color-accent); /* Color del check, si el navegador lo soporta */
+}
+
+/* ---------------------------------
+ * RESPONSIVE (Ajustes para móviles)
+ * ---------------------------------
+ */
+@media (max-width: 768px) {
+    .admin-actions-bar {
+        text-align: left;
+    }
+    
+    .admin-page-container {
+        margin: 20px auto;
+    }
+    
+    .admin-actions-bar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Ocultar encabezado y hacer que las filas se apilen (mobile-first approach) */
+    .admin-table table, 
+    .admin-table thead, 
+    .admin-table tbody, 
+    .admin-table th, 
+    .admin-table td, 
+    .admin-table tr { 
+        display: block; 
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tbody tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--color-borde-suave);
+        border-radius: 8px;
+    }
+
+    .admin-table td {
+        padding: 10px 15px;
+        text-align: right;
+        position: relative;
+        border-bottom: 1px dashed var(--color-borde-suave);
+    }
+    
+    /* Mostrar etiqueta antes del contenido en móviles */
+    .admin-table tr td:nth-child(2)::before { content: "Nombre:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+    .admin-table tr td:nth-child(3)::before { content: "Apellido:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+    .admin-table tr td:nth-child(4)::before { content: "Email:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+    .admin-table tr td:nth-child(1) { /* Columna del checkbox */
+        text-align: left; 
+        border-bottom: none;
+    }
+}

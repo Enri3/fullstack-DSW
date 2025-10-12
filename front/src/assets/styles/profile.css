@@ -1,0 +1,191 @@
+/* ------------------------------------------- */
+/* LAYOUT GLOBAL Y CONTENEDOR PRINCIPAL */
+/* ------------------------------------------- */
+.profile-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 20px;
+    background-color: #f5f7fa; /* Fondo gris muy claro */
+    min-height: calc(100vh - 60px);
+}
+
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05); /* Sombra sutil y elegante */
+    width: 100%;
+    max-width: 800px; /* Un poco más de espacio */
+    padding: 30px 40px;
+    position: relative; 
+    text-align: left;
+}
+
+/* ------------------------------------------- */
+/* HEADER DE ACCIONES (Volver, Título, Editar) */
+/* ------------------------------------------- */
+.profile-actions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e1e8ed; /* Línea divisoria nítida */
+    width: 100%;
+}
+
+.profile-card h2 {
+    /* Título Grande y Centrado */
+    border-bottom: none; 
+    padding-bottom: 0;
+    margin: 0 15px; 
+    flex-grow: 1;
+    text-align: center;
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 2.5em; /* Título aún más grande */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ------------------------------------------- */
+/* BOTONES DE ACCIÓN (Compactos y Modernos) */
+/* ------------------------------------------- */
+.btn-action-left {
+    /* Botón Volver (Ícono + Texto) */
+    background: none !important;
+    border: none !important;
+    color: #34495e; /* Gris/Azul oscuro */
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    
+    padding: 8px 12px;
+    min-width: 90px;
+    text-align: left;
+    outline: none; 
+}
+
+.btn-action-left:hover {
+    color: #007bff; /* Color de acento en hover */
+    background-color: transparent !important;
+}
+
+.btn-action-right {
+    /* Botón Editar (Principal) */
+    background-color: #007bff; /* Azul primario */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 90px;
+    box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+    text-align: center;
+}
+
+.btn-action-right:hover {
+    background-color: #0056b3;
+    box-shadow: 0 5px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* ------------------------------------------- */
+/* CUERPO DEL PERFIL (ÍCONO Y SECCIONES) */
+/* ------------------------------------------- */
+.profile-icon {
+    font-size: 80px; /* Ícono grande */
+    color: #5a6268; /* Color gris suave */
+    margin-bottom: 40px;
+    text-align: center;
+    width: 100%;
+}
+
+.profile-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    /* Usamos solo un borde superior sutil para separar las secciones */
+    border-top: 1px solid #f0f3f6; 
+}
+
+.profile-section h3 {
+    color: #34495e;
+    font-size: 1.4em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+}
+
+/* Grid de Información (Módulos) */
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px 50px; /* Más espacio entre columnas */
+}
+
+.profile-info-grid p {
+    margin: 0;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #6c757d; /* Texto secundario más oscuro */
+    white-space: normal; 
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.profile-info-grid strong {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.profile-info-grid span {
+    font-weight: 400;
+}
+
+/* Tag de Tipo de Cliente */
+.tag-tipo {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px; /* Tag cuadrado y limpio */
+    font-weight: 700 !important;
+    font-size: 0.9em;
+    background-color: #e6f0ff; /* Fondo muy claro del acento */
+    color: #007bff;
+    text-transform: uppercase;
+}
+
+/* ------------------------------------------- */
+/* MEDIA QUERIES (RESPONSIVE) */
+/* ------------------------------------------- */
+@media (max-width: 650px) {
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .profile-actions-header {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    .profile-card h2 {
+        width: 100%;
+        order: -1; /* Pone el título sobre los botones */
+        margin-top: 15px;
+        margin-left: 0;
+        margin-right: 0;
+        font-size: 1.8em; 
+    }
+    .profile-card {
+        padding: 20px;
+    }
+    .btn-action-left, .btn-action-right {
+        min-width: unset;
+        width: 120px;
+        text-align: center;
+        padding: 10px 10px;
+    }
+}

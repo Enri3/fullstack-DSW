@@ -2,10 +2,16 @@ import { useState } from "react";
 import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import { loginUsuario } from "../services/authService";
+import logo from "../assets/img/logo.png";
+import { useNavigate } from 'react-router-dom';
+import type { Cliente } from "../../../entidades/cliente";
+import { clienteVacio } from "../../../entidades/cliente";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,18 +21,31 @@ export default function Login() {
     setLoading(true);
 
     try {
-      console.log("Intentando iniciar sesión con:", email);
       const data = await loginUsuario({ email, password });
 
-      // data debería contener token y tipoCliente segun tu backend
       if (data && data.token) {
+        
         localStorage.setItem("token", data.token);
-        if (data.tipoCliente !== undefined) {
-          localStorage.setItem("tipoCliente", String(data.tipoCliente));
+        localStorage.setItem("cliente", JSON.stringify(data.cliente));
+        setCliente(data.cliente);
+
+        switch (data.cliente.idTipoCli) {
+          case 1:
+            navigate('/clienteIngresado');
+            break;
+          case 2:
+            // Redirigir a la página del cliente tipo 2
+            navigate('/productos-especiales');
+            break;
+          case 3:
+            // Redirigir a una página por defecto
+            navigate('/admin');
+            break;
         }
 
-        // redirigir a home (o a la ruta que quieras)
-        window.location.href = "/";
+        // Redirigir a clienteIngresado
+        //window.location.href = "./clienteIngresado";
+
       } else {
         setError("Respuesta inesperada del servidor.");
       }
@@ -44,7 +63,7 @@ export default function Login() {
 
       <div className="login-page">
         <div className="login-container">
-          <img src="/logo.png" alt="Vivelas" className="login-logo" />
+          <img src={logo} id="logo" alt="Logo" />
           <h2>Iniciar sesión</h2>
 
           <form onSubmit={handleSubmit}>

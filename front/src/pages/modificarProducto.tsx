@@ -1,39 +1,63 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import { useParams, Link } from "react-router-dom";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import Footer from "../components/footer";
-import { getProductos } from "../services/productosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
-import { Link } from "react-router-dom";
+import { getProductoById, updateProducto } from "../services/productosService";
 
-import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
-
-
-export default function NuevoProducto() {
+export default function ModificarProducto() {
+  const { id } = useParams<{ id: string }>();
   const [inputs, setInputs] = useState({
     nombre: "",
     medida: "",
     precio: "",
     urlImg: "",
   });
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const handleChange = (e) => {
+ 
+  if (!id) {
+    return <p>Error: ID de producto no válido.</p>;
+  }
+
+  
+  useEffect(() => {
+    const cargarProducto = async () => {
+      try {
+        const data = await getProductoById(id);
+        setInputs({
+          nombre: data.nombre || "",
+          medida: data.medida || "",
+          precio: data.precio?.toString() || "",
+          urlImg: data.urlImg || "",
+        });
+      } catch (err) {
+        console.error(err);
+        setError("No se pudo conectar con el servidor.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargarProducto();
+  }, [id]);
+
+ 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+ 
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    // Validaciones
-    if (!inputs.nombre || !inputs.medida || !inputs.precio) {
-      setError("Por favor, completa todos los campos obligatorios.");
+    if (!inputs.nombre || !inputs.precio) {
+      setError("Por favor, completa los campos obligatorios.");
       return;
     }
 
@@ -44,26 +68,18 @@ export default function NuevoProducto() {
     }
 
     try {
-      const response = await fetch("http://localhost:4000/productos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...inputs, precio: precioNum }),
+      await updateProducto(id, {
+        ...inputs, precio: precioNum,
+        id: ""
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Error en el servidor");
-        return;
-      }
-
-      setSuccess("Producto agregado correctamente!");
-      setInputs({ nombre: "", medida: "", precio: "", urlImg: "" });
+      setSuccess("✅ Producto actualizado correctamente!");
     } catch (err) {
-      setError("No se pudo conectar con el servidor");
       console.error(err);
+      setError("❌ Error al actualizar el producto.");
     }
   };
+
+  if (loading) return <p>Cargando producto...</p>;
 
   return (
     <>
@@ -72,7 +88,7 @@ export default function NuevoProducto() {
         <div className="contenedor-formulario">
           <form className="tarjeta-formulario" onSubmit={handleSubmit}>
             <div className="mensaje">
-              <h1>Nuevo Producto</h1>
+              <h1>Modificar Producto</h1>
             </div>
 
             {error && <p style={{ color: "red" }}>{error}</p>}
@@ -120,13 +136,11 @@ export default function NuevoProducto() {
             </div>
 
             <div className="botones-formulario">
-              <button type="submit">Agregar Producto</button>
-            <Link to= '/productosAdmin' >
-                <button>Volver </button>
-            </Link>
+              <button type="submit">Guardar Cambios</button>
+              <Link to="/productosAdmin">
+                <button type="button">Volver</button>
+              </Link>
             </div>
-
-  
           </form>
         </div>
       </main>

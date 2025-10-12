@@ -66,7 +66,7 @@ export default function MostrarCarrito() {
         {productos.length === 0 ? (
           <div id="carrito-vacio">
             <p>No hay productos en el carrito</p>
-            <a href="/">Volver y agregar</a>
+            <a href="/productosCliente">Volver y agregar</a>
           </div>
         ) : (
           <>
