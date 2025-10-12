@@ -6,7 +6,7 @@
  */
 :root {
     /* Colores */
-    --color-fondo-principal: #f5f3ed; /* Crema muy claro */
+    --color-fondo-principal: #eceada; /* Crema muy claro */
     --color-fondo-secundario: #e8e3d3; /* Crema un poco más oscuro, para contrastes sutiles */
     --color-texto-principal: #3c3c3c; /* Gris oscuro para legibilidad */
     --color-texto-secundario: #6b6b6b; /* Gris medio para descripciones */

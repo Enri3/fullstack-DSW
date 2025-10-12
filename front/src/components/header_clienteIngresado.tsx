@@ -9,6 +9,7 @@ interface HeaderProps {
 }
 
 export default function HeaderClienteIngresado({ cantidad }: HeaderProps) {
+  
   return (
     <header>
       <nav>
