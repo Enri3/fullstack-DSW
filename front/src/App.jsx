@@ -14,6 +14,7 @@ import CerrarSesion from './pages/cerrarSesion';
 import EditarCliente from './pages/editar-cliente';
 import EliminarClientes from './pages/eliminar-clientes';
 import DetalleAdmin from "./pages/detalleAdmin";
+import DetalleCliente from "./pages/detalleCliente";
 import Inicio from "./pages/Inicio";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/editar-cliente" element={<EditarCliente />} />
         <Route path="/eliminar-clientes" element={<EliminarClientes />} />
         <Route path="/detalleAdmin" element={<DetalleAdmin />} />
+        <Route path="/detalleCliente" element={<DetalleCliente />} />
       </Routes>
     </BrowserRouter>
   );

@@ -100,14 +100,14 @@
             
         }
 
-.boton-detalle {
-  padding: 10px 20px;
-  background-color: var(--oscuro);
-  color: white;
-  border: none;
-  font-size: 1.1rem;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s;
-  width: 120px;
-}
+        .boton-detalle {
+        padding: 10px 20px;
+        background-color: var(--oscuro);
+        color: white;
+        border: none;
+        font-size: 1.1rem;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+        width: 200px;
+        }
