@@ -14,7 +14,7 @@ const getAllDescuentosConProductos = async (req, res) => {
 };
 
 const addDescuento = async (req, res) => {
-  const { idDesc, porcentaje, fechaInicio, fechaFin } = req.body;
+  const { idDesc, porcentaje, fechaInicio, fechaFin, idProd } = req.body;
 
   if (!porcentaje || !idProd || !fechaInicio || !fechaFin)
     return res.status(400).json({ message: "Faltan completar campos obligatorios" });
@@ -22,15 +22,19 @@ const addDescuento = async (req, res) => {
   try {
     const conn = await getConnection();
 
-    const existe = await conn.query("SELECT * FROM descuentos WHERE idDesc = ?", [idDesc]);
+    const existe = await conn.query("SELECT * FROM descuentos WHERE idProd = ? AND fechaInicio = ? AND fechaFin = ? AND porcentaje = ?", [idProd, fechaInicio, fechaFin, porcentaje]);
 
     if (existe.length > 0) {
       return res.status(400).json({ message: "El descuento ya existe" });
     }
 
     await conn.query(
-      "INSERT INTO descuentos (idDesc, porcentaje, fechaInicio, fechaFin) VALUES (?, ?, ?, ?)",
-      [idDesc, porcentaje, fechaInicio, fechaFin]
+      "INSERT INTO descuentos (idDesc, porcentaje, fechaInicio, fechaFin, idProducto) VALUES (?, ?, ?, ?, ?)",
+      [idDesc, porcentaje, fechaInicio, fechaFin, idProd]
+    );
+    await conn.query(
+      "INSERT INTO productos_descuentos (idDesc, idProducto) VALUES (?, ?)",
+      [idDesc, idProd]
     );
 
     res.json({ message: "Descuento agregado con éxito" });
