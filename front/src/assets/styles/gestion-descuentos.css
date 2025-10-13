@@ -1,0 +1,48 @@
+.contenedor-descuentos {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  color: #3b2f17;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.form-descuento {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: rgba(245, 235, 210, 0.8);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(60, 50, 30, 0.2);
+}
+
+.form-descuento h3 {
+  margin-bottom: 10px;
+}
+
+.form-descuento label {
+  font-weight: bold;
+}
+
+.form-descuento select,
+.form-descuento input {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1.5px solid #a18b58;
+  background-color: #fffaf0;
+}
+
+.btn-registrar {
+  background-color: #5a4b2f;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-registrar:hover {
+  background-color: #7b663e;
+}

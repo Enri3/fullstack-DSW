@@ -100,6 +100,29 @@ LOCK TABLES `tipo_clientes` WRITE;
 INSERT INTO `tipo_clientes` VALUES (1,'Inicial',0.00),(2,'Medium',5.00),(3,'Premium',10.00);
 /*!40000 ALTER TABLE `tipo_clientes` ENABLE KEYS */;
 UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `descuentos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `descuentos` (
+  `idDesc` INT NOT NULL AUTO_INCREMENT,
+  `porcentaje` DECIMAL(5,2) NOT NULL, -- Valor de porcentaje, e.g., 20.00
+  `fechaDesde` DATE NOT NULL,
+  `fechaHasta` DATE DEFAULT NULL,
+  PRIMARY KEY (`idDesc`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TABLE IF EXISTS `productos_descuentos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `productos_descuentos` (
+  `idDesc` INT NOT NULL,
+  `idProd` INT NOT NULL,
+  PRIMARY KEY (`idDesc`, `idProd`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

@@ -1,10 +1,8 @@
-add
 const express = require("express");
 const router = express.Router();
-const { addDescuento , getAllDescuentosConProductos , deleteMultipleDescuentos } = require("../controllers/authController");
+const { addDescuento , getAllProductos } = require("../controllers/descuentos");
 
 router.post("/add", addDescuento);
-router.get("/getAllConProductos", getAllDescuentosConProductos);
-router.delete("/eliminar-multiple", deleteMultipleDescuentos);
+router.get("/getAllProd", getAllProductos)
 
 module.exports = router;

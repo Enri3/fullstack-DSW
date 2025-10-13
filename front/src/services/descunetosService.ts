@@ -1,6 +1,7 @@
 const API_URL = "http://localhost:4000/descuentos"; 
+import type {Descuento , DescuentoConProducto as DescuentoP } from "../../../entidades/descuento";
 
-export const addDescuento = async (descuento: { porcentaje: number; idProd: number }) => {
+export const addDescuento = async (descuento: DescuentoP) => {
   try {
     const res = await fetch(`${API_URL}/add`, {
       method: "POST",
@@ -21,35 +22,22 @@ export const addDescuento = async (descuento: { porcentaje: number; idProd: numb
   }
 };
 
-export const getAllDescuentosConProductos = async () => {
+export const getAllProductos = async () => {
   try {
-    const res = await fetch(`${API_URL}/getAllConProductos`);
-    if (!res.ok) throw new Error("Error al obtener descuentos con sus productos");
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
-
-export const deleteMultipleDescuentos = async (ids: number[]) => {
-  try {
-    const res = await fetch(`${API_URL}/eliminar-multiple`, {
-      method: "DELETE",
+    const res = await fetch(`${API_URL}/getAllProd`, {
+      method: "GET",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ids }),
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.message || "Error al eliminar descuentos");
+      throw new Error(data.message || "Error al agregar descuento");
     }
 
     return data;
   } catch (error: any) {
-    console.error("Error en deleteMultipleDescuentos:", error);
+    console.error("Error en addDescuento:", error);
     throw error;
   }
 };
