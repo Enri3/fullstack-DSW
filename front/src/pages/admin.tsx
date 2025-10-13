@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import type { Cliente } from "../../../entidades/cliente";
 import { clienteVacio } from "../../../entidades/cliente";
 import "../assets/styles/admin.css";
+import BotonVolver from "../components/botonVolver";
+import "../assets/styles/botonVolver.css";
 
 
 export default function Admin() {
@@ -23,7 +25,7 @@ export default function Admin() {
     <>
       <HeaderAdmin cantidad={cantidad} />
             <div className="dashboard-container admin-dashboard">
-                
+                <BotonVolver />
                 {/* 1. SECCIÓN DE BIENVENIDA Y ESTADÍSTICAS */}
                 <section className="welcome-section admin-welcome">
                     <h1 className="welcome-title">Panel de Administración</h1>
@@ -48,11 +50,11 @@ export default function Admin() {
                         <h3>Gestión de Clientes</h3>
                         <p>Ver y editar cuentas de usuario.</p>
                     </Link>
-                    <a href="/admin/reportes" className="cta-card cta-reportes">
+                    <Link to="/gestion-descuentos" className="cta-card cta-clientes">
                         <i className="icon">📊</i>
-                        <h3>Reportes y Análisis</h3>
+                        <h3>Gestion de Descuentos</h3>
                         <p>Revisar estadísticas de ventas.</p>
-                    </a>
+                    </Link>
                 </div>
 
                 {/* 4. SECCIÓN DE ACTIVIDAD RECIENTE */}

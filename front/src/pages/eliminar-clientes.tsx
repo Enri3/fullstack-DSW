@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
+import HeaderAdmin from "../components/header_admin";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { useNavigate } from 'react-router-dom';
 import type { Cliente } from "../../../entidades/cliente";
@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { getAllClientes, deleteMultipleClientes } from "../services/authService";
 import { Link } from "react-router-dom";
 import "../assets/styles/eliminarClientes.css";
+import BotonVolver from "../components/botonVolver";
+import "../assets/styles/botonVolver.css";
 
 export default function EliminarClientes() {
   
@@ -68,8 +70,9 @@ export default function EliminarClientes() {
      return (
     <>
         {/* Se asume que HeaderClienteIngresado sigue la estética de Vivelas */}
-        <HeaderClienteIngresado cantidad={cantidad} /> 
-        
+        <HeaderAdmin cantidad={cantidad} /> 
+        <BotonVolver />
+
         {/* Contenedor principal para la página de eliminación de clientes */}
         <div className="admin-page-container">
             <h2 className="admin-page-title">Panel de Administración - Clientes</h2>

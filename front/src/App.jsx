@@ -16,6 +16,7 @@ import EliminarClientes from './pages/eliminar-clientes';
 import DetalleAdmin from "./pages/detalleAdmin";
 import DetalleCliente from "./pages/detalleCliente";
 import Inicio from "./pages/Inicio";
+import Descuentos from "./pages/gestion-descuentos";
 
 function App() {
   return (
@@ -37,6 +38,8 @@ function App() {
         <Route path="/eliminar-clientes" element={<EliminarClientes />} />
         <Route path="/detalleAdmin" element={<DetalleAdmin />} />
         <Route path="/detalleCliente" element={<DetalleCliente />} />
+        <Route path="/detalleProducto" element={<Detalle />} />
+        <Route path="/gestion-descuentos" element={<Descuentos />} />
       </Routes>
     </BrowserRouter>
   );

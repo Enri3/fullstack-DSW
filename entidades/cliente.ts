@@ -9,21 +9,6 @@ export interface Cliente {
   creado_en: Date;
 }
 
-export interface TipoClientes {
-  idTipoCli: number;
-  nombreTipo: string;
-  descuento: number;
-}
-
-export interface Productos {
-  idProd: number;
-  nombreProd: string;
-  precio: number;
-  urlImg: string;
-  deleted:number;
-  medida:string;
-}
-
 export const clienteVacio: Cliente = {
   idCli: 0,
   nombre: "",
