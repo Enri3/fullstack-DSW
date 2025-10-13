@@ -13,7 +13,7 @@ import Admin from './pages/admin';
 import CerrarSesion from './pages/cerrarSesion';
 import EditarCliente from './pages/editar-cliente';
 import EliminarClientes from './pages/eliminar-clientes';
-import Detalle from "./components/detalleProducto";
+import DetalleAdmin from "./pages/detalleAdmin";
 import Inicio from "./pages/Inicio";
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
         <Route path="/cerrar-sesion" element={<CerrarSesion />} />
         <Route path="/editar-cliente" element={<EditarCliente />} />
         <Route path="/eliminar-clientes" element={<EliminarClientes />} />
-        <Route path="/detalleProducto" element={<Detalle />} />
+        <Route path="/detalleAdmin" element={<DetalleAdmin />} />
       </Routes>
     </BrowserRouter>
   );

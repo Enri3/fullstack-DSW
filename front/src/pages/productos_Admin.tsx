@@ -109,7 +109,7 @@ export default function DisplayProductos() {
           
           {!loading && productos.length > 0 && productos.map((producto) => (
           <div key={producto.id} className="tarjeta-producto-display">
-            <Link to="/detalleProducto" state={{ id: producto.id }}>
+            <Link to="/detalleAdmin" state={{ id: producto.id }}>
               <div className="tarjeta-clickable">
                 <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombre} />
                 <h3>{producto.nombre} - {producto.medida || "N/A"} grs</h3>
