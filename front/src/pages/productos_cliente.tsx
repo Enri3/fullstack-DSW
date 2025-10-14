@@ -55,16 +55,16 @@ export default function DisplayProductos_C() {
 
           {!loading && productos.length > 0 && productos.map((producto) => (
        
-            <div key={producto.id} className="tarjeta-producto-display">
-            <Link to="/detalleCliente" state={{ id: producto.id }}>
+            <div key={producto.idProd} className="tarjeta-producto-display">
+            <Link to="/detalleCliente" state={{ idProd: producto.idProd }}>
               <img
                 src={producto.urlImg || "/placeholder.png"}
-                alt={producto.nombre}
+                alt={producto.nombreProd}
               />
               <h3>
-                {producto.nombre} - {producto.medida || "N/A"} grs
+                {producto.nombreProd} - {producto.medida || "N/A"} grs
               </h3>
-              <p className="precio">${producto.precio}</p>
+              <p className="precio">${producto.precioProd}</p>
               </Link>
               <button onClick={() => handleAgregar(producto)}>
                 Agregar al carrito

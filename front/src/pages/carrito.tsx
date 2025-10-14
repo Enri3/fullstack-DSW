@@ -6,9 +6,9 @@ import "../assets/styles/style.css";
 import { obtenerCantidadCarrito, agregarAlCarrito, restarAlCarrito, reiniciarCarrito, obtenerProductosCarrito } from "../services/cartService";
 
 type ProductoCarrito = {
-  id: number;
-  nombre: string;
-  precio: number;
+  idProd: number;
+  nombreProd: string;
+  precioProd: number;
   cantidad: number;
   urlImg: string;
 };
@@ -22,7 +22,7 @@ export default function MostrarCarrito() {
   useEffect(() => {
     const prods = obtenerProductosCarrito().map((p: any) => ({
       ...p,
-      id: typeof p.id === "string" ? Number(p.id) : p.id,
+      idProd: typeof p.idProd === "string" ? Number(p.idProd) : p.idProd,
     }));
     setProductos(prods);
   }, []);
@@ -31,7 +31,7 @@ export default function MostrarCarrito() {
     agregarAlCarrito(producto);
     const prods = obtenerProductosCarrito().map((p: any) => ({
       ...p,
-      id: typeof p.id === "string" ? Number(p.id) : p.id,
+      idProd: typeof p.idProd === "string" ? Number(p.idProd) : p.idProd,
     }));
     setProductos(prods);
     setCantidad(obtenerCantidadCarrito());
@@ -41,7 +41,7 @@ export default function MostrarCarrito() {
     restarAlCarrito(producto);
     const prods = obtenerProductosCarrito().map((p: any) => ({
       ...p,
-      id: typeof p.id === "string" ? Number(p.id) : p.id,
+      idProd: typeof p.idProd === "string" ? Number(p.idProd) : p.idProd,
     }));
     setProductos(prods);
     setCantidad(obtenerCantidadCarrito());
@@ -56,7 +56,7 @@ export default function MostrarCarrito() {
 
   // Calculo totales
   const totalUnidades = productos.reduce((acc, p) => acc + p.cantidad, 0);
-  const totalPrecio = productos.reduce((acc, p) => acc + p.cantidad * p.precio, 0);
+  const totalPrecio = productos.reduce((acc, p) => acc + p.cantidad * p.precioProd, 0);
 
 
   return (
@@ -72,10 +72,10 @@ export default function MostrarCarrito() {
           <>
             <section id="productos-container-carrito">
               {productos.map((producto) => (
-                <div key={producto.id} className="tarjeta-producto-carrito">
-                  <img src={producto.urlImg} alt={producto.nombre} />
-                  <h3>{producto.nombre}</h3>
-                  <p className="precio">${producto.precio}</p>
+                <div key={producto.idProd} className="tarjeta-producto-carrito">
+                  <img src={producto.urlImg} alt={producto.nombreProd} />
+                  <h3>{producto.nombreProd}</h3>
+                  <p className="precio">${producto.precioProd}</p>
                   <div>
                     <button onClick={() => handleRestar(producto)}>-</button>
                     <span className="cantidad">{producto.cantidad}</span>

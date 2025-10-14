@@ -13,10 +13,10 @@ import Header from "../components/header";
 
 const imagenes = [foto1, foto2];
 type Producto = {
-  id: number;
-  nombre: string;
+  idProd: number;
+  nombreProd: string;
   medida?: string;
-  precio: number;
+  precioProd: number;
   urlImg?: string;
 
 };
@@ -88,15 +88,15 @@ export default function Inicio() {
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           {!loading && productosAMostrar.length > 0 && productosAMostrar.map((producto) => (
-            <div key={producto.id} className="tarjeta-producto-display">
+            <div key={producto.idProd} className="tarjeta-producto-display">
               <img
                 src={producto.urlImg || "/placeholder.png"}
-                alt={producto.nombre}
+                alt={producto.nombreProd}
               />
               <h3>
-                {producto.nombre} - {producto.medida || "N/A"} grs
+                {producto.nombreProd} - {producto.medida || "N/A"} grs
               </h3>
-              <p className="precio">${producto.precio}</p>
+              <p className="precio">${producto.precioProd}</p>
             </div>
           ))}
 

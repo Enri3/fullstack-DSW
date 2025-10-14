@@ -10,10 +10,10 @@ import HeaderAdmin from "../components/header_admin";
 
 
 type Producto = {
-  id: number | string;
-  nombre: string;
+  idProd: number | string;
+  nombreProd: string;
   medida?: string;
-  precio: number;
+  precioProd: number;
   urlImg?: string;
 };
 
@@ -54,7 +54,7 @@ export default function DisplayProductos() {
 
   // Abrir modal de eliminación
   const handleEliminar = (productoId: number | string) => {
-    const producto = productos.find((p) => p.id === productoId);
+    const producto = productos.find((p) => p.idProd === productoId);
     if (!producto) return;
     setProductoAEliminar(producto);
     setModalVisible(true);
@@ -64,8 +64,8 @@ export default function DisplayProductos() {
   const confirmarEliminar = async () => {
     if (!productoAEliminar) return;
     try {
-      await eliminarProducto(productoAEliminar.id);
-      setProductos((prev) => prev.filter((p) => p.id !== productoAEliminar.id));
+      await eliminarProducto(productoAEliminar.idProd);
+      setProductos((prev) => prev.filter((p) => p.idProd !== productoAEliminar.idProd));
     } catch (err) {
       alert("No se pudo eliminar el producto");
     } finally {
@@ -77,7 +77,7 @@ export default function DisplayProductos() {
 
   return (
     <>
-      <HeaderAdmin cantidad={cantidad}/>
+      <HeaderAdmin />
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>
@@ -108,20 +108,20 @@ export default function DisplayProductos() {
           {/* Listado de productos */}
           
           {!loading && productos.length > 0 && productos.map((producto) => (
-          <div key={producto.id} className="tarjeta-producto-display">
-            <Link to="/detalleAdmin" state={{ id: producto.id }}>
+          <div key={producto.idProd} className="tarjeta-producto-display">
+            <Link to="/detalleAdmin" state={{ id: producto.idProd }}>
               <div className="tarjeta-clickable">
-                <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombre} />
-                <h3>{producto.nombre} - {producto.medida || "N/A"} grs</h3>
-                <p className="precio">${producto.precio}</p>
+                <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
+                <h3>{producto.nombreProd} - {producto.medida || "N/A"} grs</h3>
+                <p className="precio">${producto.precioProd}</p>
               </div>
             </Link>
 
             <div className="botones-admin">
-              <Link to={`/modificarProducto/${producto.id}`}>
+              <Link to={`/modificarProducto/${producto.idProd}`}>
                 <button>Modificar</button>
               </Link>
-              <button onClick={() => handleEliminar(producto.id)}>Eliminar</button>
+              <button onClick={() => handleEliminar(producto.idProd)}>Eliminar</button>
             </div>
           </div>
         ))}
@@ -137,7 +137,7 @@ export default function DisplayProductos() {
       {modalVisible && (
         <div className="modal-overlay">
           <div className="modal">
-            <p>¿Estás seguro de eliminar {productoAEliminar?.nombre}?</p>
+            <p>¿Estás seguro de eliminar {productoAEliminar?.nombreProd}?</p>
             <div className="modal-buttons botones-admin">
               <button onClick={confirmarEliminar}>Sí, eliminar</button>
               <button onClick={() => setModalVisible(false)}>Cancelar</button>

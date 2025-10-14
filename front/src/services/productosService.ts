@@ -1,8 +1,8 @@
 type Producto = {
-  id: number | string;
-  nombre: string;
+  idProd: number | string;
+  nombreProd: string;
   medida?: string;
-  precio: number;
+  precioProd: number;
   urlImg?: string;
 
 };
@@ -12,13 +12,13 @@ export async function getProductos() {
   const res = await fetch("http://localhost:4000/productos"); 
   if (!res.ok) throw new Error("Error al obtener productos"); 
   const data = await res.json(); 
-  console.log("Datos recibidos del backend:", data); // <- muy importante 
+  console.log("Datos recibidos del backend:", data); 
   return data; }
-  // ¡Debe ser un array! 
+  
 
 // Obtener un producto por ID
-export async function getProductoById(id: string | number): Promise<Producto> {
-  const res = await fetch(`http://localhost:4000/productos/${id}`);
+export async function getProductoById(idProd: string | number): Promise<Producto> {
+  const res = await fetch(`http://localhost:4000/productos/${idProd}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Error al obtener producto");
   return data as Producto;
@@ -26,10 +26,10 @@ export async function getProductoById(id: string | number): Promise<Producto> {
 
 // Actualizar producto
 export async function updateProducto(
-  id: string | number,
+  idProd: string | number,
   producto: Producto
 ): Promise<Producto> {
-  const res = await fetch(`http://localhost:4000/productos/${id}`, {
+  const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(producto),
@@ -40,8 +40,8 @@ export async function updateProducto(
 }
 
 // Eliminar producto por ID
-export async function eliminarProducto(id: string | number): Promise<void> {
-  const res = await fetch(`http://localhost:4000/productos/${id}`, {
+export async function eliminarProducto(idProd: string | number): Promise<void> {
+  const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Error al eliminar producto");

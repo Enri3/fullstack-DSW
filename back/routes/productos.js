@@ -7,16 +7,16 @@ const productosController = require("../controllers/productosController");
 router.get("/", productosController.getAll);
 
 // Obtener por ID
-router.get("/:id", productosController.getById);
+router.get("/:idProd", productosController.getById);
 
 // Crear
 router.post("/", productosController.create);
 
 // Actualizar
-router.put("/:id", productosController.update);
+router.put("/:idProd", productosController.update);
 
 //Eliminar
-router.delete("/:id", productosController.delete);
+router.delete("/:idProd", productosController.delete);
 
 router.get("/buscarPorNombre", productosController.buscarProducto);
 

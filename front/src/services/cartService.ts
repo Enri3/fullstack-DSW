@@ -1,8 +1,8 @@
 
 export interface Producto {
-  id: number | string;
-  nombre: string;
-  precio: number;
+  idProd: number | string;
+  nombreProd: string;
+  precioProd: number;
   urlImg?: string;
   medida?: string;
   cantidad: number;
@@ -14,7 +14,7 @@ export function agregarAlCarrito(producto: Producto): number {
   const memoria: Producto[] = JSON.parse(localStorage.getItem("productos") || "[]");
   let cuenta = 0;
 
-  const indiceProducto = memoria.findIndex((p) => p.id === producto.id);
+  const indiceProducto = memoria.findIndex((p) => p.idProd === producto.idProd);
 
   if (indiceProducto === -1) {
     // Producto no existe en el carrito, agrego con cantidad 1
@@ -37,7 +37,7 @@ export function agregarAlCarrito(producto: Producto): number {
 //Si la cantidad llega a 0, lo elimina del carrito.
 export function restarAlCarrito(producto: Producto): void {
   const memoria: Producto[] = JSON.parse(localStorage.getItem("productos") || "[]");
-  const indiceProducto = memoria.findIndex((p) => p.id === producto.id);
+  const indiceProducto = memoria.findIndex((p) => p.idProd === producto.idProd);
 
   if (indiceProducto === -1) return; // Producto no encontrado
 

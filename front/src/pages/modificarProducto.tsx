@@ -7,11 +7,11 @@ import "../assets/styles/style.css";
 import { getProductoById, updateProducto } from "../services/productosService";
 
 export default function ModificarProducto() {
-  const { id } = useParams<{ id: string }>();
+  const { idProd } = useParams<{ idProd: string }>();
   const [inputs, setInputs] = useState({
-    nombre: "",
+    nombreProd: "",
     medida: "",
-    precio: "",
+    precioProd: "",
     urlImg: "",
   });
   const [error, setError] = useState("");
@@ -19,7 +19,7 @@ export default function ModificarProducto() {
   const [loading, setLoading] = useState(true);
 
  
-  if (!id) {
+  if (!idProd) {
     return <p>Error: ID de producto no válido.</p>;
   }
 
@@ -27,11 +27,11 @@ export default function ModificarProducto() {
   useEffect(() => {
     const cargarProducto = async () => {
       try {
-        const data = await getProductoById(id);
+        const data = await getProductoById(idProd);
         setInputs({
-          nombre: data.nombre || "",
+          nombreProd: data.nombre || "",
           medida: data.medida || "",
-          precio: data.precio?.toString() || "",
+          precioProd: data.precioProd?.toString() || "",
           urlImg: data.urlImg || "",
         });
       } catch (err) {
@@ -42,7 +42,7 @@ export default function ModificarProducto() {
       }
     };
     cargarProducto();
-  }, [id]);
+  }, [idProd]);
 
  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,21 +56,22 @@ export default function ModificarProducto() {
     setError("");
     setSuccess("");
 
-    if (!inputs.nombre || !inputs.precio) {
+    if (!inputs.nombreProd || !inputs.precioProd) {
       setError("Por favor, completa los campos obligatorios.");
       return;
     }
 
-    const precioNum = parseFloat(inputs.precio);
+    const precioNum = parseFloat(inputs.precioProd);
     if (isNaN(precioNum)) {
       setError("El precio debe ser un número válido.");
       return;
     }
 
     try {
-      await updateProducto(id, {
-        ...inputs, precio: precioNum,
-        id: ""
+      await updateProducto(idProd, {
+        ...inputs, precioProd: precioNum,
+        id: "",
+        nombreProd: ""
       });
       setSuccess("✅ Producto actualizado correctamente!");
     } catch (err) {
@@ -95,11 +96,11 @@ export default function ModificarProducto() {
             {success && <p style={{ color: "green" }}>{success}</p>}
 
             <div className="item-formulario">
-              <label htmlFor="nombre">Nombre:</label>
+              <label htmlFor="nombreProd">Nombre:</label>
               <input
                 type="text"
-                name="nombre"
-                value={inputs.nombre}
+                name="nombreProd"
+                value={inputs.nombreProd}
                 onChange={handleChange}
               />
             </div>
@@ -115,12 +116,12 @@ export default function ModificarProducto() {
             </div>
 
             <div className="item-formulario">
-              <label htmlFor="precio">Precio:</label>
+              <label htmlFor="precioProd">Precio:</label>
               <input
                 type="number"
                 step="0.01"
-                name="precio"
-                value={inputs.precio}
+                name="precioProd"
+                value={inputs.precioProd}
                 onChange={handleChange}
               />
             </div>

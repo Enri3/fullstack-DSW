@@ -14,22 +14,22 @@ exports.getAll = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const { nombre, medida, precio, urlImg } = req.body;
+    const { nombreProd, medida, precioProd, urlImg } = req.body;
 
-    if (!nombre || !precio) {
+    if (!nombreProd || !precioProd) {
       return res.status(400).json({ error: "Faltan campos obligatorios" });
     }
 
-    const precioNum = parseFloat(precio);
+    const precioNum = parseFloat(precioProd);
     if (isNaN(precioNum)) {
       return res.status(400).json({ error: "El precio debe ser un número" });
     }
 
     const connection = await database.getConnection();
-    const query = "INSERT INTO productos (nombre, medida, precio, urlImg) VALUES (?, ?, ?, ?)";
-    const result = await connection.query(query, [nombre, medida || null, precioNum, urlImg || null]);
+    const query = "INSERT INTO productos (nombreProd, medida, precioProd, urlImg) VALUES (?, ?, ?, ?)";
+    const result = await connection.query(query, [nombreProd, medida || null, precioNum, urlImg || null]);
 
-    res.status(201).json({ id: result.insertId, nombre, medida, precio: precioNum, urlImg });
+    res.status(201).json({ idProd: result.insertId, nombreProd, medida, precioProd: precioNum, urlImg });
   } catch (error) {
     console.error("Error al agregar producto:", error);
     res.status(500).json({ error: "Error al agregar producto" });
@@ -38,11 +38,11 @@ exports.create = async (req, res) => {
 
 exports.getById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idProd } = req.params;
     const connection = await database.getConnection();
-    console.log("Conectado a la BD, buscando producto con ID:", id);
+    console.log("Conectado a la BD, buscando producto con ID:", idProd);
 
-    const rows = await connection.query("SELECT * FROM productos WHERE id = ?", [id]);
+    const rows = await connection.query("SELECT * FROM productos WHERE idProd = ?", [idProd]);
     console.log("Resultado de la consulta:", rows);
 
     if (rows.length === 0) {
@@ -58,22 +58,22 @@ exports.getById = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { nombre, medida, precio, urlImg } = req.body;
+    const { idProd } = req.params;
+    const { nombreProd, medida, precioProd, urlImg } = req.body;
 
-    if (!nombre || !precio) {
+    if (!nombreProd || !precioProd) {
       return res.status(400).json({ error: "Faltan campos obligatorios" });
     }
 
-    const precioNum = parseFloat(precio);
+    const precioNum = parseFloat(precioProd);
     if (isNaN(precioNum)) {
       return res.status(400).json({ error: "El precio debe ser un número válido" });
     }
 
     const connection = await database.getConnection();
     const result = await connection.query(
-      "UPDATE productos SET nombre = ?, medida = ?, precio = ?, urlImg = ? WHERE id = ?",
-      [nombre, medida || null, precioNum, urlImg || null, id]
+      "UPDATE productos SET nombreProd = ?, medida = ?, precioProd = ?, urlImg = ? WHERE idProd = ?",
+      [nombreProd, medida || null, precioNum, urlImg || null, idProd]
     );
 
     if (result.affectedRows === 0) {
@@ -89,11 +89,11 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idProd } = req.params;
     const connection = await database.getConnection();
 
-    const query = "DELETE FROM productos WHERE id = ?";
-    const result = await connection.query(query, [id]);
+    const query = "DELETE FROM productos WHERE idProd = ?";
+    const result = await connection.query(query, [idProd]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Producto no encontrado" });

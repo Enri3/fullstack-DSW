@@ -8,20 +8,20 @@ import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 
 interface Producto {
-  id: number | string;
-  nombre: string;
+  idProd: number | string;
+  nombreProd: string;
 }
 
 export default function DetalleAdmin() {
   const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as { id?: number | string; nombre?: string } | null;
-  const id = state?.id;
-  const nombreProducto = state?.nombre || "Producto";
+  const state = location.state as { idProd?: number | string; nombreProd?: string } | null;
+  const idProd = state?.idProd;
+  const nombreProducto = state?.nombreProd || "Producto";
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  if (!id) {
+  if (!idProd) {
     return <p style={{ color: "red" }}>ID de producto no válido o no recibido.</p>;
   }
 
@@ -33,7 +33,7 @@ export default function DetalleAdmin() {
   // Confirmar eliminación
   const confirmarEliminar = async () => {
     try {
-      await eliminarProducto(id);
+      await eliminarProducto(idProd);
       navigate("/productosAdmin"); 
     } catch {
       alert("No se pudo eliminar el producto");
@@ -51,7 +51,7 @@ export default function DetalleAdmin() {
 
       {/* Botones de administración */}
       <div className="botones-detalle">
-        <Link to={`/modificarProducto/${id}`} >
+        <Link to={`/modificarProducto/${idProd}`} >
         <button className="boton-detalle">Modificar</button>
         </Link>
         <button onClick={handleEliminar} className="boton-detalle">Eliminar</button>

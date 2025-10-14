@@ -9,24 +9,24 @@ import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 
 interface Producto {
-  id: number | string;
-  nombre: string;
-  precio?: number;
+  idProd: number | string;
+  nombreProd: string;
+  precioProd?: number;
   medida?: string;
   urlImg?: string;
 }
 
 export default function DetalleCliente() {
   const location = useLocation();
-  const state = location.state as { id?: number | string } | null;
-  const id = state?.id;
+  const state = location.state as { idProd?: number | string } | null;
+  const idProd = state?.idProd;
 
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [producto, setProducto] = useState<Producto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  if (!id) {
+  if (!idProd) {
     return <p style={{ color: "red" }}>ID de producto no válido o no recibido.</p>;
   }
 
@@ -34,7 +34,7 @@ export default function DetalleCliente() {
   useEffect(() => {
     const cargarProducto = async () => {
       try {
-        const data = await getProductoById(id);
+        const data = await getProductoById(idProd);
         setProducto(data);
       } catch (err) {
         console.error(err);
@@ -44,7 +44,7 @@ export default function DetalleCliente() {
       }
     };
     cargarProducto();
-  }, [id]);
+  }, [idProd]);
 
   const handleAgregar = () => {
     if (!producto) return;
@@ -62,7 +62,7 @@ export default function DetalleCliente() {
       <HeaderClienteIngresado cantidad={cantidad} />
 
       {/* Mostrar detalle */}
-      <Detalle id={id} />
+      <Detalle idProd={idProd} />
 
       {/* Botones */}
       <div className="botones-detalle">

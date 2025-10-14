@@ -12,9 +12,9 @@ import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartServic
 
 export default function NuevoProducto() {
   const [inputs, setInputs] = useState({
-    nombre: "",
+    nombreProd: "",
     medida: "",
-    precio: "",
+    precioProd: "",
     urlImg: "",
   });
 
@@ -32,12 +32,12 @@ export default function NuevoProducto() {
     setSuccess("");
 
     // Validaciones
-    if (!inputs.nombre || !inputs.medida || !inputs.precio) {
+    if (!inputs.nombreProd || !inputs.medida || !inputs.precioProd) {
       setError("Por favor, completa todos los campos obligatorios.");
       return;
     }
 
-    const precioNum = parseFloat(inputs.precio);
+    const precioNum = parseFloat(inputs.precioProd);
     if (isNaN(precioNum)) {
       setError("El precio debe ser un número válido.");
       return;
@@ -58,7 +58,7 @@ export default function NuevoProducto() {
       }
 
       setSuccess("Producto agregado correctamente!");
-      setInputs({ nombre: "", medida: "", precio: "", urlImg: "" });
+      setInputs({ nombreProd: "", medida: "", precioProd: "", urlImg: "" });
     } catch (err) {
       setError("No se pudo conectar con el servidor");
       console.error(err);
@@ -79,11 +79,11 @@ export default function NuevoProducto() {
             {success && <p style={{ color: "green" }}>{success}</p>}
 
             <div className="item-formulario">
-              <label htmlFor="nombre">Nombre:</label>
+              <label htmlFor="nombreProd">Nombre:</label>
               <input
                 type="text"
-                name="nombre"
-                value={inputs.nombre}
+                name="nombreProd"
+                value={inputs.nombreProd}
                 onChange={handleChange}
               />
             </div>
@@ -99,12 +99,12 @@ export default function NuevoProducto() {
             </div>
 
             <div className="item-formulario">
-              <label htmlFor="precio">Precio:</label>
+              <label htmlFor="precioProd">Precio:</label>
               <input
                 type="number"
                 step="0.01"
-                name="precio"
-                value={inputs.precio}
+                name="precioProd"
+                value={inputs.precioProd}
                 onChange={handleChange}
               />
             </div>
