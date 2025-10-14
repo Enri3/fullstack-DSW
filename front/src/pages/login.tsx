@@ -30,25 +30,23 @@ export default function Login() {
         localStorage.setItem("cliente", JSON.stringify(data.cliente));
         setCliente(data.cliente);
 
-        // Mostrar mensaje de éxito
-        setMensaje({ tipo: "success", texto: "Inicio de sesión exitoso ✅" });
+        // Se crea mensaje de éxito
+        const mensajeExito = { tipo: "success", texto: "¡Inicio de sesión exitoso, bienvenido!" };
 
-        // Redirigir según tipo de cliente
-        setTimeout(() => {
-          switch (data.cliente.idTipoCli) {
-            case 1:
-              navigate("/clienteIngresado");
-              break;
-            case 2:
-              navigate("/productos-especiales");
-              break;
-            case 3:
-              navigate("/admin");
-              break;
-            default:
-              navigate("/");
-          }
-        });
+        // Se redirige según tipo de cliente, con el mensaje
+        switch (data.cliente.idTipoCli) {
+          case 1:
+            navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
+            break;
+          case 2:
+            navigate("/productos-especiales", { state: { mensaje: mensajeExito } });
+            break;
+          case 3:
+            navigate("/admin", { state: { mensaje: mensajeExito } });
+            break;
+          default:
+            navigate("/", { state: { mensaje: mensajeExito } });
+        }
       } else {
         setMensaje({ tipo: "error", texto: "Respuesta inesperada del servidor." });
       }

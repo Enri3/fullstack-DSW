@@ -2,8 +2,10 @@ import { useState } from "react";
 import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [email, setEmail] = useState("");
@@ -31,14 +33,12 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        setMensaje({
-          texto: "¡Te registraste correctamente! 🎉 Ahora podés iniciar sesión.",
-          tipo: "success",
+        // Enviar mensaje al login usando navigate con state
+        navigate("/login", {
+          state: {
+            mensaje: { texto: "¡Te registraste correctamente! 🎉 Ahora podés iniciar sesión.", tipo: "success" },
+          },
         });
-
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 2000);
       } else {
         setMensaje({
           texto: data.message || "Error al registrarse",
