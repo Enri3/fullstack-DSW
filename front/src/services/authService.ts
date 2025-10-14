@@ -57,3 +57,23 @@ export const deleteMultipleClientes = async (ids: number[]) => {
     throw error;
   }
 };
+
+export const cambiarPassword = async (idCli: number, passwordActual: string, passwordNueva: string) => {
+  try {
+    const respuesta = await fetch(`${API_URL}/cambiar-password`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idCli, passwordActual, passwordNueva }),
+    });
+
+    const data = await respuesta.json();
+
+    if (!respuesta.ok) {
+      throw new Error(data.message || "Error al cambiar la contraseña");
+    }
+
+    return data;
+  } catch (error: any) {
+    throw new Error(error.message || "Error de conexión con el servidor");
+  }
+};

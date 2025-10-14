@@ -62,7 +62,7 @@ const loginCliente = async (req, res) => {
       { expiresIn: "2h" }
     );
 
-    res.json({ message: "Login exitoso", token, cliente});
+    res.json({ message: "Login exitoso", token, cliente });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error al iniciar sesión" });
@@ -123,4 +123,34 @@ const eliminarClientes = async (req, res) => {
   }
 };
 
-module.exports = { getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes };
+const cambiarPassword = async (req, res) => {
+  const { idCli, passwordAnterior, passwordNueva } = req.body;
+
+  if (!idCli || !passwordAnterior || !passwordNueva) {
+    return res.status(400).json({ message: "Faltan datos requeridos" });
+  }
+
+  try {
+    const conn = await getConnection();
+
+    const [cliente] = await conn.query("SELECT * FROM clientes WHERE idCli = ?", [idCli]);
+    if (!cliente) {
+      return res.status(404).json({ message: "Cliente no encontrado" });
+    }
+
+    const coincide = await bcrypt.compare(passwordAnterior, cliente.password);
+    if (!coincide) {
+      return res.status(400).json({ message: "Contraseña actual incorrecta ❌" });
+    }
+
+    const hashedPassword = await bcrypt.hash(passwordNueva, 10);
+    await conn.query("UPDATE clientes SET password = ? WHERE idCli = ?", [hashedPassword, idCli]);
+
+    res.json({ message: "Contraseña actualizada correctamente ✅" });
+  } catch (error) {
+    console.error("Error al cambiar la contraseña:", error);
+    res.status(500).json({ message: "Error al cambiar la contraseña" });
+  }
+};
+
+module.exports = { getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword};

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const navigate = useNavigate();
-  const [nombre, setNombre] = useState("");
+  const [nombreCli, setNombreCli] = useState("");
   const [apellido, setApellido] = useState("");
   const [email, setEmail] = useState("");
   const [direccion, setDireccion] = useState("");
@@ -27,7 +27,7 @@ export default function Register() {
       const res = await fetch("http://localhost:4000/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, apellido, direccion, email, password }),
+        body: JSON.stringify({ nombreCli, apellido, direccion, email, password }),
       });
 
       const data = await res.json();
@@ -68,8 +68,8 @@ export default function Register() {
             <input
               type="text"
               placeholder="Nombre"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
+              value={nombreCli}
+              onChange={(e) => setNombreCli(e.target.value)}
               required
             />
             <input

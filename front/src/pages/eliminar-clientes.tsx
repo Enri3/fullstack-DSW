@@ -116,7 +116,7 @@ export default function EliminarClientes() {
                                     onChange={() => toggleSeleccion(cliente.idCli)}
                                 />
                             </td>
-                            <td>{cliente.nombre}</td>
+                            <td>{cliente.nombreCli}</td>
                             <td>{cliente.apellido}</td>
                             <td>{cliente.email}</td>
                         </tr>

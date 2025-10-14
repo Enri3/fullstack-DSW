@@ -2,32 +2,69 @@ import React, { useState } from "react";
 import "../assets/styles/login.css";
 import HeaderClienteIngresado from "../components/header_clienteIngresado";
 import MensajeAlerta from "../components/mensajesAlerta";
+import { cambiarPassword } from "../services/authService";
 import { obtenerCantidadCarrito } from "../services/cartService";
 
 const CambiarPassword: React.FC = () => {
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [mensaje, setMensaje] = useState("");
+  const [passwordActual, setPasswordActual] = useState("");
+  const [passwordNueva, setpasswordNueva] = useState("");
+  const [passwordConfirmada, setpasswordConfirmada] = useState("");
+  const [mensaje, setMensaje] = useState<string>("");
   const [tipoMensaje, setTipoMensaje] = useState<"success" | "error" | "info">("info");
-  const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
+  const [cantidad] = useState(obtenerCantidadCarrito());
+
+  const limpiarCampos = () => {
+    setPasswordActual("");
+    setpasswordNueva("");
+    setpasswordConfirmada("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setMensaje(""); // limpiar mensaje antes
+    setTipoMensaje("info");
 
-    if (newPassword !== confirmPassword) {
+    //validar coincidencia
+    if (passwordNueva !== passwordConfirmada) {
       setTipoMensaje("error");
       setMensaje("Las contraseñas nuevas no coinciden ❌");
-      return;
+      return; 
     }
 
-    // simulamos el cambio de contraseña
-    setTipoMensaje("success");
-    setMensaje("Contraseña cambiada correctamente ✅");
+    try {
+      const clienteGuardado = localStorage.getItem("cliente");
+      if (!clienteGuardado) {
+        setTipoMensaje("error");
+        setMensaje("No se encontró el usuario en sesión.");
+        return;
+      }
 
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+      const cliente = JSON.parse(clienteGuardado);
+      const idCli = cliente.idCli;
+
+      const respuesta = await cambiarPassword(idCli, passwordActual, passwordNueva);
+
+      setTipoMensaje("success");
+      setMensaje(respuesta.message || "Contraseña actualizada correctamente ✅");
+
+      limpiarCampos();
+
+    } catch (error: any) {
+      const msg = error.message || "";
+
+      if (msg.includes("incorrecta")) {
+        setTipoMensaje("error");
+        setMensaje("Contraseña actual incorrecta ❌");
+      } else if (msg.includes("no encontrado")) {
+        setTipoMensaje("error");
+        setMensaje("Cliente no encontrado");
+      } else {
+        setTipoMensaje("error");
+        setMensaje("Error al cambiar la contraseña");
+      }
+
+      limpiarCampos();
+    }
   };
 
   return (
@@ -43,22 +80,22 @@ const CambiarPassword: React.FC = () => {
             <input
               type="password"
               placeholder="Contraseña actual"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
+              value={passwordActual}
+              onChange={(e) => setPasswordActual(e.target.value)}
               required
             />
             <input
               type="password"
               placeholder="Nueva contraseña"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              value={passwordNueva}
+              onChange={(e) => setpasswordNueva(e.target.value)}
               required
             />
             <input
               type="password"
               placeholder="Confirmar nueva contraseña"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={passwordConfirmada}
+              onChange={(e) => setpasswordConfirmada(e.target.value)}
               required
             />
 
