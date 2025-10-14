@@ -57,12 +57,12 @@ export const deleteMultipleClientes = async (ids: number[]) => {
   }
 };
 
-export const cambiarPassword = async (idCli: number, passwordActual: string, passwordNueva: string) => {
+export const cambiarPassword = async (idCli: number, passwordAnterior: string, passwordNueva: string) => {
   try {
     const respuesta = await fetch(`${API_URL}/cambiar-password`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idCli, passwordActual, passwordNueva }),
+      body: JSON.stringify({ idCli, passwordAnterior, passwordNueva }),
     });
 
     const data = await respuesta.json();

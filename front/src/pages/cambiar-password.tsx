@@ -21,10 +21,9 @@ const CambiarPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMensaje(""); // limpiar mensaje antes
+    setMensaje(""); // limpia mensaje antes
     setTipoMensaje("info");
 
-    //validar coincidencia
     if (passwordNueva !== passwordConfirmada) {
       setTipoMensaje("error");
       setMensaje("Las contraseñas nuevas no coinciden ❌");
