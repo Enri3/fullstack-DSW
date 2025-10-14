@@ -17,6 +17,9 @@ import DetalleAdmin from "./pages/detalleAdmin";
 import DetalleCliente from "./pages/detalleCliente";
 import Inicio from "./pages/Inicio";
 import Descuentos from "./pages/gestion-descuentos";
+import CambiarPassword from "./pages/cambiar-password";
+
+
 
 function App() {
   return (
@@ -39,6 +42,7 @@ function App() {
         <Route path="/detalleAdmin" element={<DetalleAdmin />} />
         <Route path="/detalleCliente" element={<DetalleCliente />} />
         <Route path="/gestion-descuentos" element={<Descuentos />} />
+        <Route path="/cambiar-password" element={<CambiarPassword />} />
       </Routes>
     </BrowserRouter>
   );
