@@ -12,7 +12,7 @@ export default function EditarCliente() {
   const navigator = useNavigate();
   
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
-  const [nombre, setNombre] = useState("");
+  const [nombreCli, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [email, setEmail] = useState("");
   const [direccion, setDireccion] = useState("");
@@ -26,7 +26,7 @@ export default function EditarCliente() {
     if (storedCliente) {
       const parsedCliente = JSON.parse(storedCliente);
       setCliente(parsedCliente);
-      setNombre(parsedCliente.nombre || "");
+      setNombre(parsedCliente.nombreCli || "");
       setApellido(parsedCliente.apellido || "");
       setEmail(parsedCliente.email || "");
       setDireccion(parsedCliente.direccion || "");
@@ -45,7 +45,7 @@ export default function EditarCliente() {
         },
         body: JSON.stringify({ 
           idCli: cliente.idCli, 
-          nombre, 
+          nombreCli, 
           apellido, 
           direccion, 
           email 
@@ -58,7 +58,7 @@ export default function EditarCliente() {
         setTipoMensaje("success");
         setMensaje("¡Tus datos fueron actualizados correctamente!");
         
-        const updatedCliente = { ...cliente, nombre, apellido, direccion, email };
+        const updatedCliente = { ...cliente, nombreCli, apellido, direccion, email };
         localStorage.setItem("cliente", JSON.stringify(updatedCliente));
 
         setTimeout(() => navigator('/editar-cliente'));
@@ -86,7 +86,7 @@ export default function EditarCliente() {
             <input
               type="text"
               placeholder="Nombre"
-              value={nombre}
+              value={nombreCli}
               onChange={(e) => setNombre(e.target.value)}
               required
             />

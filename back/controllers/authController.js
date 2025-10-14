@@ -5,7 +5,7 @@ const { getConnection } = require("../src/database");
 const getAllClientes = async (req, res) => {
   try {
     const conn = await getConnection();
-    const rows = await conn.query("SELECT idCli, nombre, apellido, email, direccion, email FROM clientes WHERE idTipoCli = 1");
+    const rows = await conn.query("SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idTipoCli = 1");
     res.json(rows);
   } catch (error) {
     console.error("Error al obtener clientes:", error);
@@ -14,9 +14,9 @@ const getAllClientes = async (req, res) => {
 };
 
 const registrarCliente = async (req, res) => {
-  const { nombre, apellido, direccion, email, password } = req.body;
+  const { nombreCli, apellido, direccion, email, password } = req.body;
 
-  if (!nombre || !email || !password || !direccion)
+  if (!nombreCli || !email || !password || !direccion)
     return res.status(400).json({ message: "Faltan completar campos obligatorios" });
 
   try {
@@ -31,8 +31,8 @@ const registrarCliente = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await conn.query(
-      "INSERT INTO clientes (nombre, apellido, direccion, email, password, idTipoCli) VALUES (?, ?, ?, ?, ?, ?)",
-      [nombre, apellido, direccion, email, hashedPassword, 1]
+      "INSERT INTO clientes (nombreCli, apellido, direccion, email, password, idTipoCli) VALUES (?, ?, ?, ?, ?, ?)",
+      [nombreCli, apellido, direccion, email, hashedPassword, 1]
     );
 
     res.json({ message: "Cliente registrado con éxito" });
@@ -57,7 +57,7 @@ const loginCliente = async (req, res) => {
       return res.status(400).json({ message: "La contraseña ingresada es incorrecta" });
 
     const token = jwt.sign(
-      { id: cliente.idCli, nombre: cliente.nombre, tipo: cliente.idTipoCli },
+      { id: cliente.idCli, nombreCli: cliente.nombreCli, tipo: cliente.idTipoCli },
       "clave_secreta_super_segura",
       { expiresIn: "2h" }
     );
@@ -70,7 +70,7 @@ const loginCliente = async (req, res) => {
 };
 
 const editarCliente = async (req, res) => {
-  const { idCli, nombre, apellido, direccion, email, password } = req.body;
+  const { idCli, nombreCli, apellido, direccion, email, password } = req.body;
 
   if (!idCli) {
     return res.status(400).json({ message: "Falta el ID del cliente" });
@@ -86,10 +86,10 @@ const editarCliente = async (req, res) => {
 
     await conn.query(
       `UPDATE clientes 
-       SET nombre = ?, apellido = ?, direccion = ?, email = ?, 
+       SET nombreCli = ?, apellido = ?, direccion = ?, email = ?, 
            password = COALESCE(?, password)
        WHERE idCli = ?`,
-      [nombre, apellido, direccion, email, hashedPassword, idCli]
+      [nombreCli, apellido, direccion, email, hashedPassword, idCli]
     );
 
     res.json({ message: "Cliente actualizado correctamente" });

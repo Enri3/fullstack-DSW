@@ -14,7 +14,6 @@ export const loginUsuario = async (credentials: LoginCredenciales) => {
     body: JSON.stringify(credentials),
   });
 
-  // Verificar si la respuesta fue exitosa (código 200)
   if (!response.ok) {
     // Si falla, mensaje de error del backend
     const errorData = await response.json();

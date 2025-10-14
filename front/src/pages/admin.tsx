@@ -29,7 +29,7 @@ export default function Admin() {
                 {/* 1. SECCIÓN DE BIENVENIDA Y ESTADÍSTICAS */}
                 <section className="welcome-section admin-welcome">
                     <h1 className="welcome-title">Panel de Administración</h1>
-                    <p className="admin-status">Bienvenido, {cliente.nombre}.</p>
+                    <p className="admin-status">Bienvenido, {cliente.nombreCli}.</p>
                 </section>
 
                 {/* 3. GRID DE LLAMADAS A LA ACCIÓN (CTAs) DE GESTIÓN */}

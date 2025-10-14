@@ -57,7 +57,7 @@ export default function ClienteIngresado() {
 
       <div className="dashboard-container">
         <section className="welcome-section">
-          <h1 className="welcome-title">Bienvenido, {cliente.nombre} {cliente.apellido}!</h1>
+          <h1 className="welcome-title">Bienvenido, {cliente.nombreCli} {cliente.apellido}!</h1>
           <p className="client-status">
             <strong>Tipo de Cliente:</strong> {tipoNombre}
           </p>
