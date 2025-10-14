@@ -47,11 +47,10 @@ export async function eliminarProducto(idProd: string | number): Promise<void> {
   if (!res.ok) throw new Error("Error al eliminar producto");
 }
 
-const API_URL = "http://localhost:4000/producto"; 
 
 export const buscarProducto = async (nombreProdBuscado: string) => {
   try {
-    const res = await fetch(`${API_URL}/buscarPorNombre`, {
+    const res = await fetch(`http://localhost:4000/productos/buscarProductoPorNombre`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombreProdBuscado }),

@@ -76,14 +76,6 @@ const addDescuento = async (req, res) => {
   }
 }
 
-module.exports = { addDescuento };
-    /*
-    if (existe.length > 0) {
-      return res.status(400).json({ message: "El descuento ya existe" });
-    }*/
-
-;
-
 const getAllProductos = async (req, res) => {
   try {
     const conn = await getConnection();

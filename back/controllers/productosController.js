@@ -1,6 +1,6 @@
 const database = require('../src/database');
 
-exports.getAll = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const connection = await database.getConnection();
     const result = await connection.query("SELECT * FROM productos");
@@ -12,7 +12,7 @@ exports.getAll = async (req, res) => {
   }
 };
 
-exports.create = async (req, res) => {
+const create = async (req, res) => {
   try {
     const { nombreProd, medida, precioProd, urlImg } = req.body;
 
@@ -36,7 +36,7 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.getById = async (req, res) => {
+const getById = async (req, res) => {
   try {
     const { idProd } = req.params;
     const connection = await database.getConnection();
@@ -56,7 +56,7 @@ exports.getById = async (req, res) => {
   }
 };
 
-exports.update = async (req, res) => {
+const update = async (req, res) => {
   try {
     const { idProd } = req.params;
     const { nombreProd, medida, precioProd, urlImg } = req.body;
@@ -87,7 +87,7 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.delete = async (req, res) => {
+const deleteProd = async (req, res) => {
   try {
     const { idProd } = req.params;
     const connection = await database.getConnection();
@@ -106,22 +106,31 @@ exports.delete = async (req, res) => {
   }
 };
 
-exports.buscarProducto = async (req, res) => {
+const buscarProducto = async (req, res) => {
   const { nombreProdBuscado } = req.body;
 
-  if (!nombreProdBuscado) {
-    return res.status(400).json({ message: "Debe especificar un nombre de producto" });
-  }
-  try{
+  try {
     const conn = await database.getConnection();
-    const [rows] = await conn.query(
-    `SELECT idProd, nombreProd, precioProd, medida
-    FROM productos
-    WHERE nombreProd LIKE '%?%' AND deleted = 0`,[nombreProdBuscar]);
-    
-    res.json(rows);
-  }catch (error){
-    console.error('Error al ejecurtar la consulta SQL: ', error);
-    res.status(500).json({ message: 'Error interno del servidor al buscar.' });
+    let rows;
+
+    // Si el nombre está vacío → devolver todos los productos
+    if (!nombreProdBuscado || nombreProdBuscado.trim() === "") {
+      rows = await conn.query("SELECT * FROM productos WHERE deleted = 0;");
+    } else {
+      rows = await conn.query(
+        `SELECT *
+         FROM productos
+         WHERE nombreProd LIKE CONCAT('%', ?, '%')
+         AND deleted = 0;`,
+        [nombreProdBuscado]
+      );
+    }
+
+    res.json(rows); // 🔹 respuesta unificada
+  } catch (error) {
+    console.error("Error al ejecutar la consulta SQL:", error);
+    res.status(500).json({ message: "Error interno del servidor al buscar." });
   }
 };
+
+module.exports = {buscarProducto , getAll , create , getById , create , update , deleteProd };
