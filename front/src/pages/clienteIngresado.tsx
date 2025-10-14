@@ -67,25 +67,25 @@ export default function ClienteIngresado() {
           <Link to="/productosCliente" className="cta-card cta-new">
             <i className="icon">🛒</i>
             <h3>Realizar Nuevo Pedido</h3>
-            <p>Explora nuestros productos y comienza a comprar.</p>
+            <p>Explorá nuestros productos y comenzá a comprar.</p>
           </Link>
 
           <Link to="/mis-facturas" className="cta-card cta-invoice">
             <i className="icon">🧾</i>
             <h3>Ver Mis Facturas</h3>
-            <p>Accede y descarga tu historial de pagos.</p>
+            <p>Accedé y descargá tu historial de pagos.</p>
           </Link>
           <Link to="/carrito" className="cta-card cta-history">
             <i className="icon">📦</i>
             <h3>Historial de Pedidos</h3>
-            <p>Revisa el estado de tus compras pasadas.</p>
+            <p>Revisá el estado de tus compras pasadas.</p>
           </Link>
         </div>
 
         <div className="info-layout">
           <section className="recent-activity">
             <h2>Pedidos Recientes</h2>
-            <p>No tienes pedidos recientes.</p>
+            <p>No tenés pedidos recientes.</p>
             <Link to="/historial-pedidos" className="view-all">Ver todos</Link>
           </section>
 
@@ -101,7 +101,7 @@ export default function ClienteIngresado() {
             </section>
 
             <section className="support-area">
-              <h2>¿Necesitas Ayuda?</h2>
+              <h2>¿Necesitás Ayuda?</h2>
               <div className="support-links">
                 <Link to="/faq">Preguntas Frecuentes (FAQ)</Link>
                 <Link to="/contacto">Contactar a Soporte</Link>

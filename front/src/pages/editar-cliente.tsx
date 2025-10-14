@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import "../assets/styles/login.css";
 import HeaderClienteIngresado from "../components/header_clienteIngresado";
-import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
+import { obtenerCantidadCarrito } from "../services/cartService";
 import { useNavigate } from 'react-router-dom';
 import type { Cliente } from "../../../entidades/cliente";
 import { clienteVacio } from "../../../entidades/cliente";
+import MensajeAlerta from "../components/mensajesAlerta"; // 👈 agregado
 
 export default function EditarCliente() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
@@ -15,6 +16,10 @@ export default function EditarCliente() {
   const [apellido, setApellido] = useState("");
   const [email, setEmail] = useState("");
   const [direccion, setDireccion] = useState("");
+
+  //estados nuevos para los mensajes
+  const [mensaje, setMensaje] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState<"success" | "error" | "info">("info");
   
   useEffect(() => {
     const storedCliente = localStorage.getItem("cliente");
@@ -50,16 +55,21 @@ export default function EditarCliente() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("¡Tus datos fueron actualizados correctamente!");
+        setTipoMensaje("success");
+        setMensaje("¡Tus datos fueron actualizados correctamente!");
+        
         const updatedCliente = { ...cliente, nombre, apellido, direccion, email };
         localStorage.setItem("cliente", JSON.stringify(updatedCliente));
-        navigator('/clienteIngresado');
+
+        setTimeout(() => navigator('/editar-cliente'));
       } else {
-        alert(data.message || "Error al editar el perfil");
+        setTipoMensaje("error");
+        setMensaje(data.message || "Error al editar el perfil ❌");
       }
     } catch (error) {
       console.error("Error al conectar con el servidor:", error);
-      alert("No se pudo conectar con el servidor.");
+      setTipoMensaje("error");
+      setMensaje("No se pudo conectar con el servidor ❌");
     }
   };
   
@@ -69,6 +79,8 @@ export default function EditarCliente() {
       <div className="login-page">
         <div className="login-container">
           <h2>Editar Perfil</h2>
+
+          {mensaje && <MensajeAlerta tipo={tipoMensaje} texto={mensaje} />}
 
           <form onSubmit={handleSubmit}>
             <input
