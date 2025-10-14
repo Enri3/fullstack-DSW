@@ -6,11 +6,10 @@ import "../assets/styles/gestion-descuentos.css";
 
 import { obtenerCantidadCarrito } from "../services/cartService";
 import type { Producto } from "../../../entidades/producto";
-import { PRODUCTOS_MOCK_DATA } from "../../../entidades/producto";
 import { getAllProductos, addDescuento } from "../services/descunetosService";
 
 export default function Descuentos() {
-  const [productos, setProductos] = useState<Producto[]>(PRODUCTOS_MOCK_DATA);
+  const [productos, setProductos] = useState<Producto[]>([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState<number | "">("");
   const [porcentaje, setPorcentaje] = useState<number | "">("");
   const [fechaDesde, setFechaDesde] = useState("");
