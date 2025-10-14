@@ -11,17 +11,18 @@ export const descuentoVacio: Descuento = {
     fechaDesde: new Date(),
     fechaHasta: new Date(),
 };
-
-export interface DescuentoConProducto {
-    porcentaje: number;
-    fechaDesde: Date;
-    fechaHasta: Date;
-    idProd: number;
+//Me deja poner más de un producto por descuento
+export interface DescuentoConProductos {
+  porcentaje: number;
+  fechaDesde: Date;
+  fechaHasta: Date;
+  idsProductos: number[];
 }
 
-export const descuentoConProductoVacio: DescuentoConProducto = {
-    porcentaje: 0,
-    fechaDesde: new Date(),
-    fechaHasta: new Date(),
-    idProd: 0
+
+export const descuentoConProductosVacio: DescuentoConProductos = {
+  porcentaje: 0,
+  fechaDesde: new Date(),
+  fechaHasta: new Date(),
+  idsProductos: [],
 };

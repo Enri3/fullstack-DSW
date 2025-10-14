@@ -10,10 +10,11 @@ import { getAllProductos, addDescuento } from "../services/descunetosService";
 
 export default function Descuentos() {
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [productoSeleccionado, setProductoSeleccionado] = useState<number | "">("");
-  const [porcentaje, setPorcentaje] = useState<number | "">("");
-  const [fechaDesde, setFechaDesde] = useState("");
-  const [fechaHasta, setFechaHasta] = useState("");
+  const [productosSeleccionados, setProductosSeleccionados] = useState<number[]>([]);
+  const [porcentaje, setPorcentaje] = useState<string>("");
+  const [fechaDesde, setFechaDesde] = useState<string>("");
+  const [fechaHasta, setFechaHasta] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // Cargar productos al montar
@@ -32,8 +33,10 @@ export default function Descuentos() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!productoSeleccionado || !porcentaje || !fechaDesde || !fechaHasta) {
-      alert("Por favor completa todos los campos");
+    // Validaciones
+    if (productosSeleccionados.length === 0 || !porcentaje || !fechaDesde || !fechaHasta
+    ) {
+      alert("Por favor completa todos los campos y selecciona al menos un producto");
       return;
     }
 
@@ -41,88 +44,98 @@ export default function Descuentos() {
       porcentaje: Number(porcentaje),
       fechaDesde: new Date(fechaDesde),
       fechaHasta: new Date(fechaHasta),
-      idProd: productoSeleccionado,
+      idsProductos: productosSeleccionados,
     };
 
     try {
-      const res = await addDescuento(nuevoDescuento);
+      setLoading(true);
+      const data = await addDescuento(nuevoDescuento);
 
-      if (res.ok) {
-        alert("Descuento registrado correctamente ✅");
-        // limpiar formulario
-        setProductoSeleccionado("");
-        setPorcentaje("");
-        setFechaDesde("");
-        setFechaHasta("");
-      } else {
-        alert("Error al registrar el descuento ❌");
-      }
-    } catch (error) {
+      // data es { message, idDesc } según tu backend
+      alert(data.message);
+
+      // limpiar formulario
+      setProductosSeleccionados([]);
+      setPorcentaje("");
+      setFechaDesde("");
+      setFechaHasta("");
+
+    } catch (error: any) {
       console.error("Error al registrar descuento:", error);
-      alert("Error al conectar con el servidor");
-    }
-  };
+      alert(error.message || "Error al conectar con el servidor");
+    } finally {
+      setLoading(false);
+    }}
 
   return (
     <div className="contenedor-descuentos">
       <BotonVolver />
       <h1>Gestión de Descuentos</h1>
-
+        
       <form onSubmit={handleSubmit} className="form-descuento">
         <h3>Registrar un nuevo descuento</h3>
-
-        <label htmlFor="productoID">Producto:</label>
+        {/* Selección múltiple de productos */}
+        <label htmlFor="productoID">Productos:</label>
         <select
           id="productoID"
           name="productoID"
-          value={productoSeleccionado}
-          onChange={(e) => setProductoSeleccionado(Number(e.target.value))}
+          multiple
+          value={productosSeleccionados.map(String)}
+          onChange={(e) => {
+            const valores = Array.from(e.target.selectedOptions, (opt) => Number(opt.value));
+            setProductosSeleccionados(valores);
+          }}
           required
         >
-          <option value="" disabled>
-            -- Elige un producto --
-          </option>
           {productos.map((producto) => (
-            <option key={producto.id} value={producto.id}>
-              {producto.nombre}
+            <option key={producto.idProd} value={producto.idProd}>
+              {producto.nombreProd}
             </option>
           ))}
-        </select>
 
+  
+        </select>
+        <p className="nota">
+          Usa <b>Ctrl</b> (Windows) o <b>Cmd</b> (Mac) para seleccionar varios productos
+        </p>
+
+       {/* Porcentaje */}
         <label htmlFor="porcentaje">Porcentaje de descuento (%):</label>
         <input
           type="number"
           id="porcentaje"
           name="porcentaje"
           value={porcentaje}
-          onChange={(e) => setPorcentaje(Number(e.target.value))}
           min="1"
           max="100"
+          onChange={(e) => setPorcentaje(e.target.value)}
           required
         />
 
-        <label htmlFor="fechaInicio">Fecha de inicio:</label>
+           {/* Fechas */}
+        <label htmlFor="fechaDesde">Fecha Desde:</label>
         <input
           type="date"
-          id="fechaInicio"
-          name="fechaInicio"
+          id="fechaDesde"
+          name="fechaDesde"
           value={fechaDesde}
           onChange={(e) => setFechaDesde(e.target.value)}
           required
         />
 
-        <label htmlFor="fechaFin">Fecha de fin:</label>
+        <label htmlFor="fechaHasta">Fecha Hasta:</label>
         <input
           type="date"
-          id="fechaFin"
-          name="fechaFin"
+          id="fechaHasta"
+          name="fechaHasta"
           value={fechaHasta}
           onChange={(e) => setFechaHasta(e.target.value)}
           required
         />
 
-        <button type="submit" className="btn-registrar">
-          Registrar descuento
+
+        <button type="submit" className="btn-registrar " disabled={loading}>
+          {loading ? "Creando..." : "Crear descuento"}
         </button>
       </form>
     </div>
