@@ -29,7 +29,7 @@ export default function ModificarProducto() {
       try {
         const data = await getProductoById(idProd);
         setInputs({
-          nombreProd: data.nombre || "",
+          nombreProd: data.nombreProd || "",
           medida: data.medida || "",
           precioProd: data.precioProd?.toString() || "",
           urlImg: data.urlImg || "",
@@ -70,8 +70,8 @@ export default function ModificarProducto() {
     try {
       await updateProducto(idProd, {
         ...inputs, precioProd: precioNum,
-        id: "",
-        nombreProd: ""
+        idProd: "",
+        nombreProd: inputs.nombreProd
       });
       setSuccess("✅ Producto actualizado correctamente!");
     } catch (err) {
