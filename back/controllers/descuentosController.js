@@ -1,11 +1,9 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { getConnection } = require("../src/database");
 
 const addDescuento = async (req, res) => {
-  const { porcentaje, fechaInicio, fechaFin, idProd } = req.body;
-
-  if (!porcentaje || !idProd || !fechaInicio || !fechaFin)
+  const { porcentaje, fechaDesde, fechaHasta, idProd } = req.body;
+  
+  if (!porcentaje || !idProd || !fechaDesde || !fechaHasta)
     return res.status(400).json({ message: "Faltan completar campos obligatorios" });
 
   try {
@@ -44,4 +42,4 @@ const getAllProductos = async (req, res) => {
   }
 };
 
-module.exports( addDescuento , getAllProductos);
+module.exports = { addDescuento , getAllProductos};

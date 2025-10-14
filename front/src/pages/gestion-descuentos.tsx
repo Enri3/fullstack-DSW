@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BotonVolver from "../components/botonVolver";
 import "../assets/styles/botonVolver.css";
-import "../assets/styles/gestion-descuentos.css"; // si quieres darle estilos propios
+import "../assets/styles/gestion-descuentos.css";
 
 import { obtenerCantidadCarrito } from "../services/cartService";
 import type { Producto } from "../../../entidades/producto";
@@ -13,8 +13,8 @@ export default function Descuentos() {
   const [productos, setProductos] = useState<Producto[]>(PRODUCTOS_MOCK_DATA);
   const [productoSeleccionado, setProductoSeleccionado] = useState<number | "">("");
   const [porcentaje, setPorcentaje] = useState<number | "">("");
-  const [fechaInicio, setFechaInicio] = useState<string>("");
-  const [fechaFin, setFechaFin] = useState<string>("");
+  const [fechaDesde, setFechaDesde] = useState("");
+  const [fechaHasta, setFechaHasta] = useState("");
   const navigate = useNavigate();
 
   // Cargar productos al montar
@@ -33,16 +33,16 @@ export default function Descuentos() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!productoSeleccionado || !porcentaje || !fechaInicio || !fechaFin) {
+    if (!productoSeleccionado || !porcentaje || !fechaDesde || !fechaHasta) {
       alert("Por favor completa todos los campos");
       return;
     }
 
     const nuevoDescuento = {
-      idProd: productoSeleccionado,
       porcentaje: Number(porcentaje),
-      fechaDesde: new Date(fechaInicio),
-      fechaHasta: new Date(fechaFin),
+      fechaDesde: new Date(fechaDesde),
+      fechaHasta: new Date(fechaHasta),
+      idProd: productoSeleccionado,
     };
 
     try {
@@ -53,8 +53,8 @@ export default function Descuentos() {
         // limpiar formulario
         setProductoSeleccionado("");
         setPorcentaje("");
-        setFechaInicio("");
-        setFechaFin("");
+        setFechaDesde("");
+        setFechaHasta("");
       } else {
         alert("Error al registrar el descuento ❌");
       }
@@ -84,8 +84,8 @@ export default function Descuentos() {
             -- Elige un producto --
           </option>
           {productos.map((producto) => (
-            <option key={producto.idProd} value={producto.idProd}>
-              {producto.nombreProd}
+            <option key={producto.id} value={producto.id}>
+              {producto.nombre}
             </option>
           ))}
         </select>
@@ -107,8 +107,8 @@ export default function Descuentos() {
           type="date"
           id="fechaInicio"
           name="fechaInicio"
-          value={fechaInicio}
-          onChange={(e) => setFechaInicio(e.target.value)}
+          value={fechaDesde}
+          onChange={(e) => setFechaDesde(e.target.value)}
           required
         />
 
@@ -117,8 +117,8 @@ export default function Descuentos() {
           type="date"
           id="fechaFin"
           name="fechaFin"
-          value={fechaFin}
-          onChange={(e) => setFechaFin(e.target.value)}
+          value={fechaHasta}
+          onChange={(e) => setFechaHasta(e.target.value)}
           required
         />
 

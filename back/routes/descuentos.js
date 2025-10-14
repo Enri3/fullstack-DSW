@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { addDescuento , getAllProductos } = require("../controllers/descuentos");
+const { addDescuento , getAllProductos } = require("../controllers/descuentosController");
 
 router.post("/add", addDescuento);
-router.get("/getAllProd", getAllProductos)
+router.get("/getAllProd", getAllProductos);
 
 module.exports = router;
