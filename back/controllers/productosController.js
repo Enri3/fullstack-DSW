@@ -106,12 +106,14 @@ exports.delete = async (req, res) => {
   }
 };
 
-exports.buscarProducto = async(req, res) => {
-  const { nombreProdBuscar } = req.body;
+exports.buscarProducto = async (req, res) => {
+  const { nombreProdBuscado } = req.body;
 
+  if (!nombreProdBuscado) {
+    return res.status(400).json({ message: "Debe especificar un nombre de producto" });
+  }
   try{
-    const conn = await getConnection();
-
+    const conn = await database.getConnection();
     const [rows] = await conn.query(
     `SELECT idProd, nombreProd, precioProd, medida
     FROM productos
@@ -122,4 +124,4 @@ exports.buscarProducto = async(req, res) => {
     console.error('Error al ejecurtar la consulta SQL: ', error);
     res.status(500).json({ message: 'Error interno del servidor al buscar.' });
   }
-}
+};

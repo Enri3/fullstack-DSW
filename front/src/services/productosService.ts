@@ -49,21 +49,23 @@ export async function eliminarProducto(idProd: string | number): Promise<void> {
 
 const API_URL = "http://localhost:4000/producto"; 
 
-export const buscarProducto = async (nombreProdBuscado : string) => {
+export const buscarProducto = async (nombreProdBuscado: string) => {
   try {
     const res = await fetch(`${API_URL}/buscarPorNombre`, {
-      method: "GET",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombreProdBuscado }),
     });
+
     const data = await res.json();
+
     if (!res.ok) {
-      throw new Error(data.message || "Error al eliminar clientes tomado desde el service");
+      throw new Error(data.message || "Error al buscar producto desde el service");
     }
+
     return data;
+  } catch (error) {
+    console.error("Error al buscar producto:", error);
+    throw error;
   }
-  catch(error) {
-      console.error('Error al buscar elementos:', error);
-      throw error; 
-    }
-}
+};

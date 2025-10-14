@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import HeaderAdmin from "../components/header_admin";
+import { buscarProducto } from "../services/productosService";
 
 
 
@@ -74,6 +75,36 @@ export default function DisplayProductos() {
     }
   };
 
+  const [termino, setTermino] = useState("");
+  const [productosFiltro, setProductosFiltro] = useState<Producto[]>([]);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (termino.trim() === "") {
+        setProductos([]);
+        return;
+      }
+
+      handleBuscar(termino);
+    }, 400);
+
+    return () => clearTimeout(delayDebounce);
+  }, [termino]);
+
+  const handleBuscar = async (nombreProd : string) => {
+    try {
+      setLoading(true);
+      const data = await buscarProducto(nombreProd);
+      setProductos(data);
+    } catch (err) {
+      console.error(err);
+      setProductos([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
 
   return (
     <>
@@ -83,7 +114,33 @@ export default function DisplayProductos() {
           <h1>Bienvenido a Vivelas</h1>
           <p>Explora nuestros productos y disfruta de una experiencia única.</p>
         </div>
+        <div>
+          <h2>Este es el buscador de productos</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-center">Buscar Productos</h2>
 
+          <input
+            type="text"
+            placeholder="Escribe el nombre del producto..."
+            value={termino}
+            onChange={(e) => setTermino(e.target.value)}
+            className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          {loading && <p className="text-gray-500 mt-3 text-center">Buscando...</p>}
+
+          {!loading && productos.length === 0 && termino !== "" && (
+            <p className="text-gray-500 mt-3 text-center">No se encontraron productos</p>
+          )}
+
+          <ul className="mt-4 divide-y divide-gray-200 bg-white rounded-md shadow">
+            {productosFiltro.map((p) => (
+              <li key={p.idProd} className="p-3 hover:bg-gray-50">
+                <p className="font-medium">{p.nombreProd}</p>
+                <p className="text-sm text-gray-600">Precio: ${p.precioProd}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
         <section id="productos-container-display">
           {/* Sección de agregar producto */}
           <div className="tarjeta-add">
