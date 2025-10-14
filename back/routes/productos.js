@@ -18,4 +18,6 @@ router.put("/:id", productosController.update);
 //Eliminar
 router.delete("/:id", productosController.delete);
 
+router.get("/buscarPorNombre", productosController.buscarProducto);
+
 module.exports = router;

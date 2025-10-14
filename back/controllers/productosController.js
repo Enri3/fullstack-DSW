@@ -105,3 +105,21 @@ exports.delete = async (req, res) => {
     res.status(500).json({ error: "Error al eliminar producto" });
   }
 };
+
+exports.buscarProducto = async(req, res) => {
+  const { nombreProdBuscar } = req.body;
+
+  try{
+    const conn = await getConnection();
+
+    const [rows] = await conn.query(
+    `SELECT idProd, nombreProd, precioProd, medida
+    FROM productos
+    WHERE nombreProd LIKE '%?%' AND deleted = 0`,[nombreProdBuscar]);
+    
+    res.json(rows);
+  }catch (error){
+    console.error('Error al ejecurtar la consulta SQL: ', error);
+    res.status(500).json({ message: 'Error interno del servidor al buscar.' });
+  }
+}

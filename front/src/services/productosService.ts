@@ -46,3 +46,24 @@ export async function eliminarProducto(id: string | number): Promise<void> {
   });
   if (!res.ok) throw new Error("Error al eliminar producto");
 }
+
+const API_URL = "http://localhost:4000/producto"; 
+
+export const buscarProducto = async (nombreProdBuscado : string) => {
+  try {
+    const res = await fetch(`${API_URL}/buscarPorNombre`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nombreProdBuscado }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message || "Error al eliminar clientes tomado desde el service");
+    }
+    return data;
+  }
+  catch(error) {
+      console.error('Error al buscar elementos:', error);
+      throw error; 
+    }
+}
