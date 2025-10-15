@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import type { Producto } from "../interfaces";
+import BuscadorProducto from "../components/buscadorProductos";
 
 export default function DisplayProductos_C() {
   const [productos, setProductos] = useState<Producto[]>([]); 
@@ -46,6 +47,8 @@ export default function DisplayProductos_C() {
           <h1>Bienvenido a Vivelas</h1>
           <p>Explora nuestros productos y disfruta de una experiencia única.</p>
         </div>
+        <BuscadorProducto onResultados={setProductos} setLoading={setLoading} />
+                
 
         <section id="productos-container-display">
           
