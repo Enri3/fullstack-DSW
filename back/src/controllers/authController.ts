@@ -173,14 +173,14 @@ export const buscarClienteFiltro = async (req: Request, res: Response): Promise<
 
     if (!criterioFiltro || criterioFiltro.trim() === "") {
       rows = await conn.query(
-        "SELECT idCli, nombreCli, apellido, email, direccion FROM clientes WHERE idCli != 1;"
+        "SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idTipoCli != 1;"
       );
     } else {
       rows = await conn.query(
-        `SELECT idCli, nombreCli, apellido, email, direccion
+        `SELECT idCli, nombreCli, apellido, email, direccion, email
          FROM clientes
          WHERE (nombreCli LIKE CONCAT('%', ?, '%') OR email LIKE CONCAT('%', ?, '%'))
-           AND idCli != 1;`,
+         AND idTipoCli != 1;`,
         [criterioFiltro, criterioFiltro]
       );
     }
