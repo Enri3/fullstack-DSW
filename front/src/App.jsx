@@ -18,7 +18,6 @@ import DetalleCliente from "./pages/detalleCliente";
 import Inicio from "./pages/Inicio";
 import Descuentos from "./pages/gestion-descuentos";
 import CambiarPassword from "./pages/cambiar-password";
-import VerProductos from "./pages/verProductosConBuscador";
 
 
 function App() {
@@ -43,7 +42,6 @@ function App() {
         <Route path="/detalleCliente" element={<DetalleCliente />} />
         <Route path="/gestion-descuentos" element={<Descuentos />} />
         <Route path="/cambiar-password" element={<CambiarPassword />} />
-        <Route path="/verProductosConBuscador" element={<VerProductos />} />
       </Routes>
     </BrowserRouter>
   );
