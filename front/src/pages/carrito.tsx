@@ -76,7 +76,7 @@ export default function MostrarCarrito() {
                   <img src={producto.urlImg} alt={producto.nombreProd} />
                   <h3>{producto.nombreProd}</h3>
                   <p className="precio">${producto.precioProd}</p>
-                  <div>
+                  <div className="botones-carrito">
                     <button onClick={() => handleRestar(producto)}>-</button>
                     <span className="cantidad">{producto.cantidad}</span>
                     <button onClick={() => handleAgregar(producto)}>+</button>
@@ -88,8 +88,10 @@ export default function MostrarCarrito() {
               <p>Total unidades: <span id="cantidad">{totalUnidades}</span></p>
               <p>Total precio: $<span id="precio">{totalPrecio.toFixed(2)}</span></p>
               <p><a href="/productosCliente">Volver a la selección de productos</a></p>
+              <div className=" contenedor-botones ">
               <button disabled>Comprar</button>
               <button id="reiniciar" onClick={handleReiniciar}>Reiniciar</button>
+              </div>
             </section>
           </>
         )}

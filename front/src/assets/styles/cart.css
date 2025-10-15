@@ -26,5 +26,24 @@
     text-align: center;
 }
 
+.botones-carrito{
+    display: flex;
+    gap: 10px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.contenedor-botones{
+    display: flex;
+    gap: 10px;
+    height: auto;
+    vertical-align: middle;
+    width: 500px;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+}
+
+
 
 
