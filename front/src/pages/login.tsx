@@ -36,13 +36,13 @@ export default function Login() {
         // Se redirige según tipo de cliente, con el mensaje
         switch (data.cliente.idTipoCli) {
           case 1:
-            navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
+            navigate("/admin", { state: { mensaje: mensajeExito } });
             break;
           case 2:
             navigate("/productos-especiales", { state: { mensaje: mensajeExito } });
             break;
           case 3:
-            navigate("/admin", { state: { mensaje: mensajeExito } });
+            navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
             break;
           default:
             navigate("/", { state: { mensaje: mensajeExito } });

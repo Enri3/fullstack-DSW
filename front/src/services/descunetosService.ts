@@ -23,7 +23,6 @@ export const addDescuento = async (descuento: DescuentoP) => {
   }
 };
 
-
 // Obtiene todos los productos disponibles (para asignar descuentos)
 export const getAllProductos = async () => {
   try {

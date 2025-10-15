@@ -5,7 +5,7 @@ const { getConnection } = require("../src/database");
 const getAllClientes = async (req, res) => {
   try {
     const conn = await getConnection();
-    const rows = await conn.query("SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idTipoCli = 1");
+    const rows = await conn.query("SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idTipoCli != 1");
     res.json(rows);
   } catch (error) {
     console.error("Error al obtener clientes:", error);
