@@ -1,7 +1,7 @@
+import { Router } from "express";
+import { buscarProducto, getAll, getById, create, update, deleteProd } from "../controllers/productosController";
 
-const express = require("express");
-const router = express.Router();
-const { buscarProducto , getAll , getById , create , update , deleteProd } = require("../controllers/productosController");
+const router = Router();
 
 // Obtener todos
 router.get("/", getAll);
@@ -15,9 +15,10 @@ router.post("/", create);
 // Actualizar
 router.put("/:idProd", update);
 
-//Eliminar
+// Eliminar
 router.delete("/:idProd", deleteProd);
 
+// Buscar por nombre
 router.post("/buscarProductoPorNombre", buscarProducto);
 
-module.exports = router;
+export default router;

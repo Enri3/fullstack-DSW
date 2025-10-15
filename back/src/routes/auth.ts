@@ -1,6 +1,7 @@
-const express = require("express");
-const router = express.Router();
-const { buscarClienteFiltro, getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword } = require("../controllers/authController");
+import { Router } from "express";
+import { buscarClienteFiltro, getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword } from "../controllers/authController";
+
+const router = Router();
 
 router.get("/getAllClientes", getAllClientes);
 router.post("/register", registrarCliente);
@@ -10,4 +11,4 @@ router.delete("/eliminar-multiple", eliminarClientes);
 router.put("/cambiar-password", cambiarPassword);
 router.post("/buscarClienteFiltro", buscarClienteFiltro);
 
-module.exports = router;
+export default router; //
