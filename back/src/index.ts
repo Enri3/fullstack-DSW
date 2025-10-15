@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./database"; // <-- cambiar aquí
+import "reflect-metadata";
 
 import productosRoutes from "./routes/productos";
 // import authRoutes from "./routes/auth";

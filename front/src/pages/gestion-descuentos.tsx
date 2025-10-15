@@ -44,12 +44,11 @@ export default function Descuentos() {
       porcentaje: Number(porcentaje),
       fechaDesde: new Date(fechaDesde),
       fechaHasta: new Date(fechaHasta),
-      idsProductos: productosSeleccionados,
     };
 
     try {
       setLoading(true);
-      const data = await addDescuento(nuevoDescuento);
+      const data = await addDescuento(nuevoDescuento, productosSeleccionados);
 
       // data es { message, idDesc } según tu backend
       alert(data.message);

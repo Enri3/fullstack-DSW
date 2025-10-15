@@ -2,16 +2,22 @@ const API_URL = "http://localhost:4000/descuentos";
 import type {Descuento , DescuentoConProductos as DescuentoP } from "../../../entidades/descuento";
 
 //Agregar un descuento
-export const addDescuento = async (descuento: DescuentoP) => {
+export const addDescuento = async (descuento: Descuento, idsProductos: number[]
+) => {
   try {
+    // Combinamos ambos en un solo cuerpo antes de enviar
+    const body: DescuentoP = {
+      ...descuento,
+      idsProductos,
+    };
+
     const res = await fetch(`${API_URL}/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(descuento),
+      body: JSON.stringify(body),
     });
 
     const data = await res.json();
-
     if (!res.ok) {
       throw new Error(data.message || "Error al agregar descuento");
     }
