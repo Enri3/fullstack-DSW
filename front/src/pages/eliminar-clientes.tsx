@@ -5,10 +5,10 @@ import { obtenerCantidadCarrito } from "../services/cartService";
 import type { Cliente } from "../../../entidades/cliente";
 import { useEffect } from "react";
 import { deleteMultipleClientes, buscarClienteFiltro } from "../services/authService";
-// import { Link } from "react-router-dom"; // No se usa actualmente
 import "../assets/styles/eliminarClientes.css";
 import BotonVolver from "../components/botonVolver";
 import "../assets/styles/botonVolver.css";
+import BuscadorCliente from "../components/buscadorCliente";
 
 export default function EliminarClientes() {
     
@@ -18,6 +18,7 @@ export default function EliminarClientes() {
     const [clientesSeleccionados, setClientesSeleccionados] = useState<number[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [termino, setTermino] = useState("");
+    const [error, setError] = useState<string>("");
     
     const toggleSeleccion = (id: number) => {
         setClientesSeleccionados((prev) =>
@@ -55,47 +56,34 @@ export default function EliminarClientes() {
         }
     };
 
-    useEffect(() => {
-        const delayDebounce = setTimeout(() => {
-          handleBuscar(termino);
-        }, 400);
-    
-        return () => clearTimeout(delayDebounce);
-      }, [termino]);
-    
-      const handleBuscar = async (criterioFiltro : string) => {
-        try {
-          setLoading(true);
-          const data = await buscarClienteFiltro(criterioFiltro);
-          // Asegurarse de manejar cuando el resultado es solo un objeto (si la API lo permite)
-          setClientes(Array.isArray(data) ? data : (data ? [data] : []));
-        } catch (err) {
-          console.error(err);
-          setClientes([]);
-        } finally {
-          setLoading(false);
-        }
-      };
+      // Cargar clientes al montar
+      useEffect(() => {
+        const fetchClientes = async () => {
+          try {
+            const data = await buscarClienteFiltro("");
+            console.log("Clientes recibidos del backend:", data);
+            setClientes(Array.isArray(data) ? data : [data]);
+          } catch (err) {
+            console.error("Error al obtener clientes:", err);
+            setError("No se pudo conectar con el servidor.");
+            setClientes([]);
+          } finally {
+            setLoading(false);
+          }
+        };
+        fetchClientes();
+      }, []);
 
      return (
     <>
-        {/* Se asume que HeaderClienteIngresado sigue la estética de Vivelas */}
         <HeaderAdmin cantidad={cantidad} /> 
         <BotonVolver />
 
-        {/* Contenedor principal para la página de eliminación de clientes */}
         <div className="admin-page-container">
             <h2 className="admin-page-title">Panel de Administración - Clientes</h2>
             
-            {/* Input de Búsqueda */}
-            <input
-            type="text"
-            placeholder="Escribe el nombre del cliente..."
-            value={termino}
-            onChange={(e) => setTermino(e.target.value)}
-            // CLASE CSS DEFINIDA EN ELIMINARCLIENTES.CSS
-            className="input-busqueda-clientes" 
-            />
+                <BuscadorCliente onResultados={setClientes} setLoading={setLoading} />
+            
 
             {loading && <p className="text-gray-500 mt-3 text-center">Buscando...</p>}
             
@@ -137,7 +125,7 @@ export default function EliminarClientes() {
                     </thead>
                     <tbody>
                         {clientes.map((cliente) => (
-                            <tr key={cliente.idCli}>
+                            <tr key={(cliente.idCli)}>
                                 <td className="td-checkbox">
                                     <input
                                         type="checkbox"
@@ -148,6 +136,7 @@ export default function EliminarClientes() {
                                 <td>{cliente.nombreCli}</td>
                                 <td>{cliente.apellido || 'N/A'}</td>
                                 <td>{cliente.email}</td>
+                                <td>{cliente.idCli}</td>
                             </tr>
                         ))}
                     </tbody>

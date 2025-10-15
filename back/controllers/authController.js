@@ -160,16 +160,16 @@ const buscarClienteFiltro = async (req, res) => {
     const conn = await getConnection();
     let rows;
 
-    // Si el nombre está vacío → devolver todos los productos
+    // Si el nombre está vacío → devolver todos los clientes
     if (!criterioFiltro || criterioFiltro.trim() === "") {
-      rows = await conn.query("SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idCli != 1;");
+      rows = await conn.query("SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idTipoCli != 1;");
     } else {
       rows = await conn.query(
         `SELECT idCli, nombreCli, apellido, email, direccion, email
          FROM clientes
-         WHERE nombreCli LIKE CONCAT('%', ?, '%') OR email LIKE CONCAT('%', ?, '%')
-         AND idCli != 1;`,
-        [nombreProdBuscado]
+         WHERE (nombreCli LIKE CONCAT('%', ?, '%') OR email LIKE CONCAT('%', ?, '%'))
+         AND idTipoCli != 1;`,
+        [criterioFiltro]
       );
     }
 

@@ -44,7 +44,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,'lauti','ponce','amenabar','lauti@gmail.com','$2b$10$FwgRBHhMpMkci9wVM3YX3Omg3NIUJa/Kc1w3zpfWV9exNnFqAk7Ba','2025-10-10 14:15:55',1),(2,'el pepe ','jaja','9dejulio','lauti03@gmail.com','$2b$10$vqsAtQpHQWLeBEBKqaJiK.mW7C2qWASumtYiAJ5jst3ByQITpGt2m','2025-10-10 14:45:08',2),(3,'aaa','aaa','aaa','aaa@gmail.com','$2b$10$yINt.xYriHanb6tb83qKCOtARqCSsBxlGjEqw2OEa6tOwmz3Hxlhm','2025-10-10 15:34:17',2),(4,'pepe','pepe','pepe','pepe@gmail.com','$2b$10$D.G/ajWDF07sw6.S/HGkLecDFCKt/aHjH3QwoAVR8cCF6dT2951e.','2025-10-10 18:02:19',2);
+INSERT INTO `clientes` VALUES (1,'lauti','ponce','amenabar','lauti@gmail.com','$2b$10$FwgRBHhMpMkci9wVM3YX3Omg3NIUJa/Kc1w3zpfWV9exNnFqAk7Ba','2025-10-10 14:15:55',2),(2,'el pepe ','jaja','9dejulio','lauti03@gmail.com','$2b$10$vqsAtQpHQWLeBEBKqaJiK.mW7C2qWASumtYiAJ5jst3ByQITpGt2m','2025-10-10 14:45:08',2),(3,'aaa','aaa','aaa','aaa@gmail.com','$2b$10$yINt.xYriHanb6tb83qKCOtARqCSsBxlGjEqw2OEa6tOwmz3Hxlhm','2025-10-10 15:34:17',3),(4,'pepe','pepe','pepe','pepe@gmail.com','$2b$10$D.G/ajWDF07sw6.S/HGkLecDFCKt/aHjH3QwoAVR8cCF6dT2951e.','2025-10-10 18:02:19',4);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
