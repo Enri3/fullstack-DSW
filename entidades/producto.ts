@@ -1,11 +1,36 @@
-export interface Producto {
+
+
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+
+@Entity({ name: "productos" })
+export class Producto {
+  @PrimaryGeneratedColumn({ name: "idProd" })
+  idProd!: number;
+
+  @Column({ name: "nombreProd", length: 100 })
+  nombreProd!: string;
+
+  @Column("decimal", { name: "precioProd", precision: 10, scale: 2 })
+  precioProd!: number;
+
+  @Column({ name: "urlImg", length: 256, nullable: true })
+  urlImg!: string;
+
+  @Column({ type: "tinyint", default: 0 })
+  deleted!: number;
+
+  @Column({ length: 45, nullable: true })
+  medida!: string;
+}
+
+/*export interface Producto {
   idProd: number;
   nombreProd: string;
   precioProd: number;
   urlImg: string;
   deleted:number;
   medida:string;
-}
+}*/
 
 export const productoVacio: Producto = {
     idProd: 0,

@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
-import { getConnection } from "../database";
+import { AppDataSource } from "../database";
+import { Producto} from "../../../entidades/producto";
+
+const productoRepo = AppDataSource.getRepository(Producto);
+
+
 
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
-    const connection = await getConnection();
-    const result = await connection.query("SELECT * FROM productos");
-    console.log("Resultado DB:", result);
+    const result = await productoRepo.find();
     res.json(result);
   } catch (error: any) {
     console.error("Error al obtener productos:", error.message || error);
@@ -28,11 +31,17 @@ export const create = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const connection = await getConnection();
-    const query = "INSERT INTO productos (nombreProd, medida, precioProd, urlImg) VALUES (?, ?, ?, ?)";
-    const result: any = await connection.query(query, [nombreProd, medida || null, precioNum, urlImg || null]);
+    const nuevoProducto = productoRepo.create({
+      nombreProd,
+      medida: medida || null,
+      precioProd: precioNum,
+      urlImg: urlImg || null,
+      deleted: 0
+    });
 
-    res.status(201).json({ idProd: result.insertId, nombreProd, medida, precioProd: precioNum, urlImg });
+    await productoRepo.save(nuevoProducto);
+
+    res.status(201).json(nuevoProducto);
   } catch (error: any) {
     console.error("Error al agregar producto:", error.message || error);
     res.status(500).json({ error: "Error al agregar producto" });
@@ -42,21 +51,20 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 export const getById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { idProd } = req.params;
-    const connection = await getConnection();
+    const producto = await productoRepo.findOne({ where: { idProd: Number(idProd) } });
 
-    const rows: any[] = await connection.query("SELECT * FROM productos WHERE idProd = ?", [idProd]);
-
-    if (rows.length === 0) {
+    if (!producto) {
       res.status(404).json({ error: "Producto no encontrado" });
       return;
     }
 
-    res.json(rows[0]);
+    res.json(producto);
   } catch (error: any) {
     console.error("Error al obtener producto por ID:", error.message || error);
     res.status(500).json({ error: "Error al obtener producto" });
   }
 };
+
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -74,16 +82,14 @@ export const update = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const connection = await getConnection();
-    const result: any = await connection.query(
-      "UPDATE productos SET nombreProd = ?, medida = ?, precioProd = ?, urlImg = ? WHERE idProd = ?",
-      [nombreProd, medida || null, precioNum, urlImg || null, idProd]
-    );
-
-    if (result.affectedRows === 0) {
+    const producto = await productoRepo.findOne({ where: { idProd: Number(idProd) } });
+    if (!producto) {
       res.status(404).json({ error: "Producto no encontrado" });
       return;
     }
+
+    productoRepo.merge(producto, { nombreProd, medida, precioProd: precioNum, urlImg });
+    await productoRepo.save(producto);
 
     res.json({ message: "Producto actualizado correctamente" });
   } catch (error: any) {
@@ -92,17 +98,19 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+
 export const deleteProd = async (req: Request, res: Response): Promise<void> => {
   try {
     const { idProd } = req.params;
-    const connection = await getConnection();
+    const producto = await productoRepo.findOne({ where: { idProd: Number(idProd) } });
 
-    const result: any = await connection.query("DELETE FROM productos WHERE idProd = ?", [idProd]);
-
-    if (result.affectedRows === 0) {
+    if (!producto) {
       res.status(404).json({ error: "Producto no encontrado" });
       return;
     }
+
+    producto.deleted = 1;
+    await productoRepo.save(producto);
 
     res.json({ message: "Producto eliminado correctamente" });
   } catch (error: any) {
@@ -115,24 +123,20 @@ export const buscarProducto = async (req: Request, res: Response): Promise<void>
   const { nombreProdBuscado } = req.body;
 
   try {
-    const conn = await getConnection();
-    let rows: any[];
-
+    let productos;
     if (!nombreProdBuscado || nombreProdBuscado.trim() === "") {
-      rows = await conn.query("SELECT * FROM productos WHERE deleted = 0;");
+      productos = await productoRepo.find({ where: { deleted: 0 } });
     } else {
-      rows = await conn.query(
-        `SELECT *
-         FROM productos
-         WHERE nombreProd LIKE CONCAT('%', ?, '%')
-         AND deleted = 0;`,
-        [nombreProdBuscado]
-      );
+      productos = await productoRepo
+        .createQueryBuilder("producto")
+        .where("producto.deleted = 0")
+        .andWhere("producto.nombreProd LIKE :nombre", { nombre: `%${nombreProdBuscado}%` })
+        .getMany();
     }
 
-    res.json(rows);
+    res.json(productos);
   } catch (error: any) {
-    console.error("Error al ejecutar la consulta SQL:", error.message || error);
+    console.error("Error al buscar productos:", error.message || error);
     res.status(500).json({ message: "Error interno del servidor al buscar." });
   }
 };

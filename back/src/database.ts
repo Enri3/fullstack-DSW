@@ -1,18 +1,21 @@
+import "reflect-metadata";
+import { DataSource } from "typeorm";
 import dotenv from "dotenv";
-import mysql from "promise-mysql";
+import { Producto} from "../../entidades/producto";
+//import { Cliente } from "../../entidades/Cliente";
+//import { TipoCliente } from "../../entidades/TipoCliente";
 
 dotenv.config();
 
-let connection: mysql.Connection | null = null;
-
-export const getConnection = async (): Promise<mysql.Connection> => {
-  if (!connection) {
-    connection = await mysql.createConnection({
-      host: process.env.HOST || "localhost",
-      database: process.env.DATABASE || "",
-      user: process.env.USER || "",
-      password: process.env.PASSWORD || "",
-    });
-  }
-  return connection;
-};
+export const AppDataSource = new DataSource({
+  type: "mysql",
+  host: process.env.HOST || "localhost",
+  port: Number(process.env.DB_PORT) || 3306,
+  username: process.env.USER || "root",
+  password: process.env.PASSWORD || "",
+  database: process.env.DATABASE || "test",
+  synchronize: true, 
+  logging: false,
+  entities: [Producto],
+});
+//, Cliente, TipoCliente
