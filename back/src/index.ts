@@ -8,7 +8,7 @@ import "reflect-metadata";
 import productosRoutes from "./routes/productos";
 // import authRoutes from "./routes/auth";
 // import tipoUsuariosRoutes from "./routes/tipo_clientes";
-// import descuentosRoutes from "./routes/descuentos";
+ import descuentosRoutes from "./routes/descuentos";
 
 dotenv.config();
 
@@ -33,7 +33,7 @@ AppDataSource.initialize()
     app.use("/productos", productosRoutes);
     // app.use("/auth", authRoutes);
     // app.use("/tipo_usuarios", tipoUsuariosRoutes);
-    // app.use("/descuentos", descuentosRoutes);
+     app.use("/descuentos", descuentosRoutes);
 
     // Ruta 404
     app.use((req: Request, res: Response): void => {

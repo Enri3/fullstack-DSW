@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { ProductoDescuento } from "./productos_descuentos";
+
 
 @Entity("descuentos") // Mapea a la tabla 'descuentos' en la DB
 export class Descuento {
