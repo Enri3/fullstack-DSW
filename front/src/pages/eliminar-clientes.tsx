@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Cliente } from "../../../entidades/cliente";
 import { clienteVacio } from "../../../entidades/cliente";
 import { useEffect } from "react";
-import { getAllClientes, deleteMultipleClientes } from "../services/authService";
+import { getAllClientes, deleteMultipleClientes, buscarClienteFiltro } from "../services/authService";
 import { Link } from "react-router-dom";
 import "../assets/styles/eliminarClientes.css";
 import BotonVolver from "../components/botonVolver";
@@ -17,20 +17,9 @@ export default function EliminarClientes() {
     const navigator = useNavigate();
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [clientesSeleccionados, setClientesSeleccionados] = useState<number[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [termino, setTermino] = useState("");
     
-    useEffect(() => {
-    const fetchClientes = async () => {
-      try {
-        const data = await getAllClientes();
-        setClientes(data);
-      } catch (error) {
-        console.error("Error al cargar clientes:", error);
-      }
-    };
-
-    fetchClientes();
-    }, []);
-
     const toggleSeleccion = (id: number) => {
         setClientesSeleccionados((prev) =>
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
@@ -67,6 +56,27 @@ export default function EliminarClientes() {
         }
     };
   
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+          handleBuscar(termino);
+        }, 400);
+    
+        return () => clearTimeout(delayDebounce);
+      }, [termino]);
+    
+      const handleBuscar = async (criterioFiltro : string) => {
+        try {
+          setLoading(true);
+          const data = await buscarClienteFiltro(criterioFiltro);
+          setClientes(Array.isArray(data) ? data : [data]);
+        } catch (err) {
+          console.error(err);
+          setClientes([]);
+        } finally {
+          setLoading(false);
+        }
+      };
+
      return (
     <>
         {/* Se asume que HeaderClienteIngresado sigue la estética de Vivelas */}
@@ -96,11 +106,31 @@ export default function EliminarClientes() {
                 </button>
             </div>
 
+            <input
+            type="text"
+            placeholder="Escribe el nombre del cliente..."
+            value={termino}
+            onChange={(e) => setTermino(e.target.value)}
+            className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+
+            {loading && <p className="text-gray-500 mt-3 text-center">Buscando...</p>}
+
+            {!loading && clientes.length > 0 && clientes.map((cliente) => (
+                <div key={cliente.idCli} className="tarjeta-producto-display">
+                <div className="tarjeta-clickable">
+                <h3>{cliente.nombreCli} - {cliente.apellido || "N/A"} grs</h3>
+                <p className="precio">${cliente.email}</p>
+                </div>
+
+
+                </div>
+            ))}
+
             {/* Tabla de Clientes */}
             <table className="admin-table">
                 <thead>
                     <tr>
-                        <th></th> {/* Columna del Checkbox */}
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Email</th>

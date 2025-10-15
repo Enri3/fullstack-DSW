@@ -153,4 +153,31 @@ const cambiarPassword = async (req, res) => {
   }
 };
 
-module.exports = { getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword};
+const buscarClienteFiltro = async (req, res) => {
+  const { criterioFiltro } = req.body;
+
+  try {
+    const conn = await getConnection();
+    let rows;
+
+    // Si el nombre está vacío → devolver todos los productos
+    if (!criterioFiltro || criterioFiltro.trim() === "") {
+      rows = await conn.query("SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idCli != 1;");
+    } else {
+      rows = await conn.query(
+        `SELECT idCli, nombreCli, apellido, email, direccion, email
+         FROM clientes
+         WHERE nombreCli LIKE CONCAT('%', ?, '%') OR email LIKE CONCAT('%', ?, '%')
+         AND idCli != 1;`,
+        [nombreProdBuscado]
+      );
+    }
+
+    res.json(rows); // 🔹 respuesta unificada
+  } catch (error) {
+    console.error("Error al ejecutar la consulta SQL:", error);
+    res.status(500).json({ message: "Error interno del servidor al buscar." });
+  }
+};
+
+module.exports = { getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword , buscarClienteFiltro};

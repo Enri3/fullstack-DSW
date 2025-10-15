@@ -76,3 +76,24 @@ export const cambiarPassword = async (idCli: number, passwordAnterior: string, p
     throw new Error(error.message || "Error de conexión con el servidor");
   }
 };
+
+export const buscarClienteFiltro = async (nombre_emailCliente: string) => {
+  try {
+    const res = await fetch(`${API_URL}/buscarClienteFiltro`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nombre_emailCliente }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Error al buscar cliente desde el service");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error al buscar cliente:", error);
+    throw error;
+  }
+};

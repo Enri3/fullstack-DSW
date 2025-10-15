@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword } = require("../controllers/authController");
+const { buscarClienteFiltro, getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword } = require("../controllers/authController");
 
 router.get("/getAllClientes", getAllClientes);
 router.post("/register", registrarCliente);
@@ -8,5 +8,6 @@ router.post("/login", loginCliente);
 router.put("/edit", editarCliente);
 router.delete("/eliminar-multiple", eliminarClientes);
 router.put("/cambiar-password", cambiarPassword);
+router.post("/buscarClienteFiltro", buscarClienteFiltro);
 
 module.exports = router;
