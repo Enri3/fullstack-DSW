@@ -1,4 +1,27 @@
-export interface Descuento {
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { OneToMany } from "typeorm";
+import { ProductoDescuento } from "./productos_descuentos";
+
+@Entity("descuentos") // Mapea a la tabla 'descuentos' en la DB
+export class Descuento {
+
+    @PrimaryGeneratedColumn({ name: "idDesc" }) 
+    idDesc!: number;
+
+    @Column({ name: "porcentaje", type: "decimal", precision: 5, scale: 2, nullable: false })
+    porcentaje!: number;
+
+    @Column({ name: "fechaDesde", type: "date", nullable: false }) 
+    fechaDesde!: Date;
+
+    @Column({ name: "fechaHasta", type: "date", nullable: false }) 
+    fechaHasta!: Date;
+    
+    @OneToMany(() => ProductoDescuento, productoDescuento => productoDescuento.descuento)
+    productoDescuentos!: ProductoDescuento[];
+}
+
+/*export interface Descuento {
     idDesc: number;
     porcentaje: number;
     fechaDesde: Date;
@@ -25,4 +48,4 @@ export const descuentoConProductosVacio: DescuentoConProductos = {
   fechaDesde: new Date(),
   fechaHasta: new Date(),
   idsProductos: [],
-};
+};*/

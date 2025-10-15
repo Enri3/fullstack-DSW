@@ -1,6 +1,6 @@
-
-
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { OneToMany } from "typeorm";
+import { ProductoDescuento } from "./productos_descuentos";
 
 @Entity({ name: "productos" })
 export class Producto {
@@ -21,6 +21,9 @@ export class Producto {
 
   @Column({ length: 45, nullable: true })
   medida!: string;
+
+  @OneToMany(() => ProductoDescuento, productoDescuento => productoDescuento.producto)
+  productoDescuento!: ProductoDescuento[];
 }
 
 /*export interface Producto {
@@ -30,7 +33,7 @@ export class Producto {
   urlImg: string;
   deleted:number;
   medida:string;
-}*/
+}
 
 export const productoVacio: Producto = {
     idProd: 0,
@@ -90,4 +93,4 @@ export const PRODUCTOS_MOCK_DATA: Producto[] = [
         deleted: 1, // Ejemplo de un producto eliminado
         medida: '300gr',
     },
-];
+];*/

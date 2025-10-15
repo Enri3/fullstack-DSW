@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 import { Producto} from "../../entidades/producto";
+import { Descuento} from "../../entidades/descuento";
 //import { Cliente } from "../../entidades/Cliente";
 //import { TipoCliente } from "../../entidades/TipoCliente";
 
@@ -16,6 +17,6 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE || "test",
   synchronize: true, 
   logging: false,
-  entities: [Producto],
+  entities: [Producto, Descuento], 
 });
 //, Cliente, TipoCliente
