@@ -4,6 +4,7 @@ import { Descuento } from "../../../entidades/descuento";
 import { ProductoDescuento } from "../../../entidades/productos_descuentos"
 import { Producto } from "../../../entidades/producto";
 import { In } from "typeorm"; // Necesario para buscar múltiples IDs
+import { create } from "domain";
 
 // Ejemplo simple de otro controlador con TypeORM
 export const getAllProductos = async (req: Request, res: Response): Promise<void> => {
@@ -21,7 +22,55 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> =>{
   try {
     const { descuentoAgregar , idsProductosAgregar } = req.body;
     
-    if(!idsProductosAgregar || !descuentoAgregar) return;
+    if(!descuentoAgregar || !idsProductosAgregar) return;
+    
+    const descuentosRepository = AppDataSource.getRepository(Descuento);
+    const productosRepository = AppDataSource.getRepository(Producto);
+    const productosDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
+    
+    let idDescuentoNuevo = 0;
+
+    let descuento = await descuentosRepository.findOneBy({
+      porcentaje: descuentoAgregar.porcentaje,
+      fechaDesde: descuentoAgregar.fechaDesde,
+      fechaHasta: descuentoAgregar.fechaHasta
+    });
+
+    if(descuento != null){
+      let idDescuentoNuevo = descuento.idDesc;
+    }else{
+      const descuentoAg = descuentosRepository.create({
+              porcentaje: parseFloat(descuentoAgregar.porcentaje),
+              fechaDesde: new Date(descuentoAgregar.fechaDesde),
+              fechaHasta: new Date(descuentoAgregar.fechaHasta),
+          });
+      descuentosRepository.save(descuentoAg);
+      let idDescuentoNuevo = descuentoAg.idDesc;
+    }
+    
+    for (const idProd of idsProductosAgregar){
+      const prodDesc = await productosDescuentoRepository.findBy({idDesc : idDescuentoNuevo, idProd : idProd})
+      if (prodDesc.length = 0){
+        const prodDescAg = productosDescuentoRepository.create({
+          idDesc: idDescuentoNuevo,
+          idProd: idProd
+        });
+        productosDescuentoRepository.save(prodDescAg);
+      }
+    }
+    res.status(200).json({ message: "Descuento creado con exito" });
+
+  }catch (error: any) {
+      console.error("Error en addDescuento1:", error.message || error);
+      res.status(500).json({ message: "Error interno al agregar el descuento" });
+  }
+}
+
+export const addDescuento2 = async (req:Request, res:Response): Promise<void> =>{
+  try {
+    const { descuentoAgregar , idsProductosAgregar } = req.body;
+    
+    if(!descuentoAgregar || !idsProductosAgregar) return;
 
     const descuentosRepository = AppDataSource.getRepository(Descuento);
     const productosDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
