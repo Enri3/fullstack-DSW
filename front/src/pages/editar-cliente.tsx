@@ -2,25 +2,25 @@ import { useState, useEffect } from "react";
 import "../assets/styles/login.css";
 import HeaderClienteIngresado from "../components/header_clienteIngresado";
 import { obtenerCantidadCarrito } from "../services/cartService";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
-import MensajeAlerta from "../components/mensajesAlerta"; 
+import MensajeAlerta from "../components/mensajesAlerta";
 
 export default function EditarCliente() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const navigator = useNavigate();
-  
+
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [nombreCli, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [email, setEmail] = useState("");
   const [direccion, setDireccion] = useState("");
 
-  //estados nuevos para los mensajes
+  // Estados nuevos para los mensajes
   const [mensaje, setMensaje] = useState("");
   const [tipoMensaje, setTipoMensaje] = useState<"success" | "error" | "info">("info");
-  
+
   useEffect(() => {
     const storedCliente = localStorage.getItem("cliente");
     if (storedCliente) {
@@ -32,36 +32,36 @@ export default function EditarCliente() {
       setDireccion(parsedCliente.direccion || "");
     }
   }, []);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const res = await fetch("http://localhost:4000/auth/edit", {
         method: "PUT",
-        headers: { 
-          "Content-Type": "application/json", 
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ 
-          idCli: cliente.idCli, 
-          nombreCli, 
-          apellido, 
-          direccion, 
-          email 
+        body: JSON.stringify({
+          idCli: cliente.idCli,
+          nombreCli,
+          apellido,
+          direccion,
+          email,
         }),
       });
-    
+
       const data = await res.json();
 
       if (res.ok) {
         setTipoMensaje("success");
         setMensaje("¡Tus datos fueron actualizados correctamente!");
-        
+
         const updatedCliente = { ...cliente, nombreCli, apellido, direccion, email };
         localStorage.setItem("cliente", JSON.stringify(updatedCliente));
 
-        setTimeout(() => navigator('/editar-cliente'));
+        setTimeout(() => navigator("/editar-cliente"), 1000);
       } else {
         setTipoMensaje("error");
         setMensaje(data.message || "Error al editar el perfil ❌");
@@ -72,10 +72,15 @@ export default function EditarCliente() {
       setMensaje("No se pudo conectar con el servidor ❌");
     }
   };
-  
+
+  // 🟢 NUEVA FUNCIÓN: para volver a la pantalla anterior
+  const handleVolver = () => {
+    navigator("/clienteIngresado");
+  };
+
   return (
     <>
-      <HeaderClienteIngresado cantidad={cantidad}/>
+      <HeaderClienteIngresado cantidad={cantidad} />
       <div className="login-page">
         <div className="login-container">
           <h2>Editar Perfil</h2>
@@ -113,6 +118,8 @@ export default function EditarCliente() {
             />
 
             <button type="submit">Guardar cambios</button>
+            <button type="button" onClick={handleVolver} style={{ marginTop: "12px" }}>Volver</button>
+
           </form>
         </div>
       </div>

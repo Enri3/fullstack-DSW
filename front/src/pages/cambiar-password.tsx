@@ -4,6 +4,7 @@ import HeaderClienteIngresado from "../components/header_clienteIngresado";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { cambiarPassword } from "../services/authService";
 import { obtenerCantidadCarrito } from "../services/cartService";
+import { useNavigate } from "react-router-dom";
 
 const CambiarPassword: React.FC = () => {
   const [passwordActual, setPasswordActual] = useState("");
@@ -12,6 +13,7 @@ const CambiarPassword: React.FC = () => {
   const [mensaje, setMensaje] = useState<string>("");
   const [tipoMensaje, setTipoMensaje] = useState<"success" | "error" | "info">("info");
   const [cantidad] = useState(obtenerCantidadCarrito());
+  const navigate = useNavigate();
 
   const limpiarCampos = () => {
     setPasswordActual("");
@@ -101,6 +103,7 @@ const CambiarPassword: React.FC = () => {
             />
 
             <button type="submit">Guardar cambios</button>
+            <button type="button" onClick={() => navigate("/clienteIngresado")} style={{ marginTop: "12px" }}>Volver</button>
           </form>
         </div>
       </div>

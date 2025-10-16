@@ -121,6 +121,7 @@ export default function EliminarClientes() {
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Email</th>
+                            <th>ID</th>
                         </tr>
                     </thead>
                     <tbody>

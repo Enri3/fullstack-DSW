@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import HeaderAdmin from "../components/header_admin";
 import logo from "../assets/img/logo.png";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
@@ -6,6 +7,7 @@ import { Link } from "react-router-dom";
 import "../assets/styles/admin.css";
 import BotonVolver from "../components/botonVolver";
 import "../assets/styles/botonVolver.css";
+import MensajeAlerta from "../components/mensajesAlerta"; // 🟢 agregado
 
 import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
@@ -13,13 +15,21 @@ import { clienteVacio } from "../types/Cliente";
 export default function Admin() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
+  const [mensaje, setMensaje] = useState<{ tipo: "success" | "error" | "info"; texto: string } | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     const storedCliente = localStorage.getItem("cliente");
     if (storedCliente) {
       setCliente(JSON.parse(storedCliente));
     }
-  }, []);
+
+    // 🟢 Mostrar mensaje si viene del login
+    if (location.state && location.state.mensaje) {
+      setMensaje(location.state.mensaje);
+      window.history.replaceState({}, document.title); // limpia el state al recargar
+    }
+  }, [location]);
 
   return (
     <>
@@ -27,9 +37,12 @@ export default function Admin() {
       <div className="dashboard-container admin-dashboard">
         <BotonVolver />
 
+        {/* 🟢 mensaje de bienvenida */}
+        {mensaje && <MensajeAlerta tipo={mensaje.tipo} texto={mensaje.texto} />}
+
         {/* 1. SECCIÓN DE BIENVENIDA Y ESTADÍSTICAS */}
         <section className="welcome-section admin-welcome">
-          <h1 className="welcome-title">Panel de Administración</h1>
+          <h1 className="welcome-title">Panel de Administración - Administrador</h1>
           <p className="admin-status">Bienvenido, {cliente.nombreCli}.</p>
         </section>
 

@@ -1,20 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { loginUsuario } from "../services/authService";
 import logo from "../assets/img/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // 🟢 agregado useLocation
 import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation(); // 🟢 agregado
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [loading, setLoading] = useState(false);
   const [mensaje, setMensaje] = useState<{ tipo: "success" | "error" | "info"; texto: string } | null>(null);
+
+  // 🟢 Nuevo useEffect: muestra mensaje si viene desde Register
+  useEffect(() => {
+    if (location.state && location.state.mensaje) {
+      setMensaje(location.state.mensaje);
+      window.history.replaceState({}, document.title); // limpia el state para que no reaparezca al recargar
+    }
+  }, [location]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,19 +58,17 @@ export default function Login() {
       }
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
-      
+
       let mensajeError = "Error al conectar con el servidor.";
 
-      // 🟢 CORRECCIÓN TS: Verificación de tipo para manejar 'unknown'
       if (err instanceof Error) {
         mensajeError = err.message;
-      } else if (typeof err === 'string') {
+      } else if (typeof err === "string") {
         mensajeError = err;
-      } else if (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string') {
-        // Maneja objetos de error no estándar con propiedad 'message'
+      } else if (err && typeof err === "object" && "message" in err && typeof err.message === "string") {
         mensajeError = err.message;
       }
-      
+
       setMensaje({
         tipo: "error",
         texto: mensajeError,

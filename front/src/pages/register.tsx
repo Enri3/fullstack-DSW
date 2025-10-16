@@ -36,7 +36,7 @@ export default function Register() {
         // Enviar mensaje al login usando navigate con state
         navigate("/login", {
           state: {
-            mensaje: { texto: "¡Te registraste correctamente! 🎉 Ahora podés iniciar sesión.", tipo: "success" },
+            mensaje: { texto: "¡Te registraste correctamente! Ahora podés iniciar sesión.", tipo: "success" },
           },
         });
       } else {
