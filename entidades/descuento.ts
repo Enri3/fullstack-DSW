@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { OneToMany } from "typeorm";
 import { ProductoDescuento } from "./productos_descuentos";
 
 
@@ -6,7 +7,7 @@ import { ProductoDescuento } from "./productos_descuentos";
 export class Descuento {
 
     @PrimaryGeneratedColumn({ name: "idDesc" }) 
-    idDesc!: number;
+    idDesc?: number;
 
     @Column({ name: "porcentaje", type: "decimal", precision: 5, scale: 2, nullable: false })
     porcentaje!: number;

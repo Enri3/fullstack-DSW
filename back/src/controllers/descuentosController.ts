@@ -35,11 +35,11 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> =>{
     let mensajeFinal:string;
 
     if (!descuento) {
-        descuento = descuentosRepository.create({
-            porcentaje: parseFloat(descuentoAgregar.porcentaje),
-            fechaDesde: descuentoAgregar.fechaDesdeObj,
-            fechaHasta: descuentoAgregar.fechaHastaObj,
-        });
+          descuento = descuentosRepository.create({
+              porcentaje: parseFloat(descuentoAgregar.porcentaje),
+              fechaDesde: new Date(descuentoAgregar.fechaDesde),
+              fechaHasta: new Date(descuentoAgregar.fechaHasta),
+          });
         descuento = await descuentosRepository.save(descuento);
         mensajeFinal = "Descuento creado y asociado correctamente ✅";
 
@@ -47,8 +47,8 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> =>{
 
         const relaciones: ProductoDescuento[] = idTodos.map(idProd => {
         const relacion = new ProductoDescuento();
-        
-        relacion.idDesc = descuentoAgregar.idDesc;   
+      
+        relacion.idDesc = descuento!.idDesc as number;   
         relacion.idProd = idProd;             
         return relacion;
       });
@@ -72,7 +72,7 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> =>{
 
         const relaciones: ProductoDescuento[] = idsAgregar.map(idProd => {
         const relacion = new ProductoDescuento();
-        relacion.idDesc = descuentoAgregar.idDesc;
+        relacion.idDesc = descuento!.idDesc as number;
         relacion.idProd = idProd;
         return relacion;
         });
