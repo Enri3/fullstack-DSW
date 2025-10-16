@@ -35,25 +35,31 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
     const descuentosRepository = AppDataSource.getRepository(Descuento);
     const productosDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
 
-    // Buscar si ya existe un descuento con mismos valores
-    let descuento = await descuentosRepository.findOne({
-      where: {
-        porcentaje: Number(porcentaje),
-        fechaDesde: new Date(fechaDesde),
-        fechaHasta: new Date(fechaHasta)
-      }
-    });
+    // Normalizar fechas a 'YYYY-MM-DD' para evitar problemas de zona horaria
+    const fdStr = new Date(fechaDesde).toISOString().slice(0, 10);
+    const fhStr = new Date(fechaHasta).toISOString().slice(0, 10);
 
+    // Buscar si ya existe un descuento con mismos valores (comparando por DATE exacta)
+    const descuento = await descuentosRepository
+      .createQueryBuilder("d")
+      .where("d.porcentaje = :p", { p: Number(porcentaje) })
+      .andWhere("d.fechaDesde = :fd", { fd: fdStr })
+      .andWhere("d.fechaHasta = :fh", { fh: fhStr })
+      .getOne();
+
+    let idDesc: number;
     if (!descuento) {
-      descuento = descuentosRepository.create({
+      const nuevo = descuentosRepository.create({
         porcentaje: Number(porcentaje),
-        fechaDesde: new Date(fechaDesde),
-        fechaHasta: new Date(fechaHasta)
+        // TypeORM permite strings 'YYYY-MM-DD' para columnas DATE en MySQL
+        fechaDesde: fdStr as unknown as Date,
+        fechaHasta: fhStr as unknown as Date,
       });
-      descuento = await descuentosRepository.save(descuento);
+      const guardado = await descuentosRepository.save(nuevo);
+      idDesc = guardado.idDesc as number;
+    } else {
+      idDesc = descuento.idDesc as number;
     }
-
-    const idDesc = descuento.idDesc as number;
 
     // Obtener relaciones existentes para evitar duplicados
     const existentes = await productosDescuentoRepository.find({
