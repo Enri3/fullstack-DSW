@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import BotonVolver from "../components/botonVolver";
 import { useEffect, useState } from "react";
-import type { Descuento } from "../types/Descuentos";
 import { useNavigate } from 'react-router-dom';
+import type { DescuentoEncontrado } from "../types/Descuentos";
 
 import { deleteMultipleClientes, buscarClienteFiltro } from "../services/authService";
 import "../assets/styles/eliminarClientes.css";
@@ -14,13 +14,49 @@ import BuscadorDescuento from "../components/buscadorDescuento";
 export default function Descuentos() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [loading, setLoading] = useState<boolean>(true);
-  const [clientes, setClientes] = useState<Descuento[]>([]);
+  const [descuentos, setDescuentos] = useState<DescuentoEncontrado[]>([]);
 
 
   const navigator = useNavigate(); // Descomentar si se usa
-  const [clientesSeleccionados, setClientesSeleccionados] = useState<number[]>([]);
+  const [descuentosSeleccionados, setDescuentosSeleccionados] = useState<number[]>([]);
   const [termino, setTermino] = useState("");
   const [error, setError] = useState<string>("");
+
+  const toggleSeleccion = (id: number) => {
+        setDescuentosSeleccionados((prev) =>
+        prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+        );
+    };
+
+    const toggleSeleccionTodos = () => {
+        if (descuentosSeleccionados.length === descuentos.length && descuentos.length > 0) {
+        setDescuentosSeleccionados([]);
+        } else {
+        setDescuentosSeleccionados(descuentos.map((d) => d.idDesc));
+        }
+    };
+
+    const handleEliminarSeleccionados = async () => {
+    if (descuentosSeleccionados.length === 0) {
+        alert("Seleccioná al menos un cliente para eliminar");
+        return;
+    }
+
+    if (!window.confirm("¿Seguro que deseas eliminar los clientes seleccionados?")) return;
+
+        try {
+            const data = await deleteMultipleClientes(descuentosSeleccionados);
+
+            alert(data.message);
+
+            setDescuentos((prev) =>
+            prev.filter((d) => !descuentosSeleccionados.includes(d.idDesc))
+            );
+            setDescuentosSeleccionados([]);
+        } catch (error: any) {
+            alert(error.message || "No se pudo conectar con el servidor");
+        }
+    };
 
 
   // ... (Efectos y lógica irían aquí, aunque no se necesitan para el render)
@@ -33,7 +69,7 @@ export default function Descuentos() {
          <div className="admin-page-container">
              <h2 className="admin-page-title">Panel de Administración - Clientes</h2>
              
-                 <BuscadorDescuento onResultados={setClientes} setLoading={setLoading} />
+                 <BuscadorDescuento onResultados={setDescuentos} setLoading={setLoading} />
              
  
              {loading && <p className="text-gray-500 mt-3 text-center">Buscando...</p>}
@@ -44,9 +80,9 @@ export default function Descuentos() {
                  <button 
                      onClick={handleEliminarSeleccionados} 
                      className="btn-delete-selected"
-                     disabled={clientesSeleccionados.length === 0} // Deshabilita si no hay selección
+                     disabled={descuentosSeleccionados.length === 0} // Deshabilita si no hay selección
                  >
-                     Eliminar seleccionados ({clientesSeleccionados.length})
+                     Eliminar seleccionados ({descuentosSeleccionados.length})
                  </button>
              </div>
 
@@ -66,12 +102,12 @@ export default function Descuentos() {
             </div>
 
  
-             {(!loading && clientes.length === 0) && (
+             {(!loading && descuentos.length === 0) && (
                  <p className="no-data-message">No se encontraron clientes que coincidan con la búsqueda.</p>
              )}
  
              {/* Tabla de Clientes */}
-             {!loading && clientes.length > 0 && (
+             {!loading && descuentos.length > 0 && (
                  <table className="admin-table">
                      <thead>
                          <tr>
@@ -79,9 +115,9 @@ export default function Descuentos() {
                                  {/* Botón/Checkbox Seleccionar/Deseleccionar todos */}
                                  <input
                                      type="checkbox"
-                                     checked={clientesSeleccionados.length === clientes.length && clientes.length > 0}
+                                     checked={descuentosSeleccionados.length === descuentos.length && descuentos.length > 0}
                                      onChange={toggleSeleccionTodos}
-                                     title={clientesSeleccionados.length === clientes.length ? "Deseleccionar todos" : "Seleccionar todos"}
+                                     title={descuentosSeleccionados.length === descuentos.length ? "Deseleccionar todos" : "Seleccionar todos"}
                                  />
                              </th>
                              <th>Nombre</th>
@@ -91,19 +127,19 @@ export default function Descuentos() {
                          </tr>
                      </thead>
                      <tbody>
-                         {clientes.map((cliente) => (
-                             <tr key={(cliente.idCli)}>
+                         {descuentos.map((descuento) => (
+                             <tr key={(descuento.idDesc)}>
                                  <td className="td-checkbox">
                                      <input
                                          type="checkbox"
-                                         checked={clientesSeleccionados.includes(cliente.idCli)}
-                                         onChange={() => toggleSeleccion(cliente.idCli)}
+                                         checked={descuentosSeleccionados.includes(descuento.idDesc)}
+                                         onChange={() => toggleSeleccion(descuento.idDesc)}
                                      />
                                  </td>
-                                 <td>{cliente.nombreCli}</td>
-                                 <td>{cliente.apellido || 'N/A'}</td>
-                                 <td>{cliente.email}</td>
-                                 <td>{cliente.idCli}</td>
+                                 <td>{descuento.nombreProd}</td>
+                                 <td>{descuento.fechaDesde.toDateString()}</td>
+                                 <td>{descuento.fechaHasta.toDateString()}</td>
+                                 <td>{descuento.idProd}</td>
                              </tr>
                          ))}
                      </tbody>

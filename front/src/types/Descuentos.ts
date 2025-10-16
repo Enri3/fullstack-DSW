@@ -12,4 +12,11 @@ export interface DescuentoConProductos {
   idsProductos: number[];
 }
 
-
+export interface DescuentoEncontrado {
+  idProd: number;
+  nombreProd: string;
+  idDesc: number;
+  porcentaje: number;
+  fechaDesde: Date;
+  fechaHasta: Date;
+}
