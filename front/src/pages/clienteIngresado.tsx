@@ -6,8 +6,8 @@ import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartServic
 import '../assets/styles/clienteIngresado.css';
 import { Link, useLocation } from "react-router-dom";
 import MensajeAlerta from "../components/mensajesAlerta";
-import type { Cliente } from "../../../entidades/cliente";
-import { clienteVacio } from "../../../entidades/cliente";
+import type { Cliente } from "../types/Cliente";
+import { clienteVacio } from "../types/Cliente";
 
 export default function ClienteIngresado() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
@@ -36,13 +36,13 @@ export default function ClienteIngresado() {
 
     switch (cliente.idTipoCli) {
       case 1:
-        setTipoNombre("Inicial");
+        setTipoNombre("Administrador");
         break;
       case 2:
-        setTipoNombre("Premium");
+        setTipoNombre("Inicial");
         break;
       case 3:
-        setTipoNombre("Administrador");
+        setTipoNombre("Premium");
         break;
       default:
         setTipoNombre("Desconocido");

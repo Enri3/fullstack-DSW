@@ -5,8 +5,8 @@ import MensajeAlerta from "../components/mensajesAlerta";
 import { loginUsuario } from "../services/authService";
 import logo from "../assets/img/logo.png";
 import { useNavigate } from "react-router-dom";
-import type { Cliente } from "../../../entidades/cliente";
-import { clienteVacio } from "../../../entidades/cliente";
+import type { Cliente } from "../types/Cliente";
+import { clienteVacio } from "../types/Cliente";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,24 +25,21 @@ export default function Login() {
       const data = await loginUsuario({ email, password });
 
       if (data && data.token) {
-        // Guardar token y cliente en el navegador
         localStorage.setItem("token", data.token);
         localStorage.setItem("cliente", JSON.stringify(data.cliente));
         setCliente(data.cliente);
 
-        // Se crea mensaje de éxito
-        const mensajeExito = { tipo: "success", texto: "¡Inicio de sesión exitoso, bienvenido!" };
+        const mensajeExito = { tipo: "success" as "success", texto: "¡Inicio de sesión exitoso, bienvenido!" };
 
-        // Se redirige según tipo de cliente, con el mensaje
         switch (data.cliente.idTipoCli) {
           case 1:
             navigate("/admin", { state: { mensaje: mensajeExito } });
             break;
           case 2:
-            navigate("/productos-especiales", { state: { mensaje: mensajeExito } });
+            navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
             break;
           case 3:
-            navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
+            navigate("/productos-especiales", { state: { mensaje: mensajeExito } });
             break;
           default:
             navigate("/", { state: { mensaje: mensajeExito } });
@@ -50,11 +47,24 @@ export default function Login() {
       } else {
         setMensaje({ tipo: "error", texto: "Respuesta inesperada del servidor." });
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error al iniciar sesión:", err);
+      
+      let mensajeError = "Error al conectar con el servidor.";
+
+      // 🟢 CORRECCIÓN TS: Verificación de tipo para manejar 'unknown'
+      if (err instanceof Error) {
+        mensajeError = err.message;
+      } else if (typeof err === 'string') {
+        mensajeError = err;
+      } else if (err && typeof err === 'object' && 'message' in err && typeof err.message === 'string') {
+        // Maneja objetos de error no estándar con propiedad 'message'
+        mensajeError = err.message;
+      }
+      
       setMensaje({
         tipo: "error",
-        texto: err.message || "Error al conectar con el servidor.",
+        texto: mensajeError,
       });
     } finally {
       setLoading(false);

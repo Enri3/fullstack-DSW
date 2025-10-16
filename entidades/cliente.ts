@@ -1,21 +1,28 @@
-export interface Cliente {
-  idCli: number;
-  nombreCli: string;
-  apellido: string;
-  direccion: string;
-  email: string;
-  password: string;
-  idTipoCli: number;
-  creado_en: Date;
-}
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-export const clienteVacio: Cliente = {
-  idCli: 0,
-  nombreCli: "",
-  apellido: "",
-  direccion: "",
-  email: "",
-  password: "",
-  idTipoCli: 0,
-  creado_en: new Date(),
-};
+@Entity("clientes")
+export class Cliente {
+  @PrimaryGeneratedColumn()
+  idCli!: number;
+
+  @Column({ length: 100 })
+  nombreCli!: string;
+
+  @Column({ length: 100 })
+  apellido!: string;
+
+  @Column({ length: 200 })
+  direccion!: string;
+
+  @Column({ length: 100, unique: true })
+  email!: string;
+
+  @Column({ length: 255 })
+  password!: string;
+
+  @Column({ type: "timestamp" })
+  creado_en!: Date;
+
+  @Column()
+  idTipoCli!: number;
+}

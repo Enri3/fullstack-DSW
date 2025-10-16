@@ -1,15 +1,21 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { getConnection } from "../database";
+import { AppDataSource } from "../database";
+import { Cliente } from "../../../entidades/cliente";
+
+const clienteRepo = AppDataSource.getRepository(Cliente);
 
 export const getAllClientes = async (req: Request, res: Response): Promise<void> => {
   try {
-    const conn = await getConnection();
-    const rows: any[] = await conn.query(
-      "SELECT idCli, nombreCli, apellido, email, direccion FROM clientes WHERE idTipoCli != 1"
-    );
-    res.json(rows);
+    // obtenemos todos los clientes cuyo idTipoCli != 1
+    const clientes = await clienteRepo
+      .createQueryBuilder("cliente")
+      .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion"])
+      .where("cliente.idTipoCli != :tipo", { tipo: 1 })
+      .getMany();
+
+    res.json(clientes);
   } catch (error: any) {
     console.error("Error al obtener clientes:", error.message || error);
     res.status(500).json({ message: "Error al obtener clientes" });
@@ -25,20 +31,25 @@ export const registrarCliente = async (req: Request, res: Response): Promise<voi
   }
 
   try {
-    const conn = await getConnection();
-    const existe: any[] = await conn.query("SELECT * FROM clientes WHERE email = ?", [email]);
-
-    if (existe.length > 0) {
+    const existe = await clienteRepo.findOne({ where: { email } });
+    if (existe) {
       res.status(400).json({ message: "El cliente ya existe" });
       return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await conn.query(
-      "INSERT INTO clientes (nombreCli, apellido, direccion, email, password, idTipoCli) VALUES (?, ?, ?, ?, ?, ?)",
-      [nombreCli, apellido, direccion, email, hashedPassword, 1]
-    );
+    const nuevo = clienteRepo.create({
+      nombreCli,
+      apellido,
+      direccion,
+      email,
+      password: hashedPassword,
+      idTipoCli: 2,
+      creado_en: new Date(),
+    });
+
+    await clienteRepo.save(nuevo);
 
     res.json({ message: "Cliente registrado con éxito" });
   } catch (error: any) {
@@ -51,17 +62,14 @@ export const loginCliente = async (req: Request, res: Response): Promise<void> =
   const { email, password } = req.body;
 
   try {
-    const conn = await getConnection();
-    const rows: any[] = await conn.query("SELECT * FROM clientes WHERE email = ?", [email]);
+    const cliente = await clienteRepo.findOne({ where: { email } });
 
-    if (rows.length === 0) {
+    if (!cliente) {
       res.status(400).json({ message: "El cliente ingresado no existe" });
       return;
     }
 
-    const cliente = rows[0];
     const coincide = await bcrypt.compare(password, cliente.password);
-
     if (!coincide) {
       res.status(400).json({ message: "La contraseña ingresada es incorrecta" });
       return;
@@ -89,20 +97,22 @@ export const editarCliente = async (req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const conn = await getConnection();
-    let hashedPassword: string | undefined;
-
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
+    const cliente = await clienteRepo.findOne({ where: { idCli } });
+    if (!cliente) {
+      res.status(404).json({ message: "Cliente no encontrado" });
+      return;
     }
 
-    await conn.query(
-      `UPDATE clientes 
-       SET nombreCli = ?, apellido = ?, direccion = ?, email = ?, 
-           password = COALESCE(?, password)
-       WHERE idCli = ?`,
-      [nombreCli, apellido, direccion, email, hashedPassword, idCli]
-    );
+    if (password) {
+      cliente.password = await bcrypt.hash(password, 10);
+    }
+
+    cliente.nombreCli = nombreCli;
+    cliente.apellido = apellido;
+    cliente.direccion = direccion;
+    cliente.email = email;
+
+    await clienteRepo.save(cliente);
 
     res.json({ message: "Cliente actualizado correctamente" });
   } catch (error: any) {
@@ -120,10 +130,9 @@ export const eliminarClientes = async (req: Request, res: Response): Promise<voi
   }
 
   try {
-    const conn = await getConnection();
-    const result: any = await conn.query("DELETE FROM clientes WHERE idCli IN (?)", [ids]);
-
-    res.json({ message: `Se eliminaron ${result.affectedRows} clientes correctamente.` });
+    const result = await clienteRepo.delete(ids);
+    const afectados = result.affected || 0;
+    res.json({ message: `Se eliminaron ${afectados} clientes correctamente.` });
   } catch (error: any) {
     console.error("Error al eliminar clientes:", error.message || error);
     res.status(500).json({ message: "Error al eliminar clientes" });
@@ -139,10 +148,7 @@ export const cambiarPassword = async (req: Request, res: Response): Promise<void
   }
 
   try {
-    const conn = await getConnection();
-    const rows: any[] = await conn.query("SELECT * FROM clientes WHERE idCli = ?", [idCli]);
-    const cliente = rows[0];
-
+    const cliente = await clienteRepo.findOne({ where: { idCli } });
     if (!cliente) {
       res.status(404).json({ message: "Cliente no encontrado" });
       return;
@@ -154,8 +160,8 @@ export const cambiarPassword = async (req: Request, res: Response): Promise<void
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(passwordNueva, 10);
-    await conn.query("UPDATE clientes SET password = ? WHERE idCli = ?", [hashedPassword, idCli]);
+    cliente.password = await bcrypt.hash(passwordNueva, 10);
+    await clienteRepo.save(cliente);
 
     res.json({ message: "Contraseña actualizada correctamente ✅" });
   } catch (error: any) {
@@ -168,24 +174,23 @@ export const buscarClienteFiltro = async (req: Request, res: Response): Promise<
   const { criterioFiltro } = req.body;
 
   try {
-    const conn = await getConnection();
-    let rows: any[];
-
+    let clientes;
     if (!criterioFiltro || criterioFiltro.trim() === "") {
-      rows = await conn.query(
-        "SELECT idCli, nombreCli, apellido, email, direccion, email FROM clientes WHERE idTipoCli != 1;"
-      );
+      clientes = await clienteRepo
+        .createQueryBuilder("cliente")
+        .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion"])
+        .where("cliente.idTipoCli != :tipo", { tipo: 1 })
+        .getMany();
     } else {
-      rows = await conn.query(
-        `SELECT idCli, nombreCli, apellido, email, direccion, email
-         FROM clientes
-         WHERE (nombreCli LIKE CONCAT('%', ?, '%') OR email LIKE CONCAT('%', ?, '%'))
-         AND idTipoCli != 1;`,
-        [criterioFiltro, criterioFiltro]
-      );
+      clientes = await clienteRepo
+        .createQueryBuilder("cliente")
+        .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion"])
+        .where("cliente.idTipoCli != :tipo", { tipo: 1 })
+        .andWhere("(cliente.nombreCli LIKE :q OR cliente.email LIKE :q)", { q: `%${criterioFiltro}%` })
+        .getMany();
     }
 
-    res.json(rows);
+    res.json(clientes);
   } catch (error: any) {
     console.error("Error al ejecutar la consulta SQL:", error.message || error);
     res.status(500).json({ message: "Error interno del servidor al buscar." });

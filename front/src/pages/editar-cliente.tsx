@@ -3,9 +3,9 @@ import "../assets/styles/login.css";
 import HeaderClienteIngresado from "../components/header_clienteIngresado";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import { useNavigate } from 'react-router-dom';
-import type { Cliente } from "../../../entidades/cliente";
-import { clienteVacio } from "../../../entidades/cliente";
-import MensajeAlerta from "../components/mensajesAlerta"; // 👈 agregado
+import type { Cliente } from "../types/Cliente";
+import { clienteVacio } from "../types/Cliente";
+import MensajeAlerta from "../components/mensajesAlerta"; 
 
 export default function EditarCliente() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());

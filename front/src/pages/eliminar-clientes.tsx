@@ -2,7 +2,7 @@ import { useState } from "react";
 import HeaderAdmin from "../components/header_admin";
 import { obtenerCantidadCarrito } from "../services/cartService";
 // import { useNavigate } from 'react-router-dom'; // No se usa actualmente
-import type { Cliente } from "../../../entidades/cliente";
+import type { Cliente } from "../types/Cliente";
 import { useEffect } from "react";
 import { deleteMultipleClientes, buscarClienteFiltro } from "../services/authService";
 import "../assets/styles/eliminarClientes.css";

@@ -5,7 +5,7 @@ import "../assets/styles/botonVolver.css";
 import "../assets/styles/gestion-descuentos.css";
 
 import { obtenerCantidadCarrito } from "../services/cartService";
-import type { Producto } from "../../../entidades/producto";
+import type { Producto } from "../types/Producto";
 import { getAllProductos, addDescuento } from "../services/descunetosService";
 
 export default function Descuentos() {

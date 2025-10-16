@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:4000/descuentos"; 
-import type {Descuento , DescuentoConProductos as DescuentoP } from "../../../entidades/descuento";
+import type { Descuento, DescuentoConProductos as DescuentoP } from "../types/Descuento";
 
 //Agregar un descuento
 export const addDescuento = async (descuento: Descuento, idsProductos: number[]
