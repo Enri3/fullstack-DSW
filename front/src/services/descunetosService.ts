@@ -50,20 +50,3 @@ export const getAllProductos = async () => {
   }
 };
 
-export const getNewId = async () => {
-  try {
-    const res = await fetch(`${API_URL}/getNewId`, {
-      method: "GET",
-      headers: {"Content-Type": "application/json"},
-    });
-
-    const data = await res.json
-
-    if (!res.ok) {
-      throw new Error(data.message || "Error al obtener nuevo ID");
-    }
-  } catch (error: any) {
-    console.error("Error en getNewId: ",error)
-    throw error;
-  }
-}
