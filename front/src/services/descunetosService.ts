@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:4000/descuentos"; 
-import type { Descuento, DescuentoConProductos as DescuentoP } from "../types/Descuento";
+import type { Descuento, DescuentoConProductos as DescuentoP } from "../types/Descuentos";
 
 //Agregar un descuento
 export const addDescuento = async (descuento: Descuento, idsProductos: number[]
@@ -50,3 +50,23 @@ export const getAllProductos = async () => {
   }
 };
 
+export const buscarDescuentoFiltro = async (nomProdBuscados : string) => {
+  try {
+    const res = await fetch(`${API_URL}/buscarDescuentoFiltro`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nomProdBuscados }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Error al buscar descuento desde el service");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error al buscar descuento:", error);
+    throw error;
+  }
+}

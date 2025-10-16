@@ -1,142 +1,115 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import BotonVolver from "../components/botonVolver";
-import "../assets/styles/botonVolver.css";
-import "../assets/styles/gestion-descuentos.css";
-
+import HeaderAdmin from "../components/header_admin";
+import { Link } from "react-router-dom";
 import { obtenerCantidadCarrito } from "../services/cartService";
-import type { Producto } from "../types/Producto";
-import { getAllProductos, addDescuento } from "../services/descunetosService";
+import BotonVolver from "../components/botonVolver";
+import { useEffect, useState } from "react";
+import type { Descuento } from "../types/Descuentos";
+import { useNavigate } from 'react-router-dom';
+
+import { deleteMultipleClientes, buscarClienteFiltro } from "../services/authService";
+import "../assets/styles/eliminarClientes.css";
+import "../assets/styles/botonVolver.css";
+import BuscadorDescuento from "../components/buscadorDescuento";
 
 export default function Descuentos() {
-  const [productos, setProductos] = useState<Producto[]>([]);
-  const [productosSeleccionados, setProductosSeleccionados] = useState<number[]>([]);
-  const [porcentaje, setPorcentaje] = useState<string>("");
-  const [fechaDesde, setFechaDesde] = useState<string>("");
-  const [fechaHasta, setFechaHasta] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
-
-  // Cargar productos al montar
-  useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const data = await getAllProductos();
-        setProductos(data);
-      } catch (error) {
-        console.error("Error al cargar productos:", error);
-      }
-    };
-    fetchProductos();
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validaciones
-    if (productosSeleccionados.length === 0 || !porcentaje || !fechaDesde || !fechaHasta
-    ) {
-      alert("Por favor completa todos los campos y selecciona al menos un producto");
-      return;
-    }
-
-    const nuevoDescuento = {
-      porcentaje: Number(porcentaje),
-      fechaDesde: new Date(fechaDesde),
-      fechaHasta: new Date(fechaHasta),
-    };
-
-    try {
-      setLoading(true);
-      const data = await addDescuento(nuevoDescuento, productosSeleccionados);
-
-      // data es { message, idDesc } según tu backend
-      alert(data.message);
-
-      // limpiar formulario
-      setProductosSeleccionados([]);
-      setPorcentaje("");
-      setFechaDesde("");
-      setFechaHasta("");
-
-    } catch (error: any) {
-      console.error("Error al registrar descuento:", error);
-      alert(error.message || "Error al conectar con el servidor");
-    } finally {
-      setLoading(false);
-    }}
-
-  return (
-    <div className="contenedor-descuentos">
-      <BotonVolver />
-      <h1>Gestión de Descuentos</h1>
-        
-      <form onSubmit={handleSubmit} className="form-descuento">
-        <h3>Registrar un nuevo descuento</h3>
-        {/* Selección múltiple de productos */}
-        <label htmlFor="productoID">Productos:</label>
-        <select
-          id="productoID"
-          name="productoID"
-          multiple
-          value={productosSeleccionados.map(String)}
-          onChange={(e) => {
-            const valores = Array.from(e.target.selectedOptions, (opt) => Number(opt.value));
-            setProductosSeleccionados(valores);
-          }}
-          required
-        >
-          {productos.map((producto) => (
-            <option key={producto.idProd} value={producto.idProd}>
-              {producto.nombreProd}
-            </option>
-          ))}
-
-  
-        </select>
-        <p className="nota">
-          Usa <b>Ctrl</b> (Windows) o <b>Cmd</b> (Mac) para seleccionar varios productos
-        </p>
-
-       {/* Porcentaje */}
-        <label htmlFor="porcentaje">Porcentaje de descuento (%):</label>
-        <input
-          type="number"
-          id="porcentaje"
-          name="porcentaje"
-          value={porcentaje}
-          min="1"
-          max="100"
-          onChange={(e) => setPorcentaje(e.target.value)}
-          required
-        />
-
-           {/* Fechas */}
-        <label htmlFor="fechaDesde">Fecha Desde:</label>
-        <input
-          type="date"
-          id="fechaDesde"
-          name="fechaDesde"
-          value={fechaDesde}
-          onChange={(e) => setFechaDesde(e.target.value)}
-          required
-        />
-
-        <label htmlFor="fechaHasta">Fecha Hasta:</label>
-        <input
-          type="date"
-          id="fechaHasta"
-          name="fechaHasta"
-          value={fechaHasta}
-          onChange={(e) => setFechaHasta(e.target.value)}
-          required
-        />
+  const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
+  const [loading, setLoading] = useState<boolean>(true);
+  const [clientes, setClientes] = useState<Descuento[]>([]);
 
 
-        <button type="submit" className="btn-registrar " disabled={loading}>
-          {loading ? "Creando..." : "Crear descuento"}
-        </button>
-      </form>
-    </div>
-  );
+  const navigator = useNavigate(); // Descomentar si se usa
+  const [clientesSeleccionados, setClientesSeleccionados] = useState<number[]>([]);
+  const [termino, setTermino] = useState("");
+  const [error, setError] = useState<string>("");
+
+
+  // ... (Efectos y lógica irían aquí, aunque no se necesitan para el render)
+
+ return (
+     <>
+         <HeaderAdmin cantidad={cantidad} /> 
+         <BotonVolver />
+ 
+         <div className="admin-page-container">
+             <h2 className="admin-page-title">Panel de Administración - Clientes</h2>
+             
+                 <BuscadorDescuento onResultados={setClientes} setLoading={setLoading} />
+             
+ 
+             {loading && <p className="text-gray-500 mt-3 text-center">Buscando...</p>}
+             
+             {/* Contenedor para los botones de acción */}
+             <div className="admin-actions-bar">
+                 {/* Botón Eliminar */}
+                 <button 
+                     onClick={handleEliminarSeleccionados} 
+                     className="btn-delete-selected"
+                     disabled={clientesSeleccionados.length === 0} // Deshabilita si no hay selección
+                 >
+                     Eliminar seleccionados ({clientesSeleccionados.length})
+                 </button>
+             </div>
+
+
+            <div className="admin-actions-bar">
+              <Link to="/nuevo-descuento" className="btn-new-item">
+                  Crear Nuevo Descuento
+              </Link>
+              
+              <button 
+                  id="btn-eliminar-seleccionados"
+                  className="btn-delete-selected"
+                  disabled 
+              >
+                  Eliminar seleccionados (0)
+              </button>
+            </div>
+
+ 
+             {(!loading && clientes.length === 0) && (
+                 <p className="no-data-message">No se encontraron clientes que coincidan con la búsqueda.</p>
+             )}
+ 
+             {/* Tabla de Clientes */}
+             {!loading && clientes.length > 0 && (
+                 <table className="admin-table">
+                     <thead>
+                         <tr>
+                             <th className="th-checkbox">
+                                 {/* Botón/Checkbox Seleccionar/Deseleccionar todos */}
+                                 <input
+                                     type="checkbox"
+                                     checked={clientesSeleccionados.length === clientes.length && clientes.length > 0}
+                                     onChange={toggleSeleccionTodos}
+                                     title={clientesSeleccionados.length === clientes.length ? "Deseleccionar todos" : "Seleccionar todos"}
+                                 />
+                             </th>
+                             <th>Nombre</th>
+                             <th>Apellido</th>
+                             <th>Email</th>
+                             <th>ID</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         {clientes.map((cliente) => (
+                             <tr key={(cliente.idCli)}>
+                                 <td className="td-checkbox">
+                                     <input
+                                         type="checkbox"
+                                         checked={clientesSeleccionados.includes(cliente.idCli)}
+                                         onChange={() => toggleSeleccion(cliente.idCli)}
+                                     />
+                                 </td>
+                                 <td>{cliente.nombreCli}</td>
+                                 <td>{cliente.apellido || 'N/A'}</td>
+                                 <td>{cliente.email}</td>
+                                 <td>{cliente.idCli}</td>
+                             </tr>
+                         ))}
+                     </tbody>
+                 </table>
+             )}
+         </div>
+     </>
+   );
 }

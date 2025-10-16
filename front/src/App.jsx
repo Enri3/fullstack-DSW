@@ -18,6 +18,7 @@ import DetalleCliente from "./pages/detalleCliente";
 import Inicio from "./pages/Inicio";
 import Descuentos from "./pages/gestion-descuentos";
 import CambiarPassword from "./pages/cambiar-password";
+import NuevoDescuento from "./pages/nuevo-descuento";
 
 
 function ScrollToTop() {
@@ -53,6 +54,7 @@ function App() {
         <Route path="/detalleCliente" element={<DetalleCliente />} />
         <Route path="/gestion-descuentos" element={<Descuentos />} />
         <Route path="/cambiar-password" element={<CambiarPassword />} />
+        <Route path="/nuevo-descuento" element={<NuevoDescuento />} />
       </Routes>
     </BrowserRouter>
   );

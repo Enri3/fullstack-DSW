@@ -1,5 +1,5 @@
 export interface Descuento {
-  idDesc?: number;
+  idDesc: number;
   porcentaje: number;
   fechaDesde: Date;
   fechaHasta: Date;

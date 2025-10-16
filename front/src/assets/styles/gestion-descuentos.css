@@ -1,87 +1,319 @@
-.contenedor-descuentos {
-  padding: 30px;
-  max-width: 600px;
-  margin: 40px auto;
-  color: #3b2f17; /* tono café oscuro */
-  font-family: 'Segoe UI', sans-serif;
-  background-color: rgba(255, 250, 230, 0.7); /* sutil fondo translúcido */
-  border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(90, 75, 47, 0.3);
-  backdrop-filter: blur(6px);
+/* * Variables de Color Reutilizadas de la Estética Vivelas */
+:root {
+    --color-fondo-principal: #f5f3ed; /* Crema muy claro */
+    --color-fondo-secundario: #e8e3d3; /* Crema un poco más oscuro, para contrastes sutiles */
+    --color-texto-principal: #3c3c3c; /* Gris oscuro */
+    --color-accent: #8b5e3c; /* Marrón/Tierra */
+    --color-accent-hover: #724d31; /* Marrón/Tierra más oscuro para hover */
+    --color-borde-suave: #d3ccc0; /* Borde sutil */
+    --font-serif: 'Playfair Display', Georgia, serif; 
+    --font-sans: 'Montserrat', 'Helvetica Neue', sans-serif; 
 }
 
-.contenedor-descuentos h1 {
-  text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 25px;
-  color: #4a3b23;
+/* Estilos de Body para asegurar que las fuentes se apliquen */
+body {
+    background-color: var(--color-fondo-principal);
+    font-family: var(--font-sans);
+    color: var(--color-texto-principal);
+    margin: 0;
+    padding: 0;
 }
 
-.form-descuento {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  background-color: rgba(245, 235, 210, 0.85);
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(60, 50, 30, 0.15);
+/* ---------------------------------
+ * BOTÓN VOLVER (Simulación)
+ * ---------------------------------
+ */
+.boton-volver-container {
+    max-width: 1000px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+}
+.btn-volver {
+    display: inline-block;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: var(--color-texto-principal);
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-size: 0.9em;
+}
+.btn-volver:hover {
+    background-color: var(--color-fondo-secundario);
 }
 
-.form-descuento h3 {
-  margin-bottom: 10px;
-  text-align: center;
-  color: #4f3f24;
+
+/* ---------------------------------
+ * CONTENEDOR Y TÍTULO
+ * (Clases copiadas directamente de tu código)
+ * ---------------------------------
+ */
+
+.admin-page-container {
+    max-width: 1000px;
+    margin: 40px auto; 
+    padding: 0 20px;
+    background-color: var(--color-fondo-principal);
+    min-height: 80vh;
+    font-family: var(--font-sans);
 }
 
-.form-descuento label {
-  font-weight: bold;
-  color: #4f3f24;
+.admin-page-title {
+    font-family: var(--font-serif);
+    font-size: 2.2em;
+    font-weight: 700;
+    text-align: center;
+    color: var(--color-texto-principal);
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-borde-suave);
 }
 
-.form-descuento select,
-.form-descuento input {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1.5px solid #a18b58;
-  background-color: #fffaf0;
-  color: #3b2f17;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+/* ---------------------------------
+ * INPUT DE BÚSQUEDA
+ * ---------------------------------
+ */
+
+.input-busqueda-clientes { /* Se mantiene la clase para la estética */
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 25px;
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    font-size: 1em;
+    color: var(--color-texto-principal);
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.form-descuento select:focus,
-.form-descuento input:focus {
-  border-color: #7b663e;
-  box-shadow: 0 0 6px rgba(123, 102, 62, 0.5);
-  outline: none;
+.input-busqueda-clientes:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(139, 94, 60, 0.2);
 }
 
-.btn-registrar {
-  background-color: #5a4b2f;
-  color: #fffaf0;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  align-self: center;
-  width: 60%;
+.text-gray-500 {
+    color: #888;
 }
 
-.btn-registrar:hover {
-  background-color: #7b663e;
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(91, 75, 47, 0.4);
+.no-data-message {
+    text-align: center;
+    color: var(--color-texto-principal);
+    padding: 20px;
+    background-color: var(--color-fondo-secundario);
+    border-radius: 6px;
+    margin-top: 20px;
 }
 
-.btn-registrar:active {
-  transform: scale(0.98);
+/* ---------------------------------
+ * BARRA DE ACCIONES Y BOTONES
+ * ---------------------------------
+ */
+
+.admin-actions-bar {
+    margin-bottom: 20px;
+    text-align: right;
+    display: flex; /* Usamos flex para alinear los botones en línea */
+    justify-content: flex-end;
+    gap: 10px; /* Espacio entre botones */
 }
-.form-descuento select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%235a4b2f' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.516 7.548l4.484 4.485 4.484-4.485L15 9.064l-5 5-5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 14px;
+
+.admin-actions-bar button, 
+.admin-actions-bar a { /* Aplica estilos base a botones y enlaces (Crear Nuevo) */
+    padding: 10px 20px;
+    border: 1px solid var(--color-accent);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    font-family: var(--font-sans);
+    text-decoration: none; /* Importante para el enlace <a> */
+    display: inline-block; /* Importante para el enlace <a> */
+    line-height: 1.2; /* Para centrar el texto verticalmente */
+}
+
+/* Estilo para el botón CREAR NUEVO (Color primario/accent) */
+.btn-new-item {
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent);
+    color: white;
+}
+.btn-new-item:hover {
+    background-color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+}
+
+
+/* Estilo para el botón Eliminar (color de alerta) */
+.btn-delete-selected {
+    background-color: #d15d5d;
+    border-color: #d15d5d;
+    color: white;
+}
+
+.btn-delete-selected:hover:not(:disabled) {
+    background-color: #b54a4a;
+    border-color: #b54a4a;
+}
+
+.btn-delete-selected:disabled {
+    background-color: #e0e0e0;
+    border-color: #ccc;
+    color: #a0a0a0;
+    cursor: not-allowed;
+}
+
+
+/* ---------------------------------
+ * TABLA DE DATOS
+ * (Clases copiadas directamente de tu código)
+ * ---------------------------------
+ */
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+.admin-table thead {
+    background-color: var(--color-fondo-secundario);
+    color: var(--color-texto-principal);
+    border-bottom: 2px solid var(--color-borde-suave);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 15px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-borde-suave);
+}
+
+.admin-table th {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.admin-table .th-checkbox,
+.admin-table .td-checkbox {
+    width: 50px;
+    padding: 15px 10px;
+    text-align: center;
+}
+.admin-table .th-checkbox {
+    padding: 15px 10px;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tbody tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+.admin-table tbody tr:hover {
+    background-color: var(--color-fondo-secundario);
+}
+
+.admin-table input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-accent); 
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 3px;
+    margin: 0;
+    vertical-align: middle;
+}
+
+/* ---------------------------------
+ * RESPONSIVE (Ajustes para móviles)
+ * ---------------------------------
+ */
+@media (max-width: 768px) {
+    .admin-actions-bar {
+        text-align: left;
+        flex-direction: column; /* Apilar botones en móvil */
+        align-items: flex-start;
+    }
+    
+    .admin-page-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    
+    .admin-actions-bar button,
+    .admin-actions-bar a { /* Aplicar display block a ambos botones en móvil */
+        display: block;
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    /* Estilos de tabla en modo móvil (apilado) */
+    .admin-table table, 
+    .admin-table thead, 
+    .admin-table tbody, 
+    .admin-table th, 
+    .admin-table td, 
+    .admin-table tr { 
+        display: block; 
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tbody tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--color-borde-suave);
+        border-radius: 8px;
+        background-color: white;
+    }
+    
+    .admin-table tbody tr:hover {
+        background-color: var(--color-fondo-principal);
+    }
+    
+    .admin-table tbody tr:nth-child(even) {
+        background-color: white;
+    }
+
+    .admin-table td {
+        padding: 10px 15px;
+        text-align: right;
+        position: relative;
+        border-bottom: 1px dashed var(--color-borde-suave);
+    }
+    
+    .admin-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Etiquetas antes del contenido en móviles (Ajustadas para Descuentos) */
+    .admin-table tr td:nth-child(2)::before { content: "Código:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+    .admin-table tr td:nth-child(3)::before { content: "Tipo:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+    .admin-table tr td:nth-child(4)::before { content: "Valor:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+    .admin-table tr td:nth-child(5)::before { content: "Válido hasta:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+    .admin-table tr td:nth-child(6)::before { content: "ID:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
+
+    
+    .admin-table .td-checkbox { 
+        text-align: left; 
+        border-bottom: none;
+        padding-top: 15px;
+        padding-bottom: 0px;
+    }
+    .admin-table .td-checkbox input[type="checkbox"] {
+        margin-left: 0;
+        transform: scale(1.1);
+    }
 }
