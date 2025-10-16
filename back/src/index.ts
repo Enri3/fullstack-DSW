@@ -2,13 +2,13 @@ import express, { Application, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
-import { AppDataSource } from "./database"; // <-- cambiar aquí
+import { AppDataSource } from "./database"; 
 import "reflect-metadata";
 
 import productosRoutes from "./routes/productos";
 // import authRoutes from "./routes/auth";
-// import tipoUsuariosRoutes from "./routes/tipo_clientes";
- import descuentosRoutes from "./routes/descuentos";
+import tipoUsuariosRoutes from "./routes/tipo_clientes";
+import descuentosRoutes from "./routes/descuentos";
 
 dotenv.config();
 
@@ -32,7 +32,7 @@ AppDataSource.initialize()
   
     app.use("/productos", productosRoutes);
     // app.use("/auth", authRoutes);
-    // app.use("/tipo_usuarios", tipoUsuariosRoutes);
+    app.use("/tipo_usuarios", tipoUsuariosRoutes);
      app.use("/descuentos", descuentosRoutes);
 
     // Ruta 404

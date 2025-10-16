@@ -4,8 +4,9 @@ import dotenv from "dotenv";
 import { Producto} from "../../entidades/producto";
 import { Descuento} from "../../entidades/descuento";
 import { ProductoDescuento} from "../../entidades/productos_descuentos"
+import { TipoCliente } from "../../entidades/tipo-cliente";
 import "reflect-metadata";
-//import { TipoCliente } from "../../entidades/TipoCliente";
+
 
 dotenv.config();
 
@@ -18,6 +19,6 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE || "test",
   synchronize: true, 
   logging: false,
-  entities: [Producto, Descuento, ProductoDescuento ], 
+  entities: [Producto, Descuento, ProductoDescuento, TipoCliente ], 
 });
 //, Cliente, TipoCliente

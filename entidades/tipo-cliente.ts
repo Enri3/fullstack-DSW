@@ -1,11 +1,13 @@
-export interface TipoClientes {
-  idTipoCli: number;
-  nombreTipo: string;
-  descuento: number;
-}
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-export const tipoClienteVacio: TipoClientes = {
-  idTipoCli: 0,
-  nombreTipo: "",
-  descuento: 0,
-};
+@Entity({ name: "tipo_clientes" })
+export class TipoCliente {
+  @PrimaryGeneratedColumn({ name: "idTipoCli" })
+  idTipoCli!: number;
+
+  @Column({ name: "nombreTipo", length: 100 })
+  nombreTipo!: string;
+
+  @Column({ name: "descuento", type: "float", default: 0 })
+  descuento!: number;
+}

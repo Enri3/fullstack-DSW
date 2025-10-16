@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { getConnection } from "../database";
+import { AppDataSource } from "../database";
+import { TipoCliente } from "../../../entidades/tipo-cliente";
 
 export const getNombreTipo = async (req: Request, res: Response): Promise<void> => {
   const { idTipoCli } = req.params;
@@ -10,22 +11,27 @@ export const getNombreTipo = async (req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const conn = await getConnection();
+    // Obtenemos el repositorio de la entidad TipoCliente
+    const tipoClienteRepository = AppDataSource.getRepository(TipoCliente);
 
-   
-    const rows: any[] = await conn.query(
-      "SELECT nombreTipo FROM tipo_clientes WHERE idTipoCli = ?",
-      [idTipoCli]
-    );
+    // Buscamos el registro por ID
+    const tipo = await tipoClienteRepository.findOne({
+      where: { idTipoCli: Number(idTipoCli) },
+    });
 
-    if (rows.length === 0) {
+    // Si no existe el tipo de cliente, devolvemos 404
+    if (!tipo) {
       res.status(404).json({ message: "Tipo de cliente no encontrado" });
       return;
     }
 
-    res.json({ nombreTipoCli: rows[0].nombreTipo });
+    // Respondemos igual que antes
+    res.json({ nombreTipoCli: tipo.nombreTipo });
   } catch (error: any) {
     console.error("Error en getNombreTipoCliente:", error.message || error);
-    res.status(500).json({ message: "Error al obtener el tipo de cliente", detalle: error.message });
+    res.status(500).json({
+      message: "Error al obtener el tipo de cliente",
+      detalle: error.message,
+    });
   }
 };
