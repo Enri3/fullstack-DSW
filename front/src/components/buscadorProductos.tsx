@@ -36,13 +36,15 @@ export default function BuscadorProducto({ onResultados, setLoading }: BuscadorP
   return (
     <div className="buscador-container">
       <h2 className="text-2xl font-semibold mb-4 text-center">Buscar Productos</h2>
+    <div className="flex justify-center">
       <input
         type="text"
         placeholder="Escribe el nombre del producto..."
         value={termino}
         onChange={(e) => setTermino(e.target.value)}
-        className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-1/4 min-w-[200px] max-w-[400px] p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
       />
     </div>
+  </div>
   );
 }

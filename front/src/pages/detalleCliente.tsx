@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
+import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
 import Detalle from "../components/DetalleProducto";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
@@ -48,7 +48,7 @@ export default function DetalleCliente() {
 
   const handleAgregar = () => {
     if (!producto) return;
-    // ✅ Solo pasar el producto, cartService maneja la cantidad internamente
+
     agregarAlCarrito(producto);
     setCantidad(obtenerCantidadCarrito());
   };
@@ -59,7 +59,7 @@ export default function DetalleCliente() {
 
   return (
     <>
-      <HeaderClienteIngresado cantidad={cantidad} />
+      <HeaderConPanel cantidad={cantidad} />
 
       {/* Mostrar detalle */}
       <Detalle idProd={idProd} />

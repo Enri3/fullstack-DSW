@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
+import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
 import { getProductos } from "../services/productosService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
-import type { Producto } from "../interfaces";
+import type { Producto } from "../types/Producto";
 import BuscadorProducto from "../components/buscadorProductos";
 
 export default function DisplayProductos_C() {
@@ -41,7 +41,7 @@ export default function DisplayProductos_C() {
 
   return (
     <>
-      <HeaderClienteIngresado cantidad={cantidad} />
+      <HeaderConPanel cantidad={cantidad} />
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>

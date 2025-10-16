@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import DisplayProductos from "./pages/productos_Admin";
 import DisplayProductos_C from "./pages/productos_cliente";
 import MostrarCarrito from "./pages/carrito";
@@ -20,9 +20,20 @@ import Descuentos from "./pages/gestion-descuentos";
 import CambiarPassword from "./pages/cambiar-password";
 
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/productosAdmin" element={<DisplayProductos />} />

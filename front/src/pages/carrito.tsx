@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
+import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
 import "../assets/styles/cart.css";
 import "../assets/styles/style.css";
@@ -61,7 +61,7 @@ export default function MostrarCarrito() {
 
   return (
     <>
-      <HeaderClienteIngresado cantidad={cantidad} />
+      <HeaderConPanel cantidad={cantidad} />
       <main>
         {productos.length === 0 ? (
           <div id="carrito-vacio">

@@ -22,8 +22,44 @@
     width: 150 px;
 }
 
-#totales, #carrito-vacio{
+#totales{
     text-align: center;
+    padding: 30px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin: 40px auto;
+    max-width: 500px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#carrito-vacio{
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin: 40px auto;
+    max-width: 500px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#carrito-vacio p {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+#carrito-vacio a {
+    display: inline-block;
+    background: #8B4513;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+#carrito-vacio a:hover {
+    background: #A0522D;
 }
 
 .botones-carrito{

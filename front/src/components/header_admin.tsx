@@ -17,8 +17,13 @@ export default function HeaderAdmin({ cantidad }: HeaderProps) {
           <img src={logo} id="logo" alt="Logo" />
         </Link>
         
-              <div id="menu">
+             <div id="menu">
+                <Link to="/admin">
+                   Panel de Navegación
+                </Link>
+                       
                 <Link to="/cerrar-sesion">Cerrar Sesión</Link>
+
               </div>
 
       </nav>
