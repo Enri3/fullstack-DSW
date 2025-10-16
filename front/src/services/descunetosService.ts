@@ -52,7 +52,7 @@ export const getAllProductos = async () => {
 
 export const buscarDescuentoFiltro = async (nomProdBuscados : string) => {
   try {
-    const res = await fetch(`${API_URL}/buscarDescuentoFiltro`, {
+    const res = await fetch(`${API_URL}/buscDescFilt`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nomProdBuscados }),
@@ -70,3 +70,30 @@ export const buscarDescuentoFiltro = async (nomProdBuscados : string) => {
     throw error;
   }
 }
+
+export const eliminarDescuentos = async (idsDescuentos: number[]) => {
+  if (!Array.isArray(idsDescuentos) || idsDescuentos.length === 0) {
+    throw new Error("Debe proporcionar al menos un ID de descuento para eliminar");
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ idsDescuentos }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al eliminar descuentos");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error en eliminarDescuentosService:", error);
+    throw error;
+  }
+};

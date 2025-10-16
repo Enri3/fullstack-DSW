@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import type { DescuentoEncontrado } from "../types/Descuentos";
 
-import { deleteMultipleClientes, buscarClienteFiltro } from "../services/authService";
+import { eliminarDescuentos, buscarDescuentoFiltro } from "../services/descunetosService";
 import "../assets/styles/eliminarClientes.css";
 import "../assets/styles/botonVolver.css";
 import BuscadorDescuento from "../components/buscadorDescuento";
@@ -45,7 +45,7 @@ export default function Descuentos() {
     if (!window.confirm("¿Seguro que deseas eliminar los clientes seleccionados?")) return;
 
         try {
-            const data = await deleteMultipleClientes(descuentosSeleccionados);
+            const data = await eliminarDescuentos(descuentosSeleccionados);
 
             alert(data.message);
 
@@ -57,6 +57,24 @@ export default function Descuentos() {
             alert(error.message || "No se pudo conectar con el servidor");
         }
     };
+
+    // Cargar clientes al montar
+    useEffect(() => {
+        const fetchClientes = async () => {
+            try {
+            const data = await buscarDescuentoFiltro("");
+            console.log("Clientes recibidos del backend:", data);
+            setDescuentos(Array.isArray(data) ? data : [data]);
+            } catch (err) {
+            console.error("Error al obtener clientes:", err);
+            setError("No se pudo conectar con el servidor.");
+            setDescuentos([]);
+            } finally {
+            setLoading(false);
+            }
+        };
+        fetchClientes();
+    }, []);
 
 
   // ... (Efectos y lógica irían aquí, aunque no se necesitan para el render)
@@ -91,14 +109,6 @@ export default function Descuentos() {
               <Link to="/nuevo-descuento" className="btn-new-item">
                   Crear Nuevo Descuento
               </Link>
-              
-              <button 
-                  id="btn-eliminar-seleccionados"
-                  className="btn-delete-selected"
-                  disabled 
-              >
-                  Eliminar seleccionados (0)
-              </button>
             </div>
 
  
@@ -106,7 +116,7 @@ export default function Descuentos() {
                  <p className="no-data-message">No se encontraron clientes que coincidan con la búsqueda.</p>
              )}
  
-             {/* Tabla de Clientes */}
+             {/* Tabla de Descuentos */}
              {!loading && descuentos.length > 0 && (
                  <table className="admin-table">
                      <thead>
@@ -137,8 +147,8 @@ export default function Descuentos() {
                                      />
                                  </td>
                                  <td>{descuento.nombreProd}</td>
-                                 <td>{descuento.fechaDesde.toDateString()}</td>
-                                 <td>{descuento.fechaHasta.toDateString()}</td>
+                                 <td>{descuento.fechaDesde.toDateString() || 'qqq'}</td>
+                                 <td>{descuento.fechaHasta.toDateString() || 'qq'}</td>
                                  <td>{descuento.idProd}</td>
                              </tr>
                          ))}

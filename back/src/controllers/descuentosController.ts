@@ -87,3 +87,79 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
   }
 }
 
+export const buscarDescuentoFiltro = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { nombreFiltro } = req.body;
+
+    const productoDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
+
+    const query = productoDescuentoRepository
+      .createQueryBuilder("pd")
+      .innerJoinAndSelect("pd.producto", "producto")
+      .innerJoinAndSelect("pd.descuento", "descuento")
+      .where("producto.deleted = 0");
+
+    // 🔍 Si hay texto válido, se filtra; si no, se devuelven todos
+    if (nombreFiltro && nombreFiltro.trim() !== "") {
+      query.andWhere("producto.nombreProd ILIKE :nombreFiltro", { nombreFiltro: `%${nombreFiltro.trim()}%` });
+    }
+
+    const resultados = await query
+      .select([
+        "producto.idProd AS idProd",
+        "producto.nombreProd AS nombreProd",
+        "descuento.idDesc AS idDesc",
+        "descuento.porcentaje AS porcentaje",
+        "descuento.fechaDesde AS fechaDesde",
+        "descuento.fechaHasta AS fechaHasta",
+      ])
+      .orderBy("producto.nombreProd", "ASC")
+      .getRawMany();
+
+    const descuentosEncontrados = resultados.map((r) => ({
+      idProd: r.idprod,
+      nombreProd: r.nombreprod,
+      idDesc: r.iddesc,
+      porcentaje: Number(r.porcentaje),
+      fechaDesde: r.fechadesde,
+      fechaHasta: r.fechahasta,
+    }));
+
+    res.status(200).json(descuentosEncontrados);
+  } catch (error) {
+    console.error("Error al buscar descuentos:", error);
+    res.status(500).json({ message: "Error interno al buscar descuentos" });
+  }
+};
+
+export const eliminarDescuentos = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { idsDescuentos } = req.body;
+
+    // Validar entrada
+    if (!Array.isArray(idsDescuentos) || idsDescuentos.length === 0) {
+      res.status(400).json({ message: "Debe proporcionar una lista de IDs de descuentos a eliminar" });
+      return;
+    }
+
+    const descuentoRepository = AppDataSource.getRepository(Descuento);
+
+    // Verificar que existan
+    const existentes = await descuentoRepository.findByIds(idsDescuentos);
+
+    if (existentes.length === 0) {
+      res.status(404).json({ message: "No se encontraron descuentos con los IDs proporcionados" });
+      return;
+    }
+
+    // Eliminar descuentos (con cascada)
+    await descuentoRepository.remove(existentes);
+
+    res.status(200).json({
+      message: `Se eliminaron correctamente ${existentes.length} descuento(s) junto con sus relaciones`,
+    });
+  } catch (error) {
+    console.error("Error al eliminar descuentos:", error);
+    res.status(500).json({ message: "Error interno al eliminar los descuentos" });
+  }
+};
