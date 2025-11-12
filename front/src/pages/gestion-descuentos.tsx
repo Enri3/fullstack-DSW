@@ -130,10 +130,11 @@ export default function Descuentos() {
                                      title={descuentosSeleccionados.length === descuentos.length ? "Deseleccionar todos" : "Seleccionar todos"}
                                  />
                              </th>
-                             <th>Nombre</th>
-                             <th>Apellido</th>
-                             <th>Email</th>
-                             <th>ID</th>
+                             
+                             <th>Descuento</th>
+                             <th>Fecha Desde</th>
+                             <th>Fecha Hasta</th>
+                             <th>Producto </th>
                          </tr>
                      </thead>
                      <tbody>
@@ -146,10 +147,11 @@ export default function Descuentos() {
                                          onChange={() => toggleSeleccion(descuento.idDesc)}
                                      />
                                  </td>
-                                 <td>{descuento.nombreProd}</td>
+                                  
+                                 <td>{descuento.porcentaje} %</td>
                                 <td>{new Date(descuento.fechaDesde).toLocaleDateString()}</td>
                                 <td>{new Date(descuento.fechaHasta).toLocaleDateString()}</td>
-                                 <td>{descuento.idProd}</td>
+                                 <td>{descuento.nombreProd}</td>
                              </tr>
                          ))}
                      </tbody>

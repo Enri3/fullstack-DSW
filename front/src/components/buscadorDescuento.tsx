@@ -26,7 +26,7 @@ export default function BuscadorDescuento({ onResultados, setLoading }: Buscador
       onResultados(Array.isArray(data) ? data : [data]);
     } catch (err) {
       console.error("Error al buscar cliente:", err);
-      onResultados([]); // Si falla, devolvemos lista vacía
+      onResultados([]);
     } finally {
       setLoading(false);
     }
@@ -34,7 +34,7 @@ export default function BuscadorDescuento({ onResultados, setLoading }: Buscador
 
   return (
     <div className="buscador-container">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Buscar Cliente</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-center">Buscar descuentos para un producto</h2>
       <input
         type="text"
         placeholder="Escribe el nombre del descuento..."
