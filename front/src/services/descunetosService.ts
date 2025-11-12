@@ -52,6 +52,26 @@ export const getAllProductos = async () => {
 
 export const buscarDescuentoFiltro = async (nomProdBuscados : string) => {
   try {
+    const res = await fetch(`${API_URL}/buscPorProd`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nomProdBuscados }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Error al buscar descuento desde el service");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error al buscar descuento:", error);
+    throw error;
+  }
+}
+export const buscarPorProd = async (nomProdBuscados : string) => {
+  try {
     const res = await fetch(`${API_URL}/buscDescFilt`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

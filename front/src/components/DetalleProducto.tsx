@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import "../assets/styles/detalle.css";
-
+import{ buscarPorProd } from "../services/descunetosService";
 
 interface Producto {
   idProd: number | string;
@@ -22,6 +22,7 @@ export default function Detalle() {
   const [producto, setProducto] = useState<Producto | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+    const [resultados, setResultados] = useState<any[]>([]);
 
   if (!idProd) {
     return <p style={{ color: "red" }}>ID de producto no válido o no recibido.</p>;
@@ -41,6 +42,27 @@ export default function Detalle() {
     };
     cargarProducto();
   }, [idProd]);
+  const handleBuscar = async () => {
+    try {
+      setLoading(true);
+      if (!producto) return;
+  
+      const data = await buscarPorProd(producto.nombreProd);
+      console.log("Descuentos recibidos:", data);
+  
+      setResultados(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error("Error al buscar descuento:", err);
+      setResultados([]);
+    } finally {
+      setLoading(false);
+    }
+  }; 
+  useEffect(() => {
+  if (producto) {
+    handleBuscar();
+  }
+}, [producto]);
 
   if (loading) return <p>Cargando producto...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -67,8 +89,28 @@ export default function Detalle() {
               Su presentación de <strong>{producto.medida || "N/A"} grs</strong> ofrece una combustión limpia 
               y duradera, ideal para crear un ambiente cálido y relajante en cualquier espacio del hogar.
             </p>
-          </div>
-        </div>
+
+             {resultados.length > 0 ? (
+              <table className="tabla-descuentos">
+                <p className="mt-3 mb-2 font-semibold">Descuentos disponibles para este producto:</p>
+           
+                <tbody>
+                  {resultados.map((d) => (
+                    <tr key={`${d.idProd}-${d.idDesc}`}>
+
+                      <td>Descuento: {d.porcentaje}%</td>
+                      <td>Desde:{new Date(d.fechaDesde).toLocaleDateString()}</td>
+                      <td>Hasta:{new Date(d.fechaHasta).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              !loading && <p>No se encontraron descuentos para este producto.</p>
+            )}
+                      </div>
+                    </div>
+                  
       </section>
     </main>
   );

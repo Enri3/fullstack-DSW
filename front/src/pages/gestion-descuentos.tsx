@@ -17,7 +17,7 @@ export default function Descuentos() {
   const [descuentos, setDescuentos] = useState<DescuentoEncontrado[]>([]);
 
 
-  const navigator = useNavigate(); // Descomentar si se usa
+  const navigator = useNavigate(); 
   const [descuentosSeleccionados, setDescuentosSeleccionados] = useState<number[]>([]);
   const [termino, setTermino] = useState("");
   const [error, setError] = useState<string>("");
@@ -77,7 +77,7 @@ export default function Descuentos() {
     }, []);
 
 
-  // ... (Efectos y lógica irían aquí, aunque no se necesitan para el render)
+ 
 
  return (
      <>
@@ -92,13 +92,13 @@ export default function Descuentos() {
  
              {loading && <p className="text-gray-500 mt-3 text-center">Buscando...</p>}
              
-             {/* Contenedor para los botones de acción */}
+             
              <div className="admin-actions-bar">
-                 {/* Botón Eliminar */}
+                
                  <button 
                      onClick={handleEliminarSeleccionados} 
                      className="btn-delete-selected"
-                     disabled={descuentosSeleccionados.length === 0} // Deshabilita si no hay selección
+                     disabled={descuentosSeleccionados.length === 0}
                  >
                      Eliminar seleccionados ({descuentosSeleccionados.length})
                  </button>
@@ -122,7 +122,7 @@ export default function Descuentos() {
                      <thead>
                          <tr>
                              <th className="th-checkbox">
-                                 {/* Botón/Checkbox Seleccionar/Deseleccionar todos */}
+                                 
                                  <input
                                      type="checkbox"
                                      checked={descuentosSeleccionados.length === descuentos.length && descuentos.length > 0}

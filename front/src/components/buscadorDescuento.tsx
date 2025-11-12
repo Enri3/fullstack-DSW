@@ -25,7 +25,7 @@ export default function BuscadorDescuento({ onResultados, setLoading }: Buscador
       const data = await buscarDescuentoFiltro(nomProds);
       onResultados(Array.isArray(data) ? data : [data]);
     } catch (err) {
-      console.error("Error al buscar cliente:", err);
+      console.error("Error al buscar descuento:", err);
       onResultados([]);
     } finally {
       setLoading(false);

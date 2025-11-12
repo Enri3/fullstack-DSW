@@ -5,8 +5,11 @@ import Footer from "../components/footer";
 import Detalle from "../components/DetalleProducto";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { getProductoById } from "../services/productosService";
+import{ buscarDescuentoFiltro } from "../services/descunetosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
+import "../assets/styles/eliminarClientes.css";
+import "../assets/styles/botonVolver.css";
 
 interface Producto {
   idProd: number | string;
@@ -25,6 +28,7 @@ export default function DetalleCliente() {
   const [producto, setProducto] = useState<Producto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
 
   if (!idProd) {
     return <p style={{ color: "red" }}>ID de producto no válido o no recibido.</p>;
@@ -53,6 +57,7 @@ export default function DetalleCliente() {
     setCantidad(obtenerCantidadCarrito());
   };
 
+
   if (loading) return <p>Cargando producto...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!producto) return <p>Producto no encontrado.</p>;
@@ -62,7 +67,8 @@ export default function DetalleCliente() {
       <HeaderConPanel cantidad={cantidad} />
 
       {/* Mostrar detalle */}
-      <Detalle idProd={idProd} />
+      <Detalle idProd={idProd}
+       />
 
       {/* Botones */}
       <div className="botones-detalle">
@@ -72,9 +78,14 @@ export default function DetalleCliente() {
         <Link to="/productosCliente">
           <button className="boton-detalle">Volver</button>
         </Link>
+        
       </div>
 
       <Footer />
     </>
   );
+}
+
+function onResultados(arg0: any[]) {
+  throw new Error("Function not implemented.");
 }
