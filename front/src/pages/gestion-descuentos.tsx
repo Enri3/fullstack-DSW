@@ -38,11 +38,11 @@ export default function Descuentos() {
 
     const handleEliminarSeleccionados = async () => {
     if (descuentosSeleccionados.length === 0) {
-        alert("Seleccioná al menos un cliente para eliminar");
+        alert("Seleccioná al menos un descuento para eliminar");
         return;
     }
 
-    if (!window.confirm("¿Seguro que deseas eliminar los clientes seleccionados?")) return;
+    if (!window.confirm("¿Seguro que deseas eliminar los descuentos seleccionados?")) return;
 
         try {
             const data = await eliminarDescuentos(descuentosSeleccionados);
@@ -58,22 +58,22 @@ export default function Descuentos() {
         }
     };
 
-    // Cargar clientes al montar
+   
     useEffect(() => {
-        const fetchClientes = async () => {
+        const fetchDescuentos = async () => {
             try {
             const data = await buscarDescuentoFiltro("");
-            console.log("Clientes recibidos del backend:", data);
+            console.log("Descuentos recibidos del backend:", data);
             setDescuentos(Array.isArray(data) ? data : [data]);
             } catch (err) {
-            console.error("Error al obtener clientes:", err);
+            console.error("Error al obtener Descuento:", err);
             setError("No se pudo conectar con el servidor.");
             setDescuentos([]);
             } finally {
             setLoading(false);
             }
         };
-        fetchClientes();
+        fetchDescuentos();
     }, []);
 
 
@@ -85,7 +85,7 @@ export default function Descuentos() {
          <BotonVolver />
  
          <div className="admin-page-container">
-             <h2 className="admin-page-title">Panel de Administración - Clientes</h2>
+             <h2 className="admin-page-title">Panel de Administración - Descuentos</h2>
              
                  <BuscadorDescuento onResultados={setDescuentos} setLoading={setLoading} />
              
@@ -113,7 +113,7 @@ export default function Descuentos() {
 
  
              {(!loading && descuentos.length === 0) && (
-                 <p className="no-data-message">No se encontraron clientes que coincidan con la búsqueda.</p>
+                 <p className="no-data-message">No se encontraron descuentos que coincidan con la búsqueda.</p>
              )}
  
              {/* Tabla de Descuentos */}
@@ -147,8 +147,8 @@ export default function Descuentos() {
                                      />
                                  </td>
                                  <td>{descuento.nombreProd}</td>
-                                 <td>{descuento.fechaDesde.toDateString() || 'qqq'}</td>
-                                 <td>{descuento.fechaHasta.toDateString() || 'qq'}</td>
+                                <td>{new Date(descuento.fechaDesde).toLocaleDateString()}</td>
+                                <td>{new Date(descuento.fechaHasta).toLocaleDateString()}</td>
                                  <td>{descuento.idProd}</td>
                              </tr>
                          ))}
