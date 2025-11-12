@@ -89,41 +89,40 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
 
 export const buscarDescuentoFiltro = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { nombreFiltro } = req.body;
+    const { nomProdBuscados } = req.body; // concuerda con lo que envía el front
 
     const productoDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
 
-    const query = productoDescuentoRepository
+    // Base query: traemos la relación producto y descuento
+    let qb = productoDescuentoRepository
       .createQueryBuilder("pd")
       .innerJoinAndSelect("pd.producto", "producto")
       .innerJoinAndSelect("pd.descuento", "descuento")
       .where("producto.deleted = 0");
 
-    // 🔍 Si hay texto válido, se filtra; si no, se devuelven todos
-    if (nombreFiltro && nombreFiltro.trim() !== "") {
-      query.andWhere("producto.nombreProd ILIKE :nombreFiltro", { nombreFiltro: `%${nombreFiltro.trim()}%` });
+    // Si hay filtro, aplicarlo (MySQL: usar LIKE; hacerlo case-insensitive con LOWER)
+    if (nomProdBuscados && String(nomProdBuscados).trim() !== "") {
+      const filtro = nomProdBuscados.trim().toLowerCase();
+      qb = qb.andWhere("LOWER(producto.nombreProd) LIKE :filtro", { filtro: `%${filtro}%` });
     }
 
-    const resultados = await query
-      .select([
-        "producto.idProd AS idProd",
-        "producto.nombreProd AS nombreProd",
-        "descuento.idDesc AS idDesc",
-        "descuento.porcentaje AS porcentaje",
-        "descuento.fechaDesde AS fechaDesde",
-        "descuento.fechaHasta AS fechaHasta",
-      ])
-      .orderBy("producto.nombreProd", "ASC")
-      .getRawMany();
+    // getMany devuelve entidades ProductoDescuento con producto y descuento cargados
+    const resultados = await qb.getMany();
 
-    const descuentosEncontrados = resultados.map((r) => ({
-      idProd: r.idprod,
-      nombreProd: r.nombreprod,
-      idDesc: r.iddesc,
-      porcentaje: Number(r.porcentaje),
-      fechaDesde: r.fechadesde,
-      fechaHasta: r.fechahasta,
-    }));
+    // Mapear a la forma que espera el frontend
+    const descuentosEncontrados = resultados.map((pd) => {
+      const prod = pd.producto as Producto | undefined;
+      const desc = pd.descuento as Descuento | undefined;
+
+      return {
+        idProd: prod?.idProd ?? null,
+        nombreProd: prod?.nombreProd ?? "",
+        idDesc: desc?.idDesc ?? null,
+        porcentaje: desc ? Number(desc.porcentaje) : null,
+        fechaDesde: desc?.fechaDesde ?? null,
+        fechaHasta: desc?.fechaHasta ?? null,
+      };
+    });
 
     res.status(200).json(descuentosEncontrados);
   } catch (error) {
