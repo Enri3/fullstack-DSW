@@ -50,11 +50,13 @@ export const getAllProductos = async () => {
   }
 };
 
-export const buscarDescuentoFiltro = async (nomProdBuscados : string) => {
+export const buscarDescuentoFiltro = async (nomProdBuscados: string) => {
   try {
     const res = await fetch(`${API_URL}/buscPorProd`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ nomProdBuscados }),
     });
 
@@ -69,7 +71,7 @@ export const buscarDescuentoFiltro = async (nomProdBuscados : string) => {
     console.error("Error al buscar descuento:", error);
     throw error;
   }
-}
+};
 export const buscarPorProd = async (nomProdBuscados : string) => {
   try {
     const res = await fetch(`${API_URL}/buscDescFilt`, {
