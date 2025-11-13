@@ -15,10 +15,8 @@ type ProductoCarrito = {
 
 export default function MostrarCarrito() {
     const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
-  // Estado local con los productos en el carrito (del localStorage)
   const [productos, setProductos] = useState<ProductoCarrito[]>([]);
 
-  // Cada vez que cargue el componente, traigo los productos del carrito
   useEffect(() => {
     const prods = obtenerProductosCarrito().map((p: any) => ({
       ...p,
@@ -47,14 +45,12 @@ export default function MostrarCarrito() {
     setCantidad(obtenerCantidadCarrito());
   }
 
-  // Manejo el click para reiniciar carrito
   function handleReiniciar() {
     reiniciarCarrito();
     setProductos([]);
     setCantidad(obtenerCantidadCarrito());
   }
 
-  // Calculo totales
   const totalUnidades = productos.reduce((acc, p) => acc + p.cantidad, 0);
   const totalPrecio = productos.reduce((acc, p) => acc + p.cantidad * p.precioProd, 0);
 

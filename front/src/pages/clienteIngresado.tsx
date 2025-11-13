@@ -17,10 +17,10 @@ export default function ClienteIngresado() {
   const location = useLocation();
 
   useEffect(() => {
-    // Captura el mensaje si viene del login
+
     if (location.state && location.state.mensaje) {
       setMensaje(location.state.mensaje);
-      window.history.replaceState({}, document.title); // limpia el estado
+      window.history.replaceState({}, document.title); 
     }
   }, [location]);
 

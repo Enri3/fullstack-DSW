@@ -33,7 +33,6 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        // Enviar mensaje al login usando navigate con state
         navigate("/login", {
           state: {
             mensaje: { texto: "¡Te registraste correctamente! Ahora podés iniciar sesión.", tipo: "success" },

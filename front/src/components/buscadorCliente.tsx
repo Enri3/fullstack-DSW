@@ -27,7 +27,7 @@ export default function BuscadorCliente({ onResultados, setLoading }: BuscadorCl
       onResultados(Array.isArray(data) ? data : [data]);
     } catch (err) {
       console.error("Error al buscar cliente:", err);
-      onResultados([]); // Si falla, devolvemos lista vacía
+      onResultados([]);
     } finally {
       setLoading(false);
     }

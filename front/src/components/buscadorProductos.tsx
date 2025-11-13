@@ -27,7 +27,7 @@ export default function BuscadorProducto({ onResultados, setLoading }: BuscadorP
       onResultados(Array.isArray(data) ? data : [data]);
     } catch (err) {
       console.error("Error al buscar producto:", err);
-      onResultados([]); // Si falla, devolvemos lista vacía
+      onResultados([]); 
     } finally {
       setLoading(false);
     }

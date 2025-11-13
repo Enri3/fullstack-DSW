@@ -31,7 +31,6 @@ export default function NuevoProducto() {
     setError("");
     setSuccess("");
 
-    // Validaciones
     if (!inputs.nombreProd || !inputs.medida || !inputs.precioProd) {
       setError("Por favor, completa todos los campos obligatorios.");
       return;

@@ -1,11 +1,9 @@
 const API_URL = "http://localhost:4000/descuentos"; 
 import type { Descuento, DescuentoConProductos as DescuentoP } from "../types/Descuentos";
 
-//Agregar un descuento
 export const addDescuento = async (descuento: Descuento, idsProductos: number[]
 ) => {
   try {
-    // Combinamos ambos en un solo cuerpo antes de enviar
     const body: DescuentoP = {
       ...descuento,
       idsProductos,
@@ -29,7 +27,6 @@ export const addDescuento = async (descuento: Descuento, idsProductos: number[]
   }
 };
 
-// Obtiene todos los productos disponibles (para asignar descuentos)
 export const getAllProductos = async () => {
   try {
     const res = await fetch(`${API_URL}/getAllProd`, {

@@ -20,17 +20,15 @@ type Producto = {
 };
 
 export default function DisplayProductos() {
-  // Estados
+
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cantidad, setCantidad] = useState<number>(obtenerCantidadCarrito());
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  //  Modal y producto seleccionado
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [productoAEliminar, setProductoAEliminar] = useState<Producto | null>(null);
 
-  // Cargar productos al montar
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -48,13 +46,6 @@ export default function DisplayProductos() {
     fetchProductos();
   }, []);
 
-  // Agregar al carrito
-  /*const handleAgregar = (producto: Producto) => {
-    agregarAlCarrito(producto);
-    setCantidad(obtenerCantidadCarrito());
-  };*/
-
-  // Abrir modal de eliminación
   const handleEliminar = (productoId: number | string) => {
     const producto = productos.find((p) => p.idProd === productoId);
     if (!producto) return;
@@ -62,7 +53,6 @@ export default function DisplayProductos() {
     setModalVisible(true);
   };
 
-  //Confirmar eliminación
   const confirmarEliminar = async () => {
     if (!productoAEliminar) return;
     try {

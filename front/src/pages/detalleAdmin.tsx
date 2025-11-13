@@ -25,12 +25,10 @@ export default function DetalleAdmin() {
     return <p style={{ color: "red" }}>ID de producto no válido o no recibido.</p>;
   }
 
-  // Abrir modal de eliminación
   const handleEliminar = () => {
     setModalVisible(true);
   };
 
-  // Confirmar eliminación
   const confirmarEliminar = async () => {
     try {
       await eliminarProducto(idProd);
@@ -46,10 +44,8 @@ export default function DetalleAdmin() {
     <>
       <HeaderAdmin />
 
-      {/* Componente de detalle */}
       <Detalle />
 
-      {/* Botones de administración */}
       <div className="botones-detalle">
         <Link to={`/modificarProducto/${idProd}`} >
         <button className="boton-detalle">Modificar</button>
@@ -62,7 +58,6 @@ export default function DetalleAdmin() {
 
       <Footer />
 
-      {/* Modal de confirmación */}
       {modalVisible && (
         <div className="modal-overlay">
           <div className="modal">

@@ -19,7 +19,6 @@ export const getNombreTipo = async (idTipoCli : Number) => {
       throw new Error(data.message || `Error al obtener el tipo de cliente con ID: ${idTipoCli}`);
     }
 
-    // Devuelve solo el nombre del tipo de cliente
     return data.nombreTipoCli; 
   } catch (error) {
     console.error("Error en getClientTypeName:", error);

@@ -57,7 +57,6 @@ export default function Inicio() {
     fetchProductos();
   }, []);
 
-  // Solo los primeros 5, o todos si se activa "Ver más"
   const productosAMostrar = mostrarTodos ? productos : productos.slice(0, 5);
 
   return (

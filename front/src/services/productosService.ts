@@ -7,7 +7,6 @@ type Producto = {
 
 };
 
-// Traer todos los productos
 export async function getProductos() { 
   const res = await fetch("http://localhost:4000/productos"); 
   if (!res.ok) throw new Error("Error al obtener productos"); 
@@ -16,7 +15,6 @@ export async function getProductos() {
   return data; }
   
 
-// Obtener un producto por ID
 export async function getProductoById(idProd: number): Promise<Producto> {
   const res = await fetch(`http://localhost:4000/productos/${idProd}`);
   const data = await res.json();
@@ -24,7 +22,6 @@ export async function getProductoById(idProd: number): Promise<Producto> {
   return data as Producto;
 }
 
-// Actualizar producto
 export async function updateProducto(
   idProd: string | number,
   producto: Producto
@@ -39,7 +36,6 @@ export async function updateProducto(
   return data as Producto;
 }
 
-// Eliminar producto por ID
 export async function eliminarProducto(idProd: string | number): Promise<void> {
   const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
     method: "DELETE",

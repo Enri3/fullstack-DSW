@@ -17,7 +17,6 @@ export default function EditarCliente() {
   const [email, setEmail] = useState("");
   const [direccion, setDireccion] = useState("");
 
-  // Estados nuevos para los mensajes
   const [mensaje, setMensaje] = useState("");
   const [tipoMensaje, setTipoMensaje] = useState<"success" | "error" | "info">("info");
 
@@ -73,7 +72,6 @@ export default function EditarCliente() {
     }
   };
 
-  // 🟢 NUEVA FUNCIÓN: para volver a la pantalla anterior
   const handleVolver = () => {
     navigator("/clienteIngresado");
   };

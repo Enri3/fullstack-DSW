@@ -18,11 +18,7 @@ export default function Header({ cantidad }: HeaderProps) {
         <div id="menu">
           
           <Link to="/login">Ingresar</Link>
-          {/*}
-          <Link to="/carrito">
-            <i className="material-icons icono">shopping_cart</i>
-            <span id="cuenta_carrito">{cantidad}</span>
-          </Link>*/}
+          
         </div>
       </nav>
     </header>

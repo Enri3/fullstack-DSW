@@ -15,12 +15,10 @@ export const loginUsuario = async (credentials: LoginCredenciales) => {
   });
 
   if (!response.ok) {
-    // Si falla, mensaje de error del backend
     const errorData = await response.json();
     throw new Error(errorData.message || 'Error al conectar con el servidor.');
   }
 
-  // Si es exitoso, devuelve los datos
   return response.json();
 };
 

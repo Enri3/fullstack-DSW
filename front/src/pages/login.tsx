@@ -4,20 +4,19 @@ import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { loginUsuario } from "../services/authService";
 import logo from "../assets/img/logo.png";
-import { useNavigate, useLocation } from "react-router-dom"; // 🟢 agregado useLocation
+import { useNavigate, useLocation } from "react-router-dom"; 
 import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
 
 export default function Login() {
   const navigate = useNavigate();
-  const location = useLocation(); // 🟢 agregado
+  const location = useLocation(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [loading, setLoading] = useState(false);
   const [mensaje, setMensaje] = useState<{ tipo: "success" | "error" | "info"; texto: string } | null>(null);
 
-  // 🟢 Nuevo useEffect: muestra mensaje si viene desde Register
   useEffect(() => {
     if (location.state && location.state.mensaje) {
       setMensaje(location.state.mensaje);
