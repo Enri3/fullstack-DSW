@@ -5,8 +5,6 @@ import logo from "../assets/img/logo.png";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/admin.css";
-import BotonVolver from "../components/botonVolver";
-import "../assets/styles/botonVolver.css";
 import MensajeAlerta from "../components/mensajesAlerta"; 
 
 import type { Cliente } from "../types/Cliente";
@@ -34,7 +32,6 @@ export default function Admin() {
     <>
       <HeaderAdmin cantidad={cantidad} />
       <div className="dashboard-container admin-dashboard">
-        <BotonVolver />
 
         {mensaje && <MensajeAlerta tipo={mensaje.tipo} texto={mensaje.texto} />}
 
