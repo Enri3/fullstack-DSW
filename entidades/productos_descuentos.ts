@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
-import { Producto } from "./producto"; // Asumo esta ruta de tu entidad Producto
-import { Descuento } from "./descuento"; // Asumo esta ruta de tu entidad Descuento
+import { Producto } from "./producto"; 
+import { Descuento } from "./descuento"; 
 
 @Entity("productos_descuentos")
 export class ProductoDescuento {
@@ -11,12 +11,10 @@ export class ProductoDescuento {
     @PrimaryColumn({ name: "idProd" })
     idProd!: number;
 
-    // Relación ManyToOne con Descuento
     @ManyToOne(() => Descuento, descuento => descuento.productoDescuentos, { onDelete: 'CASCADE' })
     @JoinColumn({ name: "idDesc" })
     descuento!: Descuento;
 
-    // Relación ManyToOne con Producto
     @ManyToOne(() => Producto, producto => producto.productoDescuento, { onDelete: 'CASCADE' })
     @JoinColumn({ name: "idProd" })
     producto!: Producto;

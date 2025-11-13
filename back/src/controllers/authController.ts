@@ -8,7 +8,6 @@ const clienteRepo = AppDataSource.getRepository(Cliente);
 
 export const getAllClientes = async (req: Request, res: Response): Promise<void> => {
   try {
-    // obtenemos todos los clientes cuyo idTipoCli != 1
     const clientes = await clienteRepo
       .createQueryBuilder("cliente")
       .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion"])

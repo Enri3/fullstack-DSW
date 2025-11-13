@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "../database"; // Tu DataSource
+import { AppDataSource } from "../database"; 
 import { Descuento } from "../../../entidades/descuento";
 import { ProductoDescuento } from "../../../entidades/productos_descuentos"
 import { Producto } from "../../../entidades/producto";
-import { In } from "typeorm"; // Necesario para buscar múltiples IDs
+import { In } from "typeorm"; 
 
-// Ejemplo simple de otro controlador con TypeORM
 export const getAllProductos = async (req: Request, res: Response): Promise<void> => {
     try {
         const productoRepository = AppDataSource.getRepository(Producto);
@@ -19,7 +18,7 @@ export const getAllProductos = async (req: Request, res: Response): Promise<void
 
 export const addDescuento = async (req:Request, res:Response): Promise<void> => {
   try {
-    // Frontend envía { porcentaje, fechaDesde, fechaHasta, idsProductos }
+
     const { porcentaje, fechaDesde, fechaHasta, idsProductos } = req.body;
     if (
       porcentaje === undefined ||
@@ -35,11 +34,9 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
     const descuentosRepository = AppDataSource.getRepository(Descuento);
     const productosDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
 
-    // Normalizar fechas a 'YYYY-MM-DD' para evitar problemas de zona horaria
     const fdStr = new Date(fechaDesde).toISOString().slice(0, 10);
     const fhStr = new Date(fechaHasta).toISOString().slice(0, 10);
 
-    // Buscar si ya existe un descuento con mismos valores (comparando por DATE exacta)
     const descuento = await descuentosRepository
       .createQueryBuilder("d")
       .where("d.porcentaje = :p", { p: Number(porcentaje) })
@@ -51,7 +48,6 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
     if (!descuento) {
       const nuevo = descuentosRepository.create({
         porcentaje: Number(porcentaje),
-        // TypeORM permite strings 'YYYY-MM-DD' para columnas DATE en MySQL
         fechaDesde: fdStr as unknown as Date,
         fechaHasta: fhStr as unknown as Date,
       });
@@ -61,7 +57,6 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
       idDesc = descuento.idDesc as number;
     }
 
-    // Obtener relaciones existentes para evitar duplicados
     const existentes = await productosDescuentoRepository.find({
       where: { idDesc, idProd: In(idsProductos) }
     });
@@ -89,27 +84,23 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
 
 export const buscarDescuentoFiltro = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { nomProdBuscados } = req.body; // concuerda con lo que envía el front
+    const { nomProdBuscados } = req.body; 
 
     const productoDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
 
-    // Base query: traemos la relación producto y descuento
     let qb = productoDescuentoRepository
       .createQueryBuilder("pd")
       .innerJoinAndSelect("pd.producto", "producto")
       .innerJoinAndSelect("pd.descuento", "descuento")
       .where("producto.deleted = 0");
 
-    // Si hay filtro, aplicarlo (MySQL: usar LIKE; hacerlo case-insensitive con LOWER)
     if (nomProdBuscados && String(nomProdBuscados).trim() !== "") {
       const filtro = nomProdBuscados.trim().toLowerCase();
       qb = qb.andWhere("LOWER(producto.nombreProd) LIKE :filtro", { filtro: `%${filtro}%` });
     }
 
-    // getMany devuelve entidades ProductoDescuento con producto y descuento cargados
     const resultados = await qb.getMany();
 
-    // Mapear a la forma que espera el frontend
     const descuentosEncontrados = resultados.map((pd) => {
       const prod = pd.producto as Producto | undefined;
       const desc = pd.descuento as Descuento | undefined;
@@ -135,7 +126,6 @@ export const eliminarDescuentos = async (req: Request, res: Response): Promise<v
   try {
     const { idsDescuentos } = req.body;
 
-    // Validar entrada
     if (!Array.isArray(idsDescuentos) || idsDescuentos.length === 0) {
       res.status(400).json({ message: "Debe proporcionar una lista de IDs de descuentos a eliminar" });
       return;
@@ -143,7 +133,6 @@ export const eliminarDescuentos = async (req: Request, res: Response): Promise<v
 
     const descuentoRepository = AppDataSource.getRepository(Descuento);
 
-    // Verificar que existan
     const existentes = await descuentoRepository.findByIds(idsDescuentos);
 
     if (existentes.length === 0) {
@@ -151,7 +140,6 @@ export const eliminarDescuentos = async (req: Request, res: Response): Promise<v
       return;
     }
 
-    // Eliminar descuentos (con cascada)
     await descuentoRepository.remove(existentes);
 
     res.status(200).json({

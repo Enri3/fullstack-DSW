@@ -5,7 +5,6 @@ import { Producto} from "../../../entidades/producto";
 const productoRepo = AppDataSource.getRepository(Producto);
 
 
-
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await productoRepo.find();

@@ -36,7 +36,6 @@ AppDataSource.initialize()
     app.use("/tipo_usuarios", tipoUsuariosRoutes);
     app.use("/descuentos", descuentosRoutes);
 
-    // Ruta 404
     app.use((req: Request, res: Response): void => {
       res.status(404).json({ message: "Ruta no encontrada" });
     });
