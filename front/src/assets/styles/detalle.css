@@ -1,12 +1,12 @@
-/* --- CONTENEDOR GENERAL --- */
+
 #producto-detalle-container {
   display: flex;
   justify-content: center;
   margin: 50px auto;
-  width: 90%;              /* ocupa casi todo el ancho */
+  width: 90%;              
 }
 
-/* --- TARJETA HORIZONTAL --- */
+
 .detalle-producto-card {
   display: flex;
   flex-direction: row;
@@ -20,7 +20,7 @@
   overflow: hidden;
 }
 
-/* --- IMAGEN --- */
+
 .detalle-img {
   flex: 1;
   background-color: #f8f8f8;
@@ -37,11 +37,11 @@
   object-fit: cover;
 }
 
-/* --- INFORMACIÓN --- */
+
 .detalle-info {
   flex: 2;
   padding: 40px 50px;
-  background-color: var(--tarjeta); /* un beige suave */
+  background-color: var(--tarjeta); 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,11 +90,11 @@
   }
 }
 
-/* --- BOTONES DE ADMINISTRACIÓN --- */
+
 
         .botones-detalle {
             display: flex;
-            gap: 10px; /* separación horizontal */
+            gap: 10px; 
             justify-content: center;
             margin-top: 20px;
             
@@ -110,4 +110,8 @@
         border-radius: 8px;
         transition: background-color 0.3s;
         width: 200px;
+        }
+
+        .boton-detalle:hover {
+        background-color: var(--click);
         }

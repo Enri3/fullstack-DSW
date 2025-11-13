@@ -188,6 +188,9 @@ button:hover{
         flex: 1;    
            padding: 10px 20px;     
         width: auto;  }
+        .botones-admin button:hover {
+        background-color: var(--click);
+    }
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -198,7 +201,7 @@ button:hover{
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Importante para que esté por encima */
+        z-index: 1000; 
         }
 
         .modal {

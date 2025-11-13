@@ -92,7 +92,7 @@ export default function Detalle() {
 
              {resultados.length > 0 ? (
               <table className="tabla-descuentos">
-                <p className="mt-3 mb-2 font-semibold">Descuentos disponibles para este producto:</p>
+                <p className="mt-4 mb-2 font-semibold">Descuentos disponibles para este producto:</p>
            
                 <tbody>
                   {resultados.map((d) => (
