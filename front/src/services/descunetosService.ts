@@ -52,7 +52,7 @@ export const getAllProductos = async () => {
 
 export const buscarDescuentoFiltro = async (nomProdBuscados: string) => {
   try {
-    const res = await fetch(`${API_URL}/buscPorProd`, {
+    const res = await fetch(`${API_URL}/buscDescFilt`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

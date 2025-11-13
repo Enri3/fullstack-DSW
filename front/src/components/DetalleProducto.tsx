@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import "../assets/styles/detalle.css";
-import{ buscarPorProd } from "../services/descunetosService";
+import{ buscarDescuentoFiltro } from "../services/descunetosService";
 
 interface Producto {
   idProd: number | string;
@@ -47,7 +47,7 @@ export default function Detalle() {
       setLoading(true);
       if (!producto) return;
   
-      const data = await buscarPorProd(producto.nombreProd);
+      const data = await buscarDescuentoFiltro(producto.nombreProd);
       console.log("Descuentos recibidos:", data);
   
       setResultados(Array.isArray(data) ? data : [data]);
