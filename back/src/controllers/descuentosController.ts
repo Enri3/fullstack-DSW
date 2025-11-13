@@ -131,51 +131,6 @@ export const buscarDescuentoFiltro = async (req: Request, res: Response): Promis
   }
 };
 
-export const buscarPorProd = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { nomProdBuscados } = req.body; // concuerda con lo que envía el front
-
-    const productoDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
-
-    // Base query: traemos la relación producto y descuento
-    let qb = productoDescuentoRepository
-      .createQueryBuilder("pd")
-      .innerJoinAndSelect("pd.producto", "producto")
-      .innerJoinAndSelect("pd.descuento", "descuento")
-      .where("producto.deleted = 0");
-
-    // Si hay filtro, aplicarlo (MySQL: usar LIKE; hacerlo case-insensitive con LOWER)
-    if (nomProdBuscados && String(nomProdBuscados).trim() !== "") {
-      const filtro = nomProdBuscados.trim().toLowerCase();
-      qb = qb.andWhere("LOWER(producto.nombreProd) EQUALS :filtro", { filtro: `%${filtro}%` });
-    }
-
-    // getMany devuelve entidades ProductoDescuento con producto y descuento cargados
-    const resultados = await qb.getMany();
-
-    // Mapear a la forma que espera el frontend
-    const descuentosEncontrados = resultados.map((pd) => {
-      const prod = pd.producto as Producto | undefined;
-      const desc = pd.descuento as Descuento | undefined;
-
-      return {
-        idProd: prod?.idProd ?? null,
-        nombreProd: prod?.nombreProd ?? "",
-        idDesc: desc?.idDesc ?? null,
-        porcentaje: desc ? Number(desc.porcentaje) : null,
-        fechaDesde: desc?.fechaDesde ?? null,
-        fechaHasta: desc?.fechaHasta ?? null,
-      };
-    });
-
-    res.status(200).json(descuentosEncontrados);
-  } catch (error) {
-    console.error("Error al buscar descuentos:", error);
-    res.status(500).json({ message: "Error interno al buscar descuentos" });
-  }
-};
-
-
 export const eliminarDescuentos = async (req: Request, res: Response): Promise<void> => {
   try {
     const { idsDescuentos } = req.body;
