@@ -1,17 +1,20 @@
 
 export interface Producto {
-  idProd: number | string;
+  idProd: number;
   nombreProd: string;
   precioProd: number;
   urlImg?: string;
   medida?: string;
+}
+
+export interface ProductoConCantidad extends Producto {
   cantidad: number;
 }
 
 /*Agrega un producto al carrito en localStorage.*/
 /* Retorna la cantidad total de ese producto en el carrito. */
 export function agregarAlCarrito(producto: Producto): number {
-  const memoria: Producto[] = JSON.parse(localStorage.getItem("productos") || "[]");
+  const memoria: ProductoConCantidad[] = JSON.parse(localStorage.getItem("productos") || "[]");
   let cuenta = 0;
 
   const indiceProducto = memoria.findIndex((p) => p.idProd === producto.idProd);
@@ -36,7 +39,7 @@ export function agregarAlCarrito(producto: Producto): number {
 //Resta 1 al producto en el carrito.  
 //Si la cantidad llega a 0, lo elimina del carrito.
 export function restarAlCarrito(producto: Producto): void {
-  const memoria: Producto[] = JSON.parse(localStorage.getItem("productos") || "[]");
+  const memoria: ProductoConCantidad[] = JSON.parse(localStorage.getItem("productos") || "[]");
   const indiceProducto = memoria.findIndex((p) => p.idProd === producto.idProd);
 
   if (indiceProducto === -1) return; // Producto no encontrado
@@ -59,13 +62,13 @@ export function obtenerProductosCarrito(): Producto[] {
 }
 
 // Inicializa un nuevo producto con cantidad 1*/
-export function getNuevoProducto(producto: Producto): Producto {
+export function getNuevoProducto(producto: Producto): ProductoConCantidad {
   return { ...producto, cantidad: 1 };
 }
 
 //Calcula y devuelve la cantidad total de productos en el carrito */
 export function actualizarCarrito(): number {
-  const memoria: Producto[] = JSON.parse(localStorage.getItem("productos") || "[]");
+  const memoria: ProductoConCantidad[] = JSON.parse(localStorage.getItem("productos") || "[]");
   return memoria.reduce((acum, current) => acum + current.cantidad, 0);
 }
 

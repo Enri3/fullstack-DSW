@@ -8,7 +8,7 @@ import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 
 interface Producto {
-  idProd: number | string;
+  idProd: number;
   nombreProd: string;
 }
 

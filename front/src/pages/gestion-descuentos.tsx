@@ -1,14 +1,12 @@
 import HeaderAdmin from "../components/header_admin";
 import { Link } from "react-router-dom";
 import { obtenerCantidadCarrito } from "../services/cartService";
-import BotonVolver from "../components/botonVolver";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import type { DescuentoEncontrado } from "../types/Descuentos";
 
 import { eliminarDescuentos, buscarDescuentoFiltro } from "../services/descunetosService";
 import "../assets/styles/eliminarClientes.css";
-import "../assets/styles/botonVolver.css";
 import BuscadorDescuento from "../components/buscadorDescuento";
 
 export default function Descuentos() {
@@ -82,7 +80,6 @@ export default function Descuentos() {
  return (
      <>
          <HeaderAdmin cantidad={cantidad} /> 
-         <BotonVolver />
  
          <div className="admin-page-container">
              <h2 className="admin-page-title">Panel de Administración - Descuentos</h2>
@@ -116,7 +113,6 @@ export default function Descuentos() {
                  <p className="no-data-message">No se encontraron descuentos que coincidan con la búsqueda.</p>
              )}
  
-             {/* Tabla de Descuentos */}
              {!loading && descuentos.length > 0 && (
                  <table className="admin-table">
                      <thead>

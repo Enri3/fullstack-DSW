@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BotonVolver from "../components/botonVolver";
-import "../assets/styles/botonVolver.css";
 import "../assets/styles/nuevo-descuento.css";
 
 import { obtenerCantidadCarrito } from "../services/cartService";
@@ -19,7 +17,6 @@ export default function NuevoDescuento() {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // Cargar productos al montar
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -35,7 +32,6 @@ export default function NuevoDescuento() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validaciones
     if (productosSeleccionados.length === 0 || !porcentaje || !fechaDesde || !fechaHasta
     ) {
       alert("Por favor completa todos los campos y selecciona al menos un producto");
@@ -43,6 +39,7 @@ export default function NuevoDescuento() {
     }
 
     const nuevoDescuento = {
+      idDesc: Number(),
       porcentaje: Number(porcentaje),
       fechaDesde: new Date(fechaDesde),
       fechaHasta: new Date(fechaHasta),
@@ -52,16 +49,13 @@ export default function NuevoDescuento() {
       setLoading(true);
       const data = await addDescuento(nuevoDescuento, productosSeleccionados);
 
-      // data es { message, idDesc } según tu backend
       alert(data.message);
 
-      // limpiar formulario
       setProductosSeleccionados([]);
       setPorcentaje("");
       setFechaDesde("");
       setFechaHasta("");
 
-      // redirigir a gestión de descuentos
       navigate("/gestion-descuentos");
 
     } catch (error: any) {
@@ -75,12 +69,10 @@ export default function NuevoDescuento() {
     <>
     <HeaderAdmin cantidad={cantidad} /> 
     <div className="contenedor-descuentos">
-      <BotonVolver />
       <h1>Gestión de Descuentos</h1>
         
       <form onSubmit={handleSubmit} className="form-descuento">
         <h3>Registrar un nuevo descuento</h3>
-        {/* Selección múltiple de productos */}
         <label htmlFor="productoID">Productos:</label>
         <select
           id="productoID"
@@ -105,7 +97,6 @@ export default function NuevoDescuento() {
           Usa <b>Ctrl</b> (Windows) o <b>Cmd</b> (Mac) para seleccionar varios productos
         </p>
 
-       {/* Porcentaje */}
         <label htmlFor="porcentaje">Porcentaje de descuento (%):</label>
         <input
           type="number"
@@ -118,7 +109,6 @@ export default function NuevoDescuento() {
           required
         />
 
-           {/* Fechas */}
         <label htmlFor="fechaDesde">Fecha Desde:</label>
         <input
           type="date"

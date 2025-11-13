@@ -5,18 +5,11 @@ import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import "../assets/styles/detalle.css";
 import{ buscarDescuentoFiltro } from "../services/descunetosService";
-
-interface Producto {
-  idProd: number | string;
-  nombreProd: string;
-  medida?: string;
-  precioProd: number;
-  urlImg?: string;
-}
+import type { Producto } from '../types/Producto';
 
 export default function Detalle() {
   const location = useLocation();
-  const state = location.state as { idProd?: number | string } | null;
+  const state = location.state as { idProd?: number } | null;
   const idProd = state?.idProd;
 
   const [producto, setProducto] = useState<Producto | null>(null);

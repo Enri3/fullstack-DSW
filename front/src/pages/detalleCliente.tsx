@@ -9,19 +9,18 @@ import{ buscarDescuentoFiltro } from "../services/descunetosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import "../assets/styles/eliminarClientes.css";
-import "../assets/styles/botonVolver.css";
 
 interface Producto {
-  idProd: number | string;
+  idProd: number;
   nombreProd: string;
-  precioProd?: number;
+  precioProd: number;
   medida?: string;
   urlImg?: string;
 }
 
 export default function DetalleCliente() {
   const location = useLocation();
-  const state = location.state as { idProd?: number | string } | null;
+  const state = location.state as { idProd?: number } | null;
   const idProd = state?.idProd;
 
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
@@ -34,7 +33,6 @@ export default function DetalleCliente() {
     return <p style={{ color: "red" }}>ID de producto no válido o no recibido.</p>;
   }
 
-  // Cargar producto al montar
   useEffect(() => {
     const cargarProducto = async () => {
       try {
@@ -66,11 +64,8 @@ export default function DetalleCliente() {
     <>
       <HeaderConPanel cantidad={cantidad} />
 
-      {/* Mostrar detalle */}
-      <Detalle idProd={idProd}
-       />
+      <Detalle/>
 
-      {/* Botones */}
       <div className="botones-detalle">
         <button onClick={handleAgregar} className="boton-detalle">
           Agregar al carrito

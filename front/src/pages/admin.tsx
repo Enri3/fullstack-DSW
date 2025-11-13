@@ -5,9 +5,7 @@ import logo from "../assets/img/logo.png";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/admin.css";
-import BotonVolver from "../components/botonVolver";
-import "../assets/styles/botonVolver.css";
-import MensajeAlerta from "../components/mensajesAlerta"; // 🟢 agregado
+import MensajeAlerta from "../components/mensajesAlerta";
 
 import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
@@ -24,10 +22,9 @@ export default function Admin() {
       setCliente(JSON.parse(storedCliente));
     }
 
-    // 🟢 Mostrar mensaje si viene del login
     if (location.state && location.state.mensaje) {
       setMensaje(location.state.mensaje);
-      window.history.replaceState({}, document.title); // limpia el state al recargar
+      window.history.replaceState({}, document.title);
     }
   }, [location]);
 
@@ -35,18 +32,14 @@ export default function Admin() {
     <>
       <HeaderAdmin cantidad={cantidad} />
       <div className="dashboard-container admin-dashboard">
-        <BotonVolver />
 
-        {/* 🟢 mensaje de bienvenida */}
         {mensaje && <MensajeAlerta tipo={mensaje.tipo} texto={mensaje.texto} />}
 
-        {/* 1. SECCIÓN DE BIENVENIDA Y ESTADÍSTICAS */}
         <section className="welcome-section admin-welcome">
           <h1 className="welcome-title">Panel de Administración - Administrador</h1>
           <p className="admin-status">Bienvenido, {cliente.nombreCli}.</p>
         </section>
 
-        {/* 3. GRID DE LLAMADAS A LA ACCIÓN (CTAs) DE GESTIÓN */}
         <h2 className="section-title">Tareas de Gestión</h2>
         <div className="cta-grid admin-cta-grid">
           <a href="/admin/pedidos" className="cta-card cta-pedidos">
@@ -71,7 +64,6 @@ export default function Admin() {
           </Link>
         </div>
 
-        {/* 4. SECCIÓN DE ACTIVIDAD RECIENTE */}
         <div className="info-layout admin-activity">
           <section className="recent-activity admin-recent-orders">
             <h2>Últimos Pedidos Pendientes</h2>

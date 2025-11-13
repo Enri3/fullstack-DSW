@@ -1,5 +1,5 @@
 type Producto = {
-  idProd: number | string;
+  idProd: number;
   nombreProd: string;
   medida?: string;
   precioProd: number;
@@ -17,7 +17,7 @@ export async function getProductos() {
   
 
 // Obtener un producto por ID
-export async function getProductoById(idProd: string | number): Promise<Producto> {
+export async function getProductoById(idProd: number): Promise<Producto> {
   const res = await fetch(`http://localhost:4000/productos/${idProd}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Error al obtener producto");
