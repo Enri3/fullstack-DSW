@@ -7,8 +7,10 @@ import "../assets/styles/nuevo-descuento.css";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import type { Producto } from "../types/Producto";
 import { getAllProductos, addDescuento } from "../services/descunetosService";
+import HeaderAdmin from "../components/header_admin";
 
 export default function NuevoDescuento() {
+  const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<Producto[]>([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState<number[]>([]);
   const [porcentaje, setPorcentaje] = useState<string>("");
@@ -59,6 +61,9 @@ export default function NuevoDescuento() {
       setFechaDesde("");
       setFechaHasta("");
 
+      // redirigir a gestión de descuentos
+      navigate("/gestion-descuentos");
+
     } catch (error: any) {
       console.error("Error al registrar descuento:", error);
       alert(error.message || "Error al conectar con el servidor");
@@ -67,6 +72,8 @@ export default function NuevoDescuento() {
     }}
 
   return (
+    <>
+    <HeaderAdmin cantidad={cantidad} /> 
     <div className="contenedor-descuentos">
       <BotonVolver />
       <h1>Gestión de Descuentos</h1>
@@ -138,5 +145,6 @@ export default function NuevoDescuento() {
         </button>
       </form>
     </div>
+  </>
   );
 }
