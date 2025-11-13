@@ -101,6 +101,7 @@
         }
 
         .boton-detalle {
+        margin-bottom: 2%;
         padding: 10px 20px;
         background-color: var(--oscuro);
         color: white;
