@@ -1,25 +1,19 @@
-/* * Variables de Color Reutilizadas de la Estética Vivelas */
+
 :root {
-    --color-fondo-principal: #f5f3ed; /* Crema muy claro */
-    --color-fondo-secundario: #e8e3d3; /* Crema un poco más oscuro, para contrastes sutiles */
-    --color-texto-principal: #3c3c3c; /* Gris oscuro */
-    --color-accent: #8b5e3c; /* Marrón/Tierra */
-    --color-borde-suave: #d3ccc0; /* Borde sutil */
+    --color-fondo-principal: #f5f3ed; 
+    --color-fondo-secundario: #e8e3d3; 
+    --color-texto-principal: #3c3c3c; 
+    --color-accent: #8b5e3c; 
+    --color-borde-suave: #d3ccc0; 
     --font-serif: 'Playfair Display', Georgia, serif; 
     --font-sans: 'Montserrat', 'Helvetica Neue', sans-serif; 
 }
-
-
-/* ---------------------------------
- * CONTENEDOR Y TÍTULO
- * ---------------------------------
- */
 
 .admin-page-container {
     max-width: 1000px;
     margin: 40px auto; 
     padding: 0 20px;
-    background-color: var(--color-fondo-principal); /* Fondo crema general */
+    background-color: var(--color-fondo-principal);
     min-height: 80vh;
     font-family: var(--font-sans);
 }
@@ -35,15 +29,10 @@
     border-bottom: 1px solid var(--color-borde-suave);
 }
 
-/* ---------------------------------
- * INPUT DE BÚSQUEDA
- * ---------------------------------
- */
-
 .input-busqueda-clientes {
     width: 100%;
     padding: 12px 15px;
-    margin-bottom: 25px; /* Espacio antes de la barra de acciones */
+    margin-bottom: 25px; 
     border: 1px solid var(--color-borde-suave);
     border-radius: 6px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -55,15 +44,13 @@
 .input-busqueda-clientes:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 2px rgba(139, 94, 60, 0.2); /* Sombra de foco sutil */
+    box-shadow: 0 0 0 2px rgba(139, 94, 60, 0.2); 
 }
 
-/* Mensaje de carga */
 .text-gray-500 {
     color: #888;
 }
 
-/* Mensaje de no datos */
 .no-data-message {
     text-align: center;
     color: var(--color-texto-principal);
@@ -73,14 +60,9 @@
     margin-top: 20px;
 }
 
-/* ---------------------------------
- * BARRA DE ACCIONES Y BOTONES
- * ---------------------------------
- */
-
 .admin-actions-bar {
     margin-bottom: 20px;
-    text-align: right; /* Alineamos los botones a la derecha */
+    text-align: right; 
 }
 
 .admin-actions-bar button {
@@ -91,12 +73,11 @@
     font-weight: 500;
     transition: background-color 0.2s, color 0.2s;
     font-family: var(--font-sans);
-    margin-left: 10px; /* Separación entre botones */
+    margin-left: 10px; 
 }
 
-/* Estilo para el botón Eliminar (color de alerta) */
 .btn-delete-selected {
-    background-color: #d15d5d; /* Rojo más apagado/tierra */
+    background-color: #d15d5d; 
     border-color: #d15d5d;
     color: white;
 }
@@ -113,12 +94,6 @@
     cursor: not-allowed;
 }
 
-
-/* ---------------------------------
- * TABLA DE DATOS
- * ---------------------------------
- */
-
 .admin-table {
     width: 100%;
     border-collapse: collapse;
@@ -126,13 +101,12 @@
     border: 1px solid var(--color-borde-suave);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); 
     margin-top: 20px;
 }
 
-/* Encabezado de la tabla */
 .admin-table thead {
-    background-color: var(--color-fondo-secundario); /* Color crema oscuro para el header */
+    background-color: var(--color-fondo-secundario); 
     color: var(--color-texto-principal);
     border-bottom: 2px solid var(--color-borde-suave);
 }
@@ -151,10 +125,9 @@
     font-size: 0.9em;
 }
 
-/* Columna del Checkbox */
 .admin-table .th-checkbox,
 .admin-table .td-checkbox {
-    width: 50px; /* Ancho fijo para el checkbox */
+    width: 50px; 
     padding: 15px 10px;
     text-align: center;
 }
@@ -162,25 +135,22 @@
     padding: 15px 10px;
 }
 
-/* Filas del cuerpo */
 .admin-table tbody tr:last-child td {
-    border-bottom: none; /* Eliminar borde de la última fila */
+    border-bottom: none; 
 }
 
 .admin-table tbody tr:nth-child(even) {
-    background-color: #fcfcfc; /* Alternar el color de fondo sutilmente */
+    background-color: #fcfcfc; 
 }
 
 .admin-table tbody tr:hover {
-    background-color: var(--color-fondo-secundario); /* Resaltar al pasar el ratón */
+    background-color: var(--color-fondo-secundario);
 }
 
-/* Checkboxes (Estilo por defecto del navegador, solo ajustes de tamaño) */
 .admin-table input[type="checkbox"] {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    /* Ajuste visual para Vivelas */
     accent-color: var(--color-accent); 
     border: 1px solid var(--color-borde-suave);
     border-radius: 3px;
@@ -188,10 +158,6 @@
     vertical-align: middle;
 }
 
-/* ---------------------------------
- * RESPONSIVE (Ajustes para móviles)
- * ---------------------------------
- */
 @media (max-width: 768px) {
     .admin-actions-bar {
         text-align: left;
@@ -199,7 +165,7 @@
     
     .admin-page-container {
         margin: 20px auto;
-        padding: 0 15px; /* Ajuste de padding en móvil */
+        padding: 0 15px; 
     }
     
     .admin-actions-bar button {
@@ -209,7 +175,6 @@
         margin-bottom: 10px;
     }
 
-    /* Estilos de tabla en modo móvil (apilado) */
     .admin-table table, 
     .admin-table thead, 
     .admin-table tbody, 
@@ -235,7 +200,7 @@
     }
     
     .admin-table tbody tr:nth-child(even) {
-        background-color: white; /* Desactivar alternado */
+        background-color: white; 
     }
 
     .admin-table td {
@@ -246,15 +211,13 @@
     }
     
     .admin-table td:last-child {
-        border-bottom: none; /* Eliminar borde inferior de la última celda */
+        border-bottom: none; 
     }
 
-    /* Mostrar etiqueta antes del contenido en móviles */
     .admin-table tr td:nth-child(2)::before { content: "Nombre:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
     .admin-table tr td:nth-child(3)::before { content: "Apellido:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
     .admin-table tr td:nth-child(4)::before { content: "Email:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
     
-    /* Columna del checkbox en móvil */
     .admin-table .td-checkbox { 
         text-align: left; 
         border-bottom: none;
@@ -263,6 +226,6 @@
     }
     .admin-table .td-checkbox input[type="checkbox"] {
         margin-left: 0;
-        transform: scale(1.1); /* Hacer el checkbox un poco más grande */
+        transform: scale(1.1); 
     }
 }

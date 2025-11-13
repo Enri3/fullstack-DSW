@@ -47,5 +47,5 @@
 
 .botones {
   display: flex;
-  gap: 10px; /* separación horizontal */
+  gap: 10px;
 }

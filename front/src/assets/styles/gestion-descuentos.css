@@ -1,16 +1,15 @@
-/* * Variables de Color Reutilizadas de la Estética Vivelas */
+
 :root {
-    --color-fondo-principal: #f5f3ed; /* Crema muy claro */
-    --color-fondo-secundario: #e8e3d3; /* Crema un poco más oscuro, para contrastes sutiles */
-    --color-texto-principal: #3c3c3c; /* Gris oscuro */
-    --color-accent: #8b5e3c; /* Marrón/Tierra */
-    --color-accent-hover: #724d31; /* Marrón/Tierra más oscuro para hover */
-    --color-borde-suave: #d3ccc0; /* Borde sutil */
+    --color-fondo-principal: #f5f3ed;
+    --color-fondo-secundario: #e8e3d3; 
+    --color-texto-principal: #3c3c3c; 
+    --color-accent: #8b5e3c;
+    --color-accent-hover: #724d31; 
+    --color-borde-suave: #d3ccc0; 
     --font-serif: 'Playfair Display', Georgia, serif; 
     --font-sans: 'Montserrat', 'Helvetica Neue', sans-serif; 
 }
 
-/* Estilos de Body para asegurar que las fuentes se apliquen */
 body {
     background-color: var(--color-fondo-principal);
     font-family: var(--font-sans);
@@ -19,10 +18,6 @@ body {
     padding: 0;
 }
 
-/* ---------------------------------
- * BOTÓN VOLVER (Simulación)
- * ---------------------------------
- */
 .boton-volver-container {
     max-width: 1000px;
     margin: 20px auto 0;
@@ -41,13 +36,6 @@ body {
 .btn-volver:hover {
     background-color: var(--color-fondo-secundario);
 }
-
-
-/* ---------------------------------
- * CONTENEDOR Y TÍTULO
- * (Clases copiadas directamente de tu código)
- * ---------------------------------
- */
 
 .admin-page-container {
     max-width: 1000px;
@@ -69,12 +57,7 @@ body {
     border-bottom: 1px solid var(--color-borde-suave);
 }
 
-/* ---------------------------------
- * INPUT DE BÚSQUEDA
- * ---------------------------------
- */
-
-.input-busqueda-clientes { /* Se mantiene la clase para la estética */
+.input-busqueda-clientes { 
     width: 100%;
     padding: 12px 15px;
     margin-bottom: 25px;
@@ -105,21 +88,16 @@ body {
     margin-top: 20px;
 }
 
-/* ---------------------------------
- * BARRA DE ACCIONES Y BOTONES
- * ---------------------------------
- */
-
 .admin-actions-bar {
     margin-bottom: 20px;
     text-align: right;
-    display: flex; /* Usamos flex para alinear los botones en línea */
+    display: flex; 
     justify-content: flex-end;
-    gap: 10px; /* Espacio entre botones */
+    gap: 10px; 
 }
 
 .admin-actions-bar button, 
-.admin-actions-bar a { /* Aplica estilos base a botones y enlaces (Crear Nuevo) */
+.admin-actions-bar a { 
     padding: 10px 20px;
     border: 1px solid var(--color-accent);
     border-radius: 4px;
@@ -127,12 +105,11 @@ body {
     font-weight: 500;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s;
     font-family: var(--font-sans);
-    text-decoration: none; /* Importante para el enlace <a> */
-    display: inline-block; /* Importante para el enlace <a> */
-    line-height: 1.2; /* Para centrar el texto verticalmente */
+    text-decoration: none; 
+    display: inline-block; 
+    line-height: 1.2; 
 }
 
-/* Estilo para el botón CREAR NUEVO (Color primario/accent) */
 .btn-new-item {
     background-color: var(--color-accent); 
     border-color: var(--color-accent);
@@ -143,8 +120,6 @@ body {
     border-color: var(--color-accent-hover);
 }
 
-
-/* Estilo para el botón Eliminar (color de alerta) */
 .btn-delete-selected {
     background-color: #d15d5d;
     border-color: #d15d5d;
@@ -162,13 +137,6 @@ body {
     color: #a0a0a0;
     cursor: not-allowed;
 }
-
-
-/* ---------------------------------
- * TABLA DE DATOS
- * (Clases copiadas directamente de tu código)
- * ---------------------------------
- */
 
 .admin-table {
     width: 100%;
@@ -234,14 +202,10 @@ body {
     vertical-align: middle;
 }
 
-/* ---------------------------------
- * RESPONSIVE (Ajustes para móviles)
- * ---------------------------------
- */
 @media (max-width: 768px) {
     .admin-actions-bar {
         text-align: left;
-        flex-direction: column; /* Apilar botones en móvil */
+        flex-direction: column; 
         align-items: flex-start;
     }
     
@@ -251,14 +215,13 @@ body {
     }
     
     .admin-actions-bar button,
-    .admin-actions-bar a { /* Aplicar display block a ambos botones en móvil */
+    .admin-actions-bar a { 
         display: block;
         width: 100%;
         margin-left: 0;
         margin-bottom: 10px;
     }
 
-    /* Estilos de tabla en modo móvil (apilado) */
     .admin-table table, 
     .admin-table thead, 
     .admin-table tbody, 
@@ -298,7 +261,6 @@ body {
         border-bottom: none;
     }
 
-    /* Etiquetas antes del contenido en móviles (Ajustadas para Descuentos) */
     .admin-table tr td:nth-child(2)::before { content: "Código:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
     .admin-table tr td:nth-child(3)::before { content: "Tipo:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }
     .admin-table tr td:nth-child(4)::before { content: "Valor:"; font-weight: bold; position: absolute; left: 15px; color: var(--color-accent); }

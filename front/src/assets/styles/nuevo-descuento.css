@@ -2,9 +2,9 @@
   padding: 30px;
   max-width: 600px;
   margin: 40px auto;
-  color: #3b2f17; /* tono café oscuro */
+  color: #3b2f17;
   font-family: 'Segoe UI', sans-serif;
-  background-color: rgba(255, 250, 230, 0.7); /* sutil fondo translúcido */
+  background-color: rgba(255, 250, 230, 0.7); 
   border-radius: 20px;
   box-shadow: 0 4px 16px rgba(90, 75, 47, 0.3);
   backdrop-filter: blur(6px);

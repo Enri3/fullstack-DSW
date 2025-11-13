@@ -17,7 +17,6 @@
   opacity: 0;
 }
 
-/* Colores por tipo */
 .mensaje-alerta.success {
   background-color: #4caf50;
 }
@@ -30,7 +29,6 @@
   background-color: #3498db;
 }
 
-/* Animación de aparición y desvanecido */
 @keyframes fadeInOut {
   0% {
     opacity: 0;
