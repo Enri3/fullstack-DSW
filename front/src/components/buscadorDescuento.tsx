@@ -3,6 +3,7 @@ import "../assets/styles/style.css";
 import React, { useState, useEffect } from "react";
 import { buscarDescuentoFiltro } from "../services/descunetosService";
 
+
 interface BuscadorDescuentoProps {
   onResultados: (clientes: any[]) => void;
   setLoading: (loading: boolean) => void;
