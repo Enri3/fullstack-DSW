@@ -80,7 +80,3 @@ export default function DetalleCliente() {
     </>
   );
 }
-
-function onResultados(arg0: any[]) {
-  throw new Error("Function not implemented.");
-}

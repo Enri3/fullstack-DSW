@@ -25,7 +25,7 @@ type Producto = {
 export default function Inicio() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [index, setIndex] = useState(0);
-    const [productos, setProductos] = useState<Producto[]>([]);
+  const [productos, setProductos] = useState<Producto[]>([]);
   const [mostrarTodos, setMostrarTodos] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

@@ -39,6 +39,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
     //"jsx": "react-jsx",
     //"verbatimModuleSyntax": true,
     "isolatedModules": true,

@@ -8,7 +8,6 @@ import ModificarProducto from "./pages/modificarProducto";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ClienteIngresado from "./pages/clienteIngresado";
-import ProductosEspeciales from './pages/productosEspeciales';
 import Admin from './pages/admin';
 import CerrarSesion from './pages/cerrarSesion';
 import EditarCliente from './pages/editar-cliente';
@@ -45,7 +44,6 @@ function App() {
         <Route path="/login" element={<Login />} /> 
         <Route path="/register" element={<Register />} />
         <Route path="/clienteIngresado" element={<ClienteIngresado />} />
-        <Route path="/productos-especiales" element={<ProductosEspeciales />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/cerrar-sesion" element={<CerrarSesion />} />
         <Route path="/editar-cliente" element={<EditarCliente />} />

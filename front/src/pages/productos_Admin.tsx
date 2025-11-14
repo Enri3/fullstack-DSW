@@ -82,7 +82,6 @@ export default function DisplayProductos() {
        <BuscadorProducto onResultados={setProductos} setLoading={setLoading} />
         
         <section id="productos-container-display">
-          {/* Sección de agregar producto */}
           <div className="tarjeta-add">
             <div className="mensaje">
               <br />
@@ -98,11 +97,8 @@ export default function DisplayProductos() {
             </div>
           </div>
 
-          {/* Mensajes de estado */}
           {loading && <p>Cargando productos...</p>}
           {error && <p style={{ color: "red" }}>{error}</p>}
-
-          {/* Listado de productos */}
           
           {!loading && productos.length > 0 && productos.map((producto) => (
           <div key={producto.idProd} className="tarjeta-producto-display">
@@ -130,7 +126,6 @@ export default function DisplayProductos() {
       </main>
       <Footer />
 
-      {/* Modal de confirmación */}
       {modalVisible && (
         <div className="modal-overlay">
           <div className="modal">

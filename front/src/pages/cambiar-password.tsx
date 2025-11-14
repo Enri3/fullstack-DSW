@@ -23,7 +23,7 @@ const CambiarPassword: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMensaje(""); // limpia mensaje antes
+    setMensaje("");
 
     if (passwordNueva !== passwordConfirmada) {
         setTipoMensaje("error");

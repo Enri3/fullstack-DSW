@@ -20,7 +20,7 @@ export default function Login() {
   useEffect(() => {
     if (location.state && location.state.mensaje) {
       setMensaje(location.state.mensaje);
-      window.history.replaceState({}, document.title); // limpia el state para que no reaparezca al recargar
+      window.history.replaceState({}, document.title);
     }
   }, [location]);
 

@@ -7,11 +7,6 @@ import { eliminarProducto } from "../services/productosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 
-interface Producto {
-  idProd: number;
-  nombreProd: string;
-}
-
 export default function DetalleAdmin() {
   const location = useLocation();
   const navigate = useNavigate();
