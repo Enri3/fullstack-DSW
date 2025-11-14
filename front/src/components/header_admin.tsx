@@ -4,11 +4,7 @@ import logo from "../assets/img/logo.png";
 import "../assets/styles/style.css"; 
 import "../assets/styles/index.css";
 
-interface HeaderProps {
-  cantidad: number;
-}
-
-export default function HeaderAdmin({ cantidad }: HeaderProps) {
+export default function HeaderAdmin() {
   
   return (
     <header>

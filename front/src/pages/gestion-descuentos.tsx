@@ -79,7 +79,7 @@ export default function Descuentos() {
 
  return (
      <>
-         <HeaderAdmin cantidad={cantidad} /> 
+         <HeaderAdmin/> 
  
          <div className="admin-page-container">
              <h2 className="admin-page-title">Panel de Administración - Descuentos</h2>

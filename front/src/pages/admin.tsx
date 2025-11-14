@@ -30,7 +30,7 @@ export default function Admin() {
 
   return (
     <>
-      <HeaderAdmin cantidad={cantidad} />
+      <HeaderAdmin/>
       <div className="dashboard-container admin-dashboard">
 
         {mensaje && <MensajeAlerta tipo={mensaje.tipo} texto={mensaje.texto} />}

@@ -71,7 +71,7 @@ export default function EliminarClientes() {
 
      return (
     <>
-        <HeaderAdmin cantidad={cantidad} /> 
+        <HeaderAdmin/> 
 
         <div className="admin-page-container">
             <h2 className="admin-page-title">Panel de Administración - Clientes</h2>

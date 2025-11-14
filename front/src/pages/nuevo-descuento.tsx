@@ -67,7 +67,7 @@ export default function NuevoDescuento() {
 
   return (
     <>
-    <HeaderAdmin cantidad={cantidad} /> 
+    <HeaderAdmin/> 
     <div className="contenedor-descuentos">
       <h1>Gestión de Descuentos</h1>
         

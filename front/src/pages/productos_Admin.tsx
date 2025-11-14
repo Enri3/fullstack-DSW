@@ -72,7 +72,7 @@ export default function DisplayProductos() {
 
   return (
     <>
-      <HeaderAdmin cantidad={cantidad} /> 
+      <HeaderAdmin/> 
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>

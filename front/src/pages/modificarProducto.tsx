@@ -27,7 +27,7 @@ export default function ModificarProducto() {
   useEffect(() => {
     const cargarProducto = async () => {
       try {
-        const data = await getProductoById(idProd);
+        const data = await getProductoById(Number(idProd));
         setInputs({
           nombreProd: data.nombreProd || "",
           medida: data.medida || "",
@@ -70,7 +70,7 @@ export default function ModificarProducto() {
     try {
       await updateProducto(idProd, {
         ...inputs, precioProd: precioNum,
-        idProd: "",
+        idProd: Number(idProd),
         nombreProd: inputs.nombreProd
       });
       setSuccess("✅ Producto actualizado correctamente!");
