@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:4000/auth"; 
+
+const API_URL = "http://localhost:4000/auth";
 
 interface LoginCredenciales {
   email: string;
@@ -80,7 +81,7 @@ export const buscarClienteFiltro = async (nombre_emailCliente: string) => {
     const res = await fetch(`${API_URL}/buscarClienteFiltro`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre_emailCliente }),
+      body: JSON.stringify({ criterioFiltro: nombre_emailCliente }),
     });
 
     const data = await res.json();
