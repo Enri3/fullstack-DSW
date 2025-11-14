@@ -5,7 +5,7 @@ import Footer from "../components/footer";
 import Detalle from "../components/DetalleProducto";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { getProductoById } from "../services/productosService";
-import{ buscarDescuentoFiltro } from "../services/descunetosService";
+
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import "../assets/styles/eliminarClientes.css";
