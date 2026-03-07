@@ -1,14 +1,16 @@
 import { Router } from "express";
 import { buscarClienteFiltro, getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword } from "../controllers/authController";
+import { verificarToken } from "../middleware/authMiddleware";
 
 const router = Router();
 
-router.get("/getAllClientes", getAllClientes);
 router.post("/register", registrarCliente);
 router.post("/login", loginCliente);
-router.put("/edit", editarCliente);
-router.delete("/eliminar-multiple", eliminarClientes);
-router.put("/cambiar-password", cambiarPassword);
-router.post("/buscarClienteFiltro", buscarClienteFiltro);
 
-export default router; //
+router.get("/getAllClientes", verificarToken, getAllClientes);
+router.put("/edit", verificarToken, editarCliente);
+router.delete("/eliminar-multiple", verificarToken, eliminarClientes);
+router.put("/cambiar-password", verificarToken, cambiarPassword);
+router.post("/buscarClienteFiltro", verificarToken, buscarClienteFiltro);
+
+export default router;

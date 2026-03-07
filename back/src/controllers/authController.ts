@@ -86,7 +86,7 @@ export const loginCliente = async (req: Request, res: Response): Promise<void> =
     res.status(500).json({ message: "Error al iniciar sesión" });
   }
 };
-
+  
 export const editarCliente = async (req: Request, res: Response): Promise<void> => {
   const { idCli, nombreCli, apellido, direccion, email, password } = req.body;
 

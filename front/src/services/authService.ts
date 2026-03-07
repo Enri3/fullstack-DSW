@@ -1,4 +1,3 @@
-
 const API_URL = "http://localhost:4000/auth";
 
 interface LoginCredenciales {
@@ -24,11 +23,22 @@ export const loginUsuario = async (credentials: LoginCredenciales) => {
 };
 
 export const getAllClientes = async () => {
+
+  const token = localStorage.getItem("token");
+
   try {
-    const res = await fetch(`${API_URL}/getAllClientes`);
+    const res = await fetch(`${API_URL}/getAllClientes`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    });
+
     if (!res.ok) throw new Error("Error al obtener clientes");
+
     const data = await res.json();
     return data;
+
   } catch (error) {
     console.error(error);
     return [];
@@ -36,10 +46,16 @@ export const getAllClientes = async () => {
 };
 
 export const deleteMultipleClientes = async (ids: number[]) => {
+
+  const token = localStorage.getItem("token");
+
   try {
     const res = await fetch(`${API_URL}/eliminar-multiple`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({ ids }),
     });
 
@@ -50,6 +66,7 @@ export const deleteMultipleClientes = async (ids: number[]) => {
     }
 
     return data;
+
   } catch (error: any) {
     console.error("Error en deleteMultipleClientes:", error);
     throw error;
@@ -57,10 +74,16 @@ export const deleteMultipleClientes = async (ids: number[]) => {
 };
 
 export const cambiarPassword = async (idCli: number, passwordAnterior: string, passwordNueva: string) => {
+
+  const token = localStorage.getItem("token");
+
   try {
     const respuesta = await fetch(`${API_URL}/cambiar-password`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({ idCli, passwordAnterior, passwordNueva }),
     });
 
@@ -71,16 +94,23 @@ export const cambiarPassword = async (idCli: number, passwordAnterior: string, p
     }
 
     return data;
+
   } catch (error: any) {
     throw new Error(error.message || "Error de conexión con el servidor");
   }
 };
 
 export const buscarClienteFiltro = async (nombre_emailCliente: string) => {
+
+  const token = localStorage.getItem("token");
+
   try {
     const res = await fetch(`${API_URL}/buscarClienteFiltro`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({ criterioFiltro: nombre_emailCliente }),
     });
 
@@ -91,6 +121,7 @@ export const buscarClienteFiltro = async (nombre_emailCliente: string) => {
     }
 
     return data;
+
   } catch (error) {
     console.error("Error al buscar cliente:", error);
     throw error;
