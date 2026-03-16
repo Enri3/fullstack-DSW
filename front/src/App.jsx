@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import DisplayProductos from "./pages/productos_Admin";
 import DisplayProductos_C from "./pages/productos_cliente";
 import MostrarCarrito from "./pages/carrito";
@@ -8,17 +10,16 @@ import ModificarProducto from "./pages/modificarProducto";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ClienteIngresado from "./pages/clienteIngresado";
-import Admin from './pages/admin';
-import CerrarSesion from './pages/cerrarSesion';
-import EditarCliente from './pages/editar-cliente';
-import EliminarClientes from './pages/eliminar-clientes';
+import Admin from "./pages/admin";
+import CerrarSesion from "./pages/cerrarSesion";
+import EditarCliente from "./pages/editar-cliente";
+import EliminarClientes from "./pages/eliminar-clientes";
 import DetalleAdmin from "./pages/detalleAdmin";
 import DetalleCliente from "./pages/detalleCliente";
 import Inicio from "./pages/Inicio";
 import Descuentos from "./pages/gestion-descuentos";
 import CambiarPassword from "./pages/cambiar-password";
 import NuevoDescuento from "./pages/nuevo-descuento";
-
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -34,25 +35,26 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+
       <Routes>
         <Route path="/" element={<Inicio />} />
-        <Route path="/productosAdmin" element={<DisplayProductos />} />
-        <Route path="/productosCliente" element={<DisplayProductos_C />} />
-        <Route path="/carrito" element={<MostrarCarrito />} />
-        <Route path="/nuevoProducto" element={<NuevoProducto />} />
-        <Route path="/modificarProducto/:idProd" element={<ModificarProducto />} />
-        <Route path="/login" element={<Login />} /> 
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/clienteIngresado" element={<ClienteIngresado />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/cerrar-sesion" element={<CerrarSesion />} />
-        <Route path="/editar-cliente" element={<EditarCliente />} />
-        <Route path="/eliminar-clientes" element={<EliminarClientes />} />
-        <Route path="/detalleAdmin" element={<DetalleAdmin />} />
+        <Route path="/productosCliente" element={<DisplayProductos_C />} />
         <Route path="/detalleCliente" element={<DetalleCliente />} />
-        <Route path="/gestion-descuentos" element={<Descuentos />} />
-        <Route path="/cambiar-password" element={<CambiarPassword />} />
-        <Route path="/nuevo-descuento" element={<NuevoDescuento />} />
+        <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}/>
+        <Route path="/productosAdmin" element={<ProtectedRoute><DisplayProductos /></ProtectedRoute>} />
+        <Route path="/carrito" element={<ProtectedRoute><MostrarCarrito /></ProtectedRoute>} />
+        <Route path="/nuevoProducto" element={<ProtectedRoute><NuevoProducto /></ProtectedRoute>} />
+        <Route path="/modificarProducto/:idProd" element={<ProtectedRoute><ModificarProducto /></ProtectedRoute>} />
+        <Route path="/clienteIngresado" element={<ProtectedRoute><ClienteIngresado /></ProtectedRoute>} />
+        <Route path="/cerrar-sesion" element={<ProtectedRoute><CerrarSesion /></ProtectedRoute>} />
+        <Route path="/editar-cliente" element={<ProtectedRoute><EditarCliente /></ProtectedRoute>} />
+        <Route path="/eliminar-clientes" element={<ProtectedRoute><EliminarClientes /></ProtectedRoute>} />
+        <Route path="/detalleAdmin" element={<ProtectedRoute><DetalleAdmin /></ProtectedRoute>} />
+        <Route path="/gestion-descuentos" element={<ProtectedRoute><Descuentos /></ProtectedRoute>} />
+        <Route path="/cambiar-password" element={<ProtectedRoute><CambiarPassword /></ProtectedRoute>} />
+        <Route path="/nuevo-descuento" element={<ProtectedRoute><NuevoDescuento /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
