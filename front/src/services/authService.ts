@@ -3,6 +3,7 @@ const API_URL = "http://localhost:4000/auth";
 interface LoginCredenciales {
   email: string;
   password: string;
+  captcha?: string | null;
 }
 
 export const loginUsuario = async (credentials: LoginCredenciales) => {

@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { AppDataSource } from "../database";
 import { Cliente } from "../../../entidades/cliente";
+import axios from "axios";
 
 const clienteRepo = AppDataSource.getRepository(Cliente);
 
@@ -22,15 +23,37 @@ export const getAllClientes = async (req: Request, res: Response): Promise<void>
 };
 
 export const registrarCliente = async (req: Request, res: Response): Promise<void> => {
-  const { nombreCli, apellido, direccion, email, password } = req.body;
+  const { nombreCli, apellido, direccion, email, password, captcha } = req.body;
 
   if (!nombreCli || !email || !password || !direccion) {
     res.status(400).json({ message: "Faltan completar campos obligatorios" });
     return;
   }
 
+  if (!captcha) {
+    res.status(400).json({ message: "Captcha requerido" });
+    return;
+  }
+
   try {
+    const captchaVerify = await axios.post(
+      "https://www.google.com/recaptcha/api/siteverify",
+      null,
+      {
+        params: {
+          secret: "6LcId4wsAAAAAG7kuR7k-YkRvypmdG9t8VapFDV8",
+          response: captcha,
+        },
+      }
+    );
+
+    if (!captchaVerify.data.success) {
+      res.status(400).json({ message: "Captcha inválido" });
+      return;
+    }
+
     const existe = await clienteRepo.findOne({ where: { email } });
+
     if (existe) {
       res.status(400).json({ message: "El cliente ya existe" });
       return;
@@ -51,16 +74,41 @@ export const registrarCliente = async (req: Request, res: Response): Promise<voi
     await clienteRepo.save(nuevo);
 
     res.json({ message: "Cliente registrado con éxito" });
+
   } catch (error: any) {
     console.error("Error en registrarCliente:", error.message || error);
-    res.status(500).json({ message: "Error al registrar el cliente", detalle: error.message });
+    res.status(500).json({
+      message: "Error al registrar el cliente",
+      detalle: error.message,
+    });
   }
 };
 
 export const loginCliente = async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body;
+  const { email, password, captcha } = req.body;
+
+  if (!captcha) {
+    res.status(400).json({ message: "Captcha requerido" });
+    return;
+  }
 
   try {
+    const captchaVerify = await axios.post(
+      "https://www.google.com/recaptcha/api/siteverify",
+      null,
+      {
+        params: {
+          secret: "6LcId4wsAAAAAG7kuR7k-YkRvypmdG9t8VapFDV8",
+          response: captcha,
+        },
+      }
+    );
+
+    if (!captchaVerify.data.success) {
+      res.status(400).json({ message: "Captcha inválido" });
+      return;
+    }
+
     const cliente = await clienteRepo.findOne({ where: { email } });
 
     if (!cliente) {
@@ -81,6 +129,7 @@ export const loginCliente = async (req: Request, res: Response): Promise<void> =
     );
 
     res.json({ message: "Login exitoso", token, cliente });
+
   } catch (error: any) {
     console.error(error.message || error);
     res.status(500).json({ message: "Error al iniciar sesión" });

@@ -3,6 +3,7 @@ import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -12,7 +13,12 @@ export default function Register() {
   const [direccion, setDireccion] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [mensaje, setMensaje] = useState<{ texto: string; tipo: "success" | "error" | "info" } | null>(null);
+  const [captcha, setCaptcha] = useState<string | null>(null);
+
+  const [mensaje, setMensaje] = useState<{
+    texto: string;
+    tipo: "success" | "error" | "info";
+  } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,11 +29,23 @@ export default function Register() {
       return;
     }
 
+    if (!captcha) {
+      setMensaje({ texto: "Por favor completa el captcha.", tipo: "error" });
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:4000/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombreCli, apellido, direccion, email, password }),
+        body: JSON.stringify({
+          nombreCli,
+          apellido,
+          direccion,
+          email,
+          password,
+          captcha,
+        }),
       });
 
       const data = await res.json();
@@ -35,7 +53,10 @@ export default function Register() {
       if (res.ok) {
         navigate("/login", {
           state: {
-            mensaje: { texto: "¡Te registraste correctamente! Ahora podés iniciar sesión.", tipo: "success" },
+            mensaje: {
+              texto: "¡Te registraste correctamente! Ahora podés iniciar sesión.",
+              tipo: "success",
+            },
           },
         });
       } else {
@@ -71,6 +92,7 @@ export default function Register() {
               onChange={(e) => setNombreCli(e.target.value)}
               required
             />
+
             <input
               type="text"
               placeholder="Apellido"
@@ -78,6 +100,7 @@ export default function Register() {
               onChange={(e) => setApellido(e.target.value)}
               required
             />
+
             <input
               type="email"
               placeholder="Correo electrónico"
@@ -85,6 +108,7 @@ export default function Register() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
             <input
               type="text"
               placeholder="Dirección"
@@ -92,6 +116,7 @@ export default function Register() {
               onChange={(e) => setDireccion(e.target.value)}
               required
             />
+
             <input
               type="password"
               placeholder="Contraseña"
@@ -99,6 +124,7 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
             <input
               type="password"
               placeholder="Confirmar contraseña"
@@ -106,6 +132,13 @@ export default function Register() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
+
+           <div style={{ margin: "15px 0", display: "flex", justifyContent: "center" }}>
+                <ReCAPTCHA
+                sitekey="6LcId4wsAAAAACh1zDxtPNzTFaCmzh89LVrSkJw7"
+                onChange={(value: string | null) => setCaptcha(value)}
+                />
+            </div>
 
             <button type="submit">Registrarme</button>
           </form>

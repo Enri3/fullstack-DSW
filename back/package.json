@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Enri3/fullstack-DSW#readme",
   "description": "",
   "dependencies": {
+    "axios": "^1.13.6",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.3.1",

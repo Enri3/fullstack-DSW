@@ -4,18 +4,24 @@ import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { loginUsuario } from "../services/authService";
 import logo from "../assets/img/logo.png";
-import { useNavigate, useLocation } from "react-router-dom"; 
+import { useNavigate, useLocation } from "react-router-dom";
 import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Login() {
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [loading, setLoading] = useState(false);
-  const [mensaje, setMensaje] = useState<{ tipo: "success" | "error" | "info"; texto: string } | null>(null);
+  const [captcha, setCaptcha] = useState<string | null>(null);
+
+  const [mensaje, setMensaje] = useState<{
+    tipo: "success" | "error" | "info";
+    texto: string;
+  } | null>(null);
 
   useEffect(() => {
     if (location.state && location.state.mensaje) {
@@ -29,15 +35,24 @@ export default function Login() {
     setMensaje(null);
     setLoading(true);
 
+    if (!captcha) {
+      setMensaje({ tipo: "error", texto: "Por favor completa el captcha." });
+      setLoading(false);
+      return;
+    }
+
     try {
-      const data = await loginUsuario({ email, password });
+      const data = await loginUsuario({ email, password, captcha });
 
       if (data && data.token) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("cliente", JSON.stringify(data.cliente));
         setCliente(data.cliente);
 
-        const mensajeExito = { tipo: "success" as "success", texto: "¡Inicio de sesión exitoso, bienvenido!" };
+        const mensajeExito = {
+          tipo: "success" as "success",
+          texto: "¡Inicio de sesión exitoso, bienvenido!",
+        };
 
         switch (data.cliente.idTipoCli) {
           case 1:
@@ -47,13 +62,18 @@ export default function Login() {
             navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
             break;
           case 3:
-            navigate("/productos-especiales", { state: { mensaje: mensajeExito } });
+            navigate("/productos-especiales", {
+              state: { mensaje: mensajeExito },
+            });
             break;
           default:
             navigate("/", { state: { mensaje: mensajeExito } });
         }
       } else {
-        setMensaje({ tipo: "error", texto: "Respuesta inesperada del servidor." });
+        setMensaje({
+          tipo: "error",
+          texto: "Respuesta inesperada del servidor.",
+        });
       }
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
@@ -64,7 +84,12 @@ export default function Login() {
         mensajeError = err.message;
       } else if (typeof err === "string") {
         mensajeError = err;
-      } else if (err && typeof err === "object" && "message" in err && typeof err.message === "string") {
+      } else if (
+        err &&
+        typeof err === "object" &&
+        "message" in err &&
+        typeof err.message === "string"
+      ) {
         mensajeError = err.message;
       }
 
@@ -96,6 +121,7 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
             <input
               type="password"
               placeholder="Contraseña"
@@ -103,6 +129,14 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
+           <div style={{ margin: "15px 0", display: "flex", justifyContent: "center" }}>
+                <ReCAPTCHA
+                sitekey="6LcId4wsAAAAACh1zDxtPNzTFaCmzh89LVrSkJw7"
+                onChange={(value: string | null) => setCaptcha(value)}
+                />
+            </div>
+
             <button type="submit" disabled={loading}>
               {loading ? "Ingresando..." : "Ingresar"}
             </button>
