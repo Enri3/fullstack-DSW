@@ -6,6 +6,8 @@ import { Cliente} from "../../entidades/cliente";
 import { Descuento} from "../../entidades/descuento";
 import { ProductoDescuento} from "../../entidades/productos_descuentos"
 import { TipoCliente } from "../../entidades/tipo-cliente";
+import { Pedido } from "../../entidades/pedido";
+import { PedidoProducto } from "../../entidades/pedido_productos";
 import "reflect-metadata";
 
 
@@ -20,5 +22,5 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE || "test",
   synchronize: true, 
   logging: false,
-  entities: [Producto, Cliente, Descuento, ProductoDescuento, TipoCliente ], 
+  entities: [Producto, Cliente, Descuento, ProductoDescuento, TipoCliente, Pedido, PedidoProducto], 
 });

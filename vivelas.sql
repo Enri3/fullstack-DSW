@@ -147,3 +147,58 @@ LOCK TABLES `productos_descuentos` WRITE;
 INSERT INTO `productos_descuentos` VALUES (1,1),(2,1),(3,2);
 /*!40000 ALTER TABLE `productos_descuentos` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `pedidos`
+--
+
+DROP TABLE IF EXISTS `pedidos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pedidos` (
+  `idPedido` int NOT NULL AUTO_INCREMENT,
+  `fechaPedido` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `estadoPedido` varchar(50) NOT NULL,
+  `idCli` int NOT NULL,
+  PRIMARY KEY (`idPedido`),
+  KEY `idCli` (`idCli`),
+  CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`idCli`) REFERENCES `clientes` (`idCli`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pedidos`
+--
+
+LOCK TABLES `pedidos` WRITE;
+/*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pedidos_productos`
+--
+
+DROP TABLE IF EXISTS `pedidos_productos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pedidos_productos` (
+  `idPedido` int NOT NULL,
+  `idProd` int NOT NULL,
+  `cantidadProdPed` int NOT NULL,
+  KEY `idPedido` (`idPedido`),
+  KEY `idProd` (`idProd`),
+  PRIMARY KEY (`idPedido`, `idProd`),
+  CONSTRAINT `pedidos_productos_ibfk_1` FOREIGN KEY (`idPedido`) REFERENCES `pedidos` (`idPedido`) ON DELETE CASCADE,
+  CONSTRAINT `pedidos_productos_ibfk_2` FOREIGN KEY (`idProd`) REFERENCES `productos` (`idProd`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pedidos_productos`
+--
+
+LOCK TABLES `pedidos_productos` WRITE;
+/*!40000 ALTER TABLE `pedidos_productos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pedidos_productos` ENABLE KEYS */;
+UNLOCK TABLES;

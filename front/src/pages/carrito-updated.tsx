@@ -57,6 +57,7 @@ export default function MostrarCarrito() {
     try {
       setComprando(true);
 
+      // Obtener cliente desde localStorage
       const clienteJSON = localStorage.getItem("cliente");
       if (!clienteJSON) {
         alert("Debes estar autenticado para comprar");
@@ -64,27 +65,27 @@ export default function MostrarCarrito() {
       }
 
       const cliente = JSON.parse(clienteJSON);
-      const idCli = Number(cliente?.idCli);
+      const idCli = cliente.idCli;
 
-      if (!idCli || Number.isNaN(idCli)) {
-        alert("No se pudo identificar el cliente");
-        return;
-      }
-
+      // Preparar productos en formato para la API
       const productosParaPedido = productos.map((p) => ({
         idProd: p.idProd,
         cantidadProdPed: p.cantidad,
       }));
 
+      // Crear el pedido
       await createPedido(idCli, "pendienteDePago", productosParaPedido);
 
-      alert("Pedido creado exitosamente");
+      // Mensaje de éxito
+      alert("¡Pedido creado exitosamente! Estado: Pendiente de Pago");
+
+      // Reiniciar carrito
       reiniciarCarrito();
       setProductos([]);
       setCantidad(obtenerCantidadCarrito());
     } catch (error: any) {
       console.error("Error al crear pedido:", error);
-      alert("Error al procesar la compra");
+      alert("Error al procesar la compra: " + (error.message || "Error desconocido"));
     } finally {
       setComprando(false);
     }

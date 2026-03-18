@@ -10,6 +10,7 @@ import productosRoutes from "./routes/productos";
 import authRoutes from "./routes/auth";
 import tipoUsuariosRoutes from "./routes/tipo_clientes";
 import descuentosRoutes from "./routes/descuentos";
+import pedidosRoutes from "./routes/pedidos";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ AppDataSource.initialize()
     app.use("/auth", authRoutes);
     app.use("/tipo_usuarios", tipoUsuariosRoutes);
     app.use("/descuentos", descuentosRoutes);
+    app.use("/pedidos", pedidosRoutes);
 
     app.use((req: Request, res: Response): void => {
       res.status(404).json({ message: "Ruta no encontrada" });
