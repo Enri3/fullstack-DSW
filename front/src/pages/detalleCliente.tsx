@@ -5,6 +5,8 @@ import Footer from "../components/footer";
 import Detalle from "../components/DetalleProducto";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { getProductoById } from "../services/productosService";
+import { agregarProductoEnCarrito } from "../services/pedidosService";
+import type { Cliente } from "../types/Cliente";
 
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
@@ -48,11 +50,26 @@ export default function DetalleCliente() {
     cargarProducto();
   }, [idProd]);
 
-  const handleAgregar = () => {
+  const handleAgregar = async () => {
     if (!producto) return;
 
-    agregarAlCarrito(producto);
-    setCantidad(obtenerCantidadCarrito());
+    try {
+      const clienteStorage = localStorage.getItem("cliente");
+
+      if (!clienteStorage) {
+        setError("Debe iniciar sesion para agregar productos al carrito.");
+        return;
+      }
+
+      const cliente = JSON.parse(clienteStorage) as Cliente;
+      await agregarProductoEnCarrito(cliente.idCli, producto.idProd, 1);
+
+      agregarAlCarrito(producto);
+      setCantidad(obtenerCantidadCarrito());
+    } catch (err) {
+      console.error("Error al agregar producto al pedido en carrito:", err);
+      setError("No se pudo agregar el producto al carrito.");
+    }
   };
 
 
@@ -67,7 +84,7 @@ export default function DetalleCliente() {
       <Detalle/>
 
       <div className="botones-detalle">
-        <button onClick={handleAgregar} className="boton-detalle">
+        <button onClick={() => void handleAgregar()} className="boton-detalle">
           Agregar al carrito
         </button>
         <Link to="/productosCliente">

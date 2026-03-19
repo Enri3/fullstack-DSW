@@ -29,6 +29,19 @@ export async function getPedidosByIdCliente(idCli: number): Promise<Pedido[]> {
   }
 }
 
+export async function getPedidoEnCarritoByCliente(idCli: number): Promise<Pedido | null> {
+  try {
+    const res = await fetch(`${API_URL}/cliente/${idCli}/enCarrito`);
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error("Error al obtener pedido en carrito del cliente");
+    const data = await res.json();
+    return data as Pedido;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function getPedidoById(idPedido: number): Promise<Pedido> {
   try {
     const res = await fetch(`${API_URL}/${idPedido}`);
@@ -65,6 +78,33 @@ export async function createPedido(
   }
 }
 
+export async function agregarProductoEnCarrito(
+  idCli: number,
+  idProd: number,
+  cantidadProdPed = 1
+): Promise<Pedido> {
+  return createPedido(idCli, "enCarrito", [{ idProd, cantidadProdPed }]);
+}
+
+export async function actualizarCantidadProductoEnPedido(
+  idPedido: number,
+  idProd: number,
+  cantidadProdPed: number
+): Promise<void> {
+  try {
+    const res = await fetch(`${API_URL}/${idPedido}/productos/${idProd}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cantidadProdPed })
+    });
+
+    if (!res.ok) throw new Error("Error al actualizar cantidad del producto en pedido");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function updatePedidoEstado(
   idPedido: number,
   estadoPedido: string
@@ -92,4 +132,37 @@ export async function deletePedido(idPedido: number): Promise<void> {
     console.error(error);
     throw error;
   }
+}
+
+export async function reiniciarPedidoEnCarrito(idCli: number): Promise<void> {
+  const pedidoEnCarrito = await getPedidoEnCarritoByCliente(idCli);
+  if (!pedidoEnCarrito) return;
+  await deletePedido(pedidoEnCarrito.idPedido);
+}
+
+export async function hidratarCarritoDesdePedidoEnCarrito(idCli: number): Promise<void> {
+  const pedidoEnCarrito = await getPedidoEnCarritoByCliente(idCli);
+
+  if (!pedidoEnCarrito || !pedidoEnCarrito.pedidoProductos || pedidoEnCarrito.pedidoProductos.length === 0) {
+    localStorage.removeItem("productos");
+    return;
+  }
+
+  const productos = pedidoEnCarrito.pedidoProductos
+    .filter((pp) => pp.producto)
+    .map((pp) => ({
+      idProd: pp.idProd,
+      nombreProd: pp.producto!.nombreProd,
+      precioProd: pp.producto!.precioProd,
+      urlImg: pp.producto!.urlImg,
+      medida: pp.producto!.medida,
+      cantidad: pp.cantidadProdPed,
+    }));
+
+  if (productos.length === 0) {
+    localStorage.removeItem("productos");
+    return;
+  }
+
+  localStorage.setItem("productos", JSON.stringify(productos));
 }

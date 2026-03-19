@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import type { Producto } from "../types/Producto";
+import type { Cliente } from "../types/Cliente";
+import { agregarProductoEnCarrito } from "../services/pedidosService";
 import BuscadorProducto from "../components/buscadorProductos";
 
 export default function DisplayProductos_C() {
@@ -34,9 +36,24 @@ export default function DisplayProductos_C() {
     fetchProductos();
   }, []);
 
-  const handleAgregar = (producto: Producto) => {
-    agregarAlCarrito(producto);
-    setCantidad(obtenerCantidadCarrito());
+  const handleAgregar = async (producto: Producto) => {
+    try {
+      const clienteStorage = localStorage.getItem("cliente");
+
+      if (!clienteStorage) {
+        setError("Debe iniciar sesion para agregar productos al carrito.");
+        return;
+      }
+
+      const cliente = JSON.parse(clienteStorage) as Cliente;
+
+      await agregarProductoEnCarrito(cliente.idCli, producto.idProd, 1);
+      agregarAlCarrito(producto);
+      setCantidad(obtenerCantidadCarrito());
+    } catch (err) {
+      console.error("Error al agregar producto al pedido en carrito:", err);
+      setError("No se pudo agregar el producto al carrito.");
+    }
   };
 
   return (
@@ -69,7 +86,7 @@ export default function DisplayProductos_C() {
               </h3>
               <p className="precio">${producto.precioProd}</p>
               </Link>
-              <button onClick={() => handleAgregar(producto)}>
+              <button onClick={() => void handleAgregar(producto)}>
                 Agregar al carrito
               </button>
             </div>

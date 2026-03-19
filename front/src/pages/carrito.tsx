@@ -4,7 +4,14 @@ import Footer from "../components/footer";
 import "../assets/styles/cart.css";
 import "../assets/styles/style.css";
 import { obtenerCantidadCarrito, agregarAlCarrito, restarAlCarrito, reiniciarCarrito, obtenerProductosCarrito } from "../services/cartService";
-import { createPedido } from "../services/pedidosService";
+import {
+  agregarProductoEnCarrito,
+  actualizarCantidadProductoEnPedido,
+  getPedidoEnCarritoByCliente,
+  hidratarCarritoDesdePedidoEnCarrito,
+  reiniciarPedidoEnCarrito,
+  updatePedidoEstado
+} from "../services/pedidosService";
 
 type ProductoCarrito = {
   idProd: number;
@@ -15,68 +22,148 @@ type ProductoCarrito = {
 };
 
 export default function MostrarCarrito() {
-    const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
+  const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<ProductoCarrito[]>([]);
   const [comprando, setComprando] = useState(false);
 
-  useEffect(() => {
+  const obtenerIdCliente = (): number => {
+    const clienteJSON = localStorage.getItem("cliente");
+    if (!clienteJSON) return 0;
+
+    const cliente = JSON.parse(clienteJSON);
+    const idCli = Number(cliente?.idCli);
+    if (!idCli || Number.isNaN(idCli)) return 0;
+
+    return idCli;
+  };
+
+  const refrescarCarritoLocal = (): ProductoCarrito[] => {
     const prods = obtenerProductosCarrito().map((p: any) => ({
       ...p,
       idProd: typeof p.idProd === "string" ? Number(p.idProd) : p.idProd,
     }));
+
     setProductos(prods);
+    setCantidad(obtenerCantidadCarrito());
+
+    return prods;
+  };
+
+  useEffect(() => {
+    const sincronizarCarritoDesdeServidor = async () => {
+      const idCli = obtenerIdCliente();
+
+      if (!idCli) {
+        refrescarCarritoLocal();
+        return;
+      }
+
+      try {
+        await hidratarCarritoDesdePedidoEnCarrito(idCli);
+      } catch (error) {
+        console.error("Error al hidratar carrito desde servidor:", error);
+      } finally {
+        refrescarCarritoLocal();
+      }
+    };
+
+    void sincronizarCarritoDesdeServidor();
   }, []);
 
-  function handleAgregar(producto: ProductoCarrito) {
+  async function handleAgregar(producto: ProductoCarrito) {
     agregarAlCarrito(producto);
-    const prods = obtenerProductosCarrito().map((p: any) => ({
-      ...p,
-      idProd: typeof p.idProd === "string" ? Number(p.idProd) : p.idProd,
-    }));
-    setProductos(prods);
-    setCantidad(obtenerCantidadCarrito());
+
+    try {
+      const idCli = obtenerIdCliente();
+      if (!idCli) {
+        refrescarCarritoLocal();
+        return;
+      }
+
+      const pedidoEnCarrito = await getPedidoEnCarritoByCliente(idCli);
+      const prods = refrescarCarritoLocal();
+      const prodActualizado = prods.find((p) => p.idProd === producto.idProd);
+      const cantidadActual = prodActualizado?.cantidad ?? 0;
+
+      if (!pedidoEnCarrito) {
+        await agregarProductoEnCarrito(idCli, producto.idProd, cantidadActual);
+      } else {
+        await actualizarCantidadProductoEnPedido(
+          pedidoEnCarrito.idPedido,
+          producto.idProd,
+          cantidadActual
+        );
+      }
+    } catch (error) {
+      console.error("Error al sincronizar suma de producto en carrito:", error);
+      alert("No se pudo sincronizar el carrito con el servidor");
+      refrescarCarritoLocal();
+    }
   }
 
-  function handleRestar(producto: ProductoCarrito) {
+  async function handleRestar(producto: ProductoCarrito) {
     restarAlCarrito(producto);
-    const prods = obtenerProductosCarrito().map((p: any) => ({
-      ...p,
-      idProd: typeof p.idProd === "string" ? Number(p.idProd) : p.idProd,
-    }));
-    setProductos(prods);
-    setCantidad(obtenerCantidadCarrito());
+
+    try {
+      const idCli = obtenerIdCliente();
+      if (!idCli) {
+        refrescarCarritoLocal();
+        return;
+      }
+
+      const pedidoEnCarrito = await getPedidoEnCarritoByCliente(idCli);
+      const prods = refrescarCarritoLocal();
+      const prodActualizado = prods.find((p) => p.idProd === producto.idProd);
+      const cantidadActual = prodActualizado?.cantidad ?? 0;
+
+      if (pedidoEnCarrito) {
+        await actualizarCantidadProductoEnPedido(
+          pedidoEnCarrito.idPedido,
+          producto.idProd,
+          cantidadActual
+        );
+      }
+    } catch (error) {
+      console.error("Error al sincronizar resta de producto en carrito:", error);
+      alert("No se pudo sincronizar el carrito con el servidor");
+      refrescarCarritoLocal();
+    }
   }
 
-  function handleReiniciar() {
+  async function handleReiniciar() {
     reiniciarCarrito();
-    setProductos([]);
-    setCantidad(obtenerCantidadCarrito());
+
+    try {
+      const idCli = obtenerIdCliente();
+      if (idCli) {
+        await reiniciarPedidoEnCarrito(idCli);
+      }
+    } catch (error) {
+      console.error("Error al reiniciar pedido en carrito:", error);
+      alert("No se pudo reiniciar el carrito en el servidor");
+    } finally {
+      setProductos([]);
+      setCantidad(obtenerCantidadCarrito());
+    }
   }
 
   async function handleComprar() {
     try {
       setComprando(true);
 
-      const clienteJSON = localStorage.getItem("cliente");
-      if (!clienteJSON) {
+      const idCli = obtenerIdCliente();
+      if (!idCli) {
         alert("Debes estar autenticado para comprar");
         return;
       }
 
-      const cliente = JSON.parse(clienteJSON);
-      const idCli = Number(cliente?.idCli);
-
-      if (!idCli || Number.isNaN(idCli)) {
-        alert("No se pudo identificar el cliente");
+      const pedidoEnCarrito = await getPedidoEnCarritoByCliente(idCli);
+      if (!pedidoEnCarrito) {
+        alert("No hay un pedido en carrito para finalizar");
         return;
       }
 
-      const productosParaPedido = productos.map((p) => ({
-        idProd: p.idProd,
-        cantidadProdPed: p.cantidad,
-      }));
-
-      await createPedido(idCli, "pendienteDePago", productosParaPedido);
+      await updatePedidoEstado(pedidoEnCarrito.idPedido, "pendienteDePago");
 
       alert("Pedido creado exitosamente");
       reiniciarCarrito();
@@ -112,9 +199,9 @@ export default function MostrarCarrito() {
                   <h3>{producto.nombreProd}</h3>
                   <p className="precio">${producto.precioProd}</p>
                   <div className="botones-carrito">
-                    <button onClick={() => handleRestar(producto)}>-</button>
+                    <button onClick={() => void handleRestar(producto)}>-</button>
                     <span className="cantidad">{producto.cantidad}</span>
-                    <button onClick={() => handleAgregar(producto)}>+</button>
+                    <button onClick={() => void handleAgregar(producto)}>+</button>
                   </div>
                 </div>
               ))}
@@ -127,7 +214,7 @@ export default function MostrarCarrito() {
               <button onClick={handleComprar} disabled={comprando}>
                 {comprando ? "Procesando..." : "Comprar"}
               </button>
-              <button id="reiniciar" onClick={handleReiniciar}>Reiniciar</button>
+              <button id="reiniciar" onClick={() => void handleReiniciar()}>Reiniciar</button>
               </div>
             </section>
           </>

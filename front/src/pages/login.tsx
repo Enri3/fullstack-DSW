@@ -3,6 +3,7 @@ import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { loginUsuario } from "../services/authService";
+import { hidratarCarritoDesdePedidoEnCarrito } from "../services/pedidosService";
 import logo from "../assets/img/logo.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { Cliente } from "../types/Cliente";
@@ -48,6 +49,12 @@ export default function Login() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("cliente", JSON.stringify(data.cliente));
         setCliente(data.cliente);
+
+        try {
+          await hidratarCarritoDesdePedidoEnCarrito(Number(data.cliente.idCli));
+        } catch (error) {
+          console.error("No se pudo hidratar el carrito desde el pedido en carrito:", error);
+        }
 
         const mensajeExito = {
           tipo: "success" as "success",
