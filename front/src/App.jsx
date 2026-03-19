@@ -20,6 +20,8 @@ import Inicio from "./pages/Inicio";
 import Descuentos from "./pages/gestion-descuentos";
 import CambiarPassword from "./pages/cambiar-password";
 import NuevoDescuento from "./pages/nuevo-descuento";
+import FormaDeEntrega from "./pages/formaDeEntrega";
+import MedioDePago from "./pages/medioDePago";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -45,6 +47,8 @@ function App() {
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}/>
         <Route path="/productosAdmin" element={<ProtectedRoute><DisplayProductos /></ProtectedRoute>} />
         <Route path="/carrito" element={<ProtectedRoute><MostrarCarrito /></ProtectedRoute>} />
+        <Route path="/formaDeEntrega" element={<ProtectedRoute><FormaDeEntrega /></ProtectedRoute>} />
+        <Route path="/medioDePago" element={<ProtectedRoute><MedioDePago /></ProtectedRoute>} />
         <Route path="/nuevoProducto" element={<ProtectedRoute><NuevoProducto /></ProtectedRoute>} />
         <Route path="/modificarProducto/:idProd" element={<ProtectedRoute><ModificarProducto /></ProtectedRoute>} />
         <Route path="/clienteIngresado" element={<ProtectedRoute><ClienteIngresado /></ProtectedRoute>} />

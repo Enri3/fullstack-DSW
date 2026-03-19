@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
 import "../assets/styles/cart.css";
@@ -9,8 +10,7 @@ import {
   actualizarCantidadProductoEnPedido,
   getPedidoEnCarritoByCliente,
   hidratarCarritoDesdePedidoEnCarrito,
-  reiniciarPedidoEnCarrito,
-  updatePedidoEstado
+  reiniciarPedidoEnCarrito
 } from "../services/pedidosService";
 
 type ProductoCarrito = {
@@ -22,9 +22,9 @@ type ProductoCarrito = {
 };
 
 export default function MostrarCarrito() {
+  const navigate = useNavigate();
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<ProductoCarrito[]>([]);
-  const [comprando, setComprando] = useState(false);
 
   const obtenerIdCliente = (): number => {
     const clienteJSON = localStorage.getItem("cliente");
@@ -147,34 +147,13 @@ export default function MostrarCarrito() {
     }
   }
 
-  async function handleComprar() {
-    try {
-      setComprando(true);
-
-      const idCli = obtenerIdCliente();
-      if (!idCli) {
-        alert("Debes estar autenticado para comprar");
-        return;
-      }
-
-      const pedidoEnCarrito = await getPedidoEnCarritoByCliente(idCli);
-      if (!pedidoEnCarrito) {
-        alert("No hay un pedido en carrito para finalizar");
-        return;
-      }
-
-      await updatePedidoEstado(pedidoEnCarrito.idPedido, "pendienteDePago");
-
-      alert("Pedido creado exitosamente");
-      reiniciarCarrito();
-      setProductos([]);
-      setCantidad(obtenerCantidadCarrito());
-    } catch (error: any) {
-      console.error("Error al crear pedido:", error);
-      alert("Error al procesar la compra");
-    } finally {
-      setComprando(false);
+  function handleComprar() {
+    if (productos.length === 0) {
+      alert("No hay productos en el carrito");
+      return;
     }
+
+    navigate("/formaDeEntrega");
   }
 
   const totalUnidades = productos.reduce((acc, p) => acc + p.cantidad, 0);
@@ -184,15 +163,15 @@ export default function MostrarCarrito() {
   return (
     <>
       <HeaderConPanel cantidad={cantidad} />
-      <main>
+      <main className="carrito-main">
         {productos.length === 0 ? (
           <div id="carrito-vacio">
             <p>No hay productos en el carrito</p>
-            <a href="/productosCliente">Volver y agregar</a>
+            <Link to="/productosCliente">Volver y agregar</Link>
           </div>
         ) : (
           <>
-            <section id="productos-container-carrito">
+            <section id="productos-container-carrito" className="lista-scroll-5">
               {productos.map((producto) => (
                 <div key={producto.idProd} className="tarjeta-producto-carrito">
                   <img src={producto.urlImg} alt={producto.nombreProd} />
@@ -209,10 +188,10 @@ export default function MostrarCarrito() {
             <section id="totales">
               <p>Total unidades: <span id="cantidad">{totalUnidades}</span></p>
               <p>Total precio: $<span id="precio">{totalPrecio.toFixed(2)}</span></p>
-              <p><a href="/productosCliente">Volver a la selección de productos</a></p>
+              <p><Link to="/productosCliente">Volver a la selección de productos</Link></p>
               <div className=" contenedor-botones ">
-              <button onClick={handleComprar} disabled={comprando}>
-                {comprando ? "Procesando..." : "Comprar"}
+              <button onClick={handleComprar}>
+                Comprar
               </button>
               <button id="reiniciar" onClick={() => void handleReiniciar()}>Reiniciar</button>
               </div>
