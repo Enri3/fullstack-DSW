@@ -42,11 +42,11 @@ export default function Admin() {
 
         <h2 className="section-title">Tareas de Gestión</h2>
         <div className="cta-grid admin-cta-grid">
-          <a href="/admin/pedidos" className="cta-card cta-pedidos">
+          <Link to="/admin/pedidos" className="cta-card cta-pedidos">
             <i className="icon">📝</i>
             <h3>Gestionar Pedidos</h3>
             <p>Ver y procesar órdenes de compra.</p>
-          </a>
+          </Link>
           <Link to="/productosAdmin" className="cta-card cta-productos">
             <i className="icon">📦</i>
             <h3>Inventario y Productos</h3>
@@ -70,7 +70,7 @@ export default function Admin() {
             <p>Pedido #1234 - Cliente A - $1.200</p>
             <p>Pedido #1233 - Cliente B - $950</p>
             <p>No hay pedidos urgentes.</p>
-            <a href="/admin/pedidos" className="view-all">Ver todos los pedidos</a>
+            <Link to="/admin/pedidos" className="view-all">Ver todos los pedidos</Link>
           </section>
 
           <section className="account-details admin-settings">

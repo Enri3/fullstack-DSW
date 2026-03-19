@@ -107,13 +107,23 @@ export async function actualizarCantidadProductoEnPedido(
 
 export async function updatePedidoEstado(
   idPedido: number,
-  estadoPedido: string
+  estadoPedido: string,
+  metadata?: {
+    formaEntrega?: string;
+    medioPago?: string;
+    montoTotal?: number;
+    montoPagado?: number;
+    vuelto?: number;
+  }
 ): Promise<void> {
   try {
     const res = await fetch(`${API_URL}/${idPedido}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ estadoPedido })
+      body: JSON.stringify({
+        estadoPedido,
+        ...metadata
+      })
     });
     if (!res.ok) throw new Error("Error al actualizar pedido");
   } catch (error) {

@@ -9,7 +9,8 @@ const pedidoProductoRepo = AppDataSource.getRepository(PedidoProducto);
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
     const resultado = await pedidoRepo.find({
-      relations: ["cliente", "pedidoProductos", "pedidoProductos.producto"]
+      relations: ["cliente", "pedidoProductos", "pedidoProductos.producto"],
+      order: { fechaPedido: "DESC" }
     });
     res.json(resultado);
   } catch (error: any) {
@@ -23,7 +24,8 @@ export const getByIdCliente = async (req: Request, res: Response): Promise<void>
     const { idCli } = req.params;
     const resultado = await pedidoRepo.find({
       where: { idCli: Number(idCli) },
-      relations: ["cliente", "pedidoProductos", "pedidoProductos.producto"]
+      relations: ["cliente", "pedidoProductos", "pedidoProductos.producto"],
+      order: { fechaPedido: "DESC" }
     });
 
     if (resultado.length === 0) {
@@ -165,7 +167,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 export const updateEstado = async (req: Request, res: Response): Promise<void> => {
   try {
     const { idPedido } = req.params;
-    const { estadoPedido } = req.body;
+    const { estadoPedido, formaEntrega, medioPago, montoTotal, montoPagado, vuelto } = req.body;
 
     if (!estadoPedido) {
       res.status(400).json({ error: "El estado del pedido es requerido" });
@@ -179,7 +181,38 @@ export const updateEstado = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    pedidoRepo.merge(pedido, { estadoPedido });
+    const dataToMerge: Partial<Pedido> = { estadoPedido };
+
+    if (typeof formaEntrega === "string") {
+      dataToMerge.formaEntrega = formaEntrega;
+    }
+
+    if (typeof medioPago === "string") {
+      dataToMerge.medioPago = medioPago;
+    }
+
+    if (montoTotal !== undefined && montoTotal !== null) {
+      const total = Number(montoTotal);
+      if (!Number.isNaN(total)) {
+        dataToMerge.montoTotal = total;
+      }
+    }
+
+    if (montoPagado !== undefined && montoPagado !== null) {
+      const pagado = Number(montoPagado);
+      if (!Number.isNaN(pagado)) {
+        dataToMerge.montoPagado = pagado;
+      }
+    }
+
+    if (vuelto !== undefined && vuelto !== null) {
+      const vueltoNumero = Number(vuelto);
+      if (!Number.isNaN(vueltoNumero)) {
+        dataToMerge.vuelto = vueltoNumero;
+      }
+    }
+
+    pedidoRepo.merge(pedido, dataToMerge);
     await pedidoRepo.save(pedido);
 
     res.json({ message: "Pedido actualizado correctamente" });

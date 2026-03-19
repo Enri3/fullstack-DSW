@@ -23,6 +23,7 @@ export default function MedioDePago() {
   const [cantidad] = useState(obtenerCantidadCarrito());
   const [medioPago, setMedioPago] = useState<MedioPago | null>(null);
   const [montoEfectivo, setMontoEfectivo] = useState("");
+  const esRetiroEnLocal = state.formaEntrega === "retiro";
 
   const formaEntregaLabel = useMemo(() => {
     if (state.formaEntrega === "domicilio") {
@@ -53,6 +54,28 @@ export default function MedioDePago() {
         return;
       }
 
+      if (!medioPago) {
+        alert("Debes seleccionar un medio de pago");
+        return;
+      }
+
+      if (!esRetiroEnLocal && medioPago === "efectivo") {
+        alert("El pago en efectivo solo esta disponible para retiro en local");
+        return;
+      }
+
+      if (medioPago === "efectivo") {
+        if (montoEfectivo === "") {
+          alert("Debes ingresar el monto con el que se paga en efectivo");
+          return;
+        }
+
+        if (Number.isNaN(montoNumerico) || montoNumerico < total) {
+          alert("El monto ingresado no puede ser menor al total a pagar");
+          return;
+        }
+      }
+
       const cliente = JSON.parse(clienteJSON);
       const idCli = Number(cliente?.idCli);
       if (!idCli || Number.isNaN(idCli)) {
@@ -67,7 +90,13 @@ export default function MedioDePago() {
       }
 
       const nuevoEstado = state.formaEntrega === "domicilio" ? "envio" : "retiro";
-      await updatePedidoEstado(pedidoEnCarrito.idPedido, nuevoEstado);
+      await updatePedidoEstado(pedidoEnCarrito.idPedido, nuevoEstado, {
+        formaEntrega: state.formaEntrega,
+        medioPago,
+        montoTotal: total,
+        montoPagado: medioPago === "efectivo" ? montoNumerico : total,
+        vuelto: medioPago === "efectivo" ? vuelto : 0,
+      });
 
       reiniciarCarrito();
       alert("Pago registrado y pedido actualizado correctamente");
@@ -106,40 +135,44 @@ export default function MedioDePago() {
               </span>
             </label>
 
-            <label className="opcion-pago-item">
-              <input
-                type="radio"
-                name="medioPago"
-                value="efectivo"
-                checked={medioPago === "efectivo"}
-                onChange={() => setMedioPago("efectivo")}
-              />
-              <span className="opcion-pago-texto">
-                <strong>Efectivo</strong>
-                <span className="detalle-pago">Pagas al recibir o retirar el pedido.</span>
-              </span>
-            </label>
-          </div>
-
-          <div className="efectivo-campo">
-            <label htmlFor="montoPago">Monto con el que paga</label>
-            <div className="monto-input-wrap">
-              <span className="monto-simbolo">$</span>
-              <input
-                id="montoPago"
-                type="number"
-                min="0"
-                step="1"
-                placeholder="Ingrese el monto"
-                disabled={medioPago !== "efectivo"}
-                value={montoEfectivo}
-                onChange={(e) => setMontoEfectivo(e.target.value)}
-              />
-            </div>
-            {medioPago === "efectivo" && montoEfectivo !== "" && (
-              <p className="vuelto">Vuelto estimado: ${vuelto.toFixed(2)}</p>
+            {esRetiroEnLocal && (
+              <label className="opcion-pago-item">
+                <input
+                  type="radio"
+                  name="medioPago"
+                  value="efectivo"
+                  checked={medioPago === "efectivo"}
+                  onChange={() => setMedioPago("efectivo")}
+                />
+                <span className="opcion-pago-texto">
+                  <strong>Efectivo</strong>
+                  <span className="detalle-pago">Pagas al recibir o retirar el pedido.</span>
+                </span>
+              </label>
             )}
           </div>
+
+          {esRetiroEnLocal && (
+            <div className="efectivo-campo">
+              <label htmlFor="montoPago">Monto con el que paga</label>
+              <div className="monto-input-wrap">
+                <span className="monto-simbolo">$</span>
+                <input
+                  id="montoPago"
+                  type="number"
+                  min="0"
+                  step="1"
+                  placeholder="Ingrese el monto"
+                  disabled={medioPago !== "efectivo"}
+                  value={montoEfectivo}
+                  onChange={(e) => setMontoEfectivo(e.target.value)}
+                />
+              </div>
+              {medioPago === "efectivo" && montoEfectivo !== "" && (
+                <p className="vuelto">Vuelto estimado: ${vuelto.toFixed(2)}</p>
+              )}
+            </div>
+          )}
 
           <div className="acciones-pago">
             <Link to="/formaDeEntrega" className="link-secundario">Volver a forma de entrega</Link>

@@ -13,6 +13,21 @@ export class Pedido {
   @Column({ length: 50 })
   estadoPedido!: string;
 
+  @Column({ length: 30, nullable: true })
+  formaEntrega?: string;
+
+  @Column({ length: 30, nullable: true })
+  medioPago?: string;
+
+  @Column("decimal", { precision: 10, scale: 2, nullable: true })
+  montoTotal?: number;
+
+  @Column("decimal", { precision: 10, scale: 2, nullable: true })
+  montoPagado?: number;
+
+  @Column("decimal", { precision: 10, scale: 2, nullable: true })
+  vuelto?: number;
+
   @Column({ name: "idCli" })
   idCli!: number;
 

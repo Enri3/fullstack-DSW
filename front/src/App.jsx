@@ -22,6 +22,7 @@ import CambiarPassword from "./pages/cambiar-password";
 import NuevoDescuento from "./pages/nuevo-descuento";
 import FormaDeEntrega from "./pages/formaDeEntrega";
 import MedioDePago from "./pages/medioDePago";
+import AdminPedidos from "./pages/admin-pedidos";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -45,6 +46,7 @@ function App() {
         <Route path="/productosCliente" element={<DisplayProductos_C />} />
         <Route path="/detalleCliente" element={<DetalleCliente />} />
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}/>
+        <Route path="/admin/pedidos" element={<ProtectedRoute><AdminPedidos /></ProtectedRoute>} />
         <Route path="/productosAdmin" element={<ProtectedRoute><DisplayProductos /></ProtectedRoute>} />
         <Route path="/carrito" element={<ProtectedRoute><MostrarCarrito /></ProtectedRoute>} />
         <Route path="/formaDeEntrega" element={<ProtectedRoute><FormaDeEntrega /></ProtectedRoute>} />
