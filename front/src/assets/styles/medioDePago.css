@@ -1,0 +1,163 @@
+.medio-main {
+  min-height: 70vh;
+  padding: 24px 14px 48px;
+}
+
+.medio-card {
+  max-width: 760px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.medio-card h1 {
+  margin: 0 0 16px;
+  color: #1c2b39;
+}
+
+.resumen-pago {
+  border: 1px solid #dfe5eb;
+  border-radius: 10px;
+  padding: 12px;
+  background: #f7fbff;
+}
+
+.resumen-pago p {
+  margin: 6px 0;
+}
+
+.opciones-pago {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.opcion-pago-item {
+  border: 1px solid #dfe5eb;
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.opcion-pago-item input {
+  margin-top: 0;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+}
+
+.opcion-pago-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.opcion-pago-texto strong {
+  font-size: 0.98rem;
+  line-height: 1.15;
+}
+
+.detalle-pago {
+  color: #5a6f82;
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.efectivo-campo {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.efectivo-campo label {
+  font-weight: 600;
+  color: #2a4661;
+}
+
+.monto-input-wrap {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  border: 1px solid #bccbdb;
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.monto-simbolo {
+  background: transparent;
+  color: #2a4661;
+  border-right: 1px solid #bccbdb;
+  padding: 10px 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.efectivo-campo input {
+  border: none;
+  border-radius: 0;
+  padding: 10px 12px;
+  width: 100%;
+  text-align: left;
+  font-size: 1rem;
+  color: #1f2f3f;
+}
+
+.efectivo-campo input:focus {
+  outline: none;
+}
+
+.monto-input-wrap:focus-within {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.15);
+}
+
+.vuelto {
+  margin: 0;
+  color: #1f5fb8;
+  font-weight: 600;
+}
+
+.acciones-pago {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.link-principal,
+.link-secundario {
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+.link-principal {
+  background: linear-gradient(120deg, #2f80ed, #1f5fb8);
+  border: 1px solid #1f5fb8;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.link-secundario {
+  background: #ffffff;
+  border: 1px solid #bccbdb;
+  color: #2a4661;
+}
+
+@media (max-width: 768px) {
+  .medio-card {
+    padding: 16px;
+  }
+}
