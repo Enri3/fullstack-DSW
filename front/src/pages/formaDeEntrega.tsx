@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
+import { buildImageUrl } from "../utils/imageUrl";
 import "../assets/styles/formaDeEntrega.css";
 import "../assets/styles/cart.css";
 import { obtenerCantidadCarrito, obtenerProductosCarrito } from "../services/cartService";
@@ -95,7 +96,7 @@ export default function FormaDeEntrega() {
                   const subtotal = producto.precioProd * producto.cantidad;
                   return (
                     <article key={producto.idProd} className="tarjeta-producto-carrito resumen-carrito-item">
-                      <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
+                      <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
                       <div className="resumen-carrito-info">
                         <h3>{producto.nombreProd}</h3>
                         <p className="precio">Precio unitario: ${producto.precioProd.toFixed(2)}</p>

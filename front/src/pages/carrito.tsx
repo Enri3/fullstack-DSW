@@ -12,6 +12,7 @@ import {
   hidratarCarritoDesdePedidoEnCarrito,
   reiniciarPedidoEnCarrito
 } from "../services/pedidosService";
+import { buildImageUrl } from "../utils/imageUrl";
 
 type ProductoCarrito = {
   idProd: number;
@@ -174,7 +175,7 @@ export default function MostrarCarrito() {
             <section id="productos-container-carrito" className="lista-scroll-5">
               {productos.map((producto) => (
                 <div key={producto.idProd} className="tarjeta-producto-carrito">
-                  <img src={producto.urlImg} alt={producto.nombreProd} />
+                  <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
                   <h3>{producto.nombreProd}</h3>
                   <p className="precio">${producto.precioProd}</p>
                   <div className="botones-carrito">

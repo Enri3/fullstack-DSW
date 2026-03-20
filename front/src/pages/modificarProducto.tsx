@@ -12,8 +12,8 @@ export default function ModificarProducto() {
     nombreProd: "",
     medida: "",
     precioProd: "",
-    urlImg: "",
   });
+  const [imagen, setImagen] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,6 @@ export default function ModificarProducto() {
           nombreProd: data.nombreProd || "",
           medida: data.medida || "",
           precioProd: data.precioProd?.toString() || "",
-          urlImg: data.urlImg || "",
         });
       } catch (err) {
         console.error(err);
@@ -68,11 +67,15 @@ export default function ModificarProducto() {
     }
 
     try {
-      await updateProducto(idProd, {
-        ...inputs, precioProd: precioNum,
-        idProd: Number(idProd),
-        nombreProd: inputs.nombreProd
-      });
+      const formData = new FormData();
+      formData.append("nombreProd", inputs.nombreProd);
+      formData.append("medida", inputs.medida);
+      formData.append("precioProd", precioNum.toString());
+      if (imagen) {
+        formData.append("imagen", imagen);
+      }
+
+      await updateProducto(idProd, formData);
       setSuccess("✅ Producto actualizado correctamente!");
     } catch (err) {
       console.error(err);
@@ -127,12 +130,13 @@ export default function ModificarProducto() {
             </div>
 
             <div className="item-formulario">
-              <label htmlFor="urlImg">URL Imagen:</label>
+              <label htmlFor="imagen">Nueva imagen (opcional):</label>
               <input
-                type="text"
-                name="urlImg"
-                value={inputs.urlImg}
-                onChange={handleChange}
+                type="file"
+                id="imagen"
+                name="imagen"
+                accept="image/*"
+                onChange={(e) => setImagen(e.target.files?.[0] || null)}
               />
             </div>
 

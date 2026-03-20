@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
+import React, { useState } from "react";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import Footer from "../components/footer";
-import { getProductos } from "../services/productosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import { Link } from "react-router-dom";
-
-import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 
 
 export default function NuevoProducto() {
@@ -15,8 +11,8 @@ export default function NuevoProducto() {
     nombreProd: "",
     medida: "",
     precioProd: "",
-    urlImg: "",
   });
+  const [imagen, setImagen] = useState<File | null>(null);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -43,10 +39,17 @@ export default function NuevoProducto() {
     }
 
     try {
+      const formData = new FormData();
+      formData.append("nombreProd", inputs.nombreProd);
+      formData.append("medida", inputs.medida);
+      formData.append("precioProd", precioNum.toString());
+      if (imagen) {
+        formData.append("imagen", imagen);
+      }
+
       const response = await fetch("http://localhost:4000/productos", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...inputs, precio: precioNum }),
+        body: formData,
       });
 
       const data = await response.json();
@@ -57,7 +60,8 @@ export default function NuevoProducto() {
       }
 
       setSuccess("Producto agregado correctamente!");
-      setInputs({ nombreProd: "", medida: "", precioProd: "", urlImg: "" });
+      setInputs({ nombreProd: "", medida: "", precioProd: "" });
+      setImagen(null);
     } catch (err) {
       setError("No se pudo conectar con el servidor");
       console.error(err);
@@ -109,12 +113,13 @@ export default function NuevoProducto() {
             </div>
 
             <div className="item-formulario">
-              <label htmlFor="urlImg">URL Imagen:</label>
+              <label htmlFor="imagen">Imagen:</label>
               <input
-                type="text"
-                name="urlImg"
-                value={inputs.urlImg}
-                onChange={handleChange}
+                type="file"
+                id="imagen"
+                name="imagen"
+                accept="image/*"
+                onChange={(e) => setImagen(e.target.files?.[0] || null)}
               />
             </div>
 

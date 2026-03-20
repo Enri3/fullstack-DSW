@@ -3,6 +3,8 @@ import express, { Application, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
 import { AppDataSource } from "./database"; 
 import "reflect-metadata";
 
@@ -25,6 +27,12 @@ app.use(cors({
 
 app.use(express.json());
 app.use(morgan("dev"));
+
+const fotosProductosPath = path.resolve(process.cwd(), "..", "entidades", "fotosProductos");
+if (!fs.existsSync(fotosProductosPath)) {
+  fs.mkdirSync(fotosProductosPath, { recursive: true });
+}
+app.use("/fotosProductos", express.static(fotosProductosPath));
 
 
 AppDataSource.initialize()

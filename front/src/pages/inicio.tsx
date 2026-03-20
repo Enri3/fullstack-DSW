@@ -10,6 +10,7 @@ import foto2 from "../assets/img/carrousel_2.png";
 import foto3 from "../assets/img/carrousel_3.png";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import Header from "../components/header";
+import { buildImageUrl } from "../utils/imageUrl";
 
 const imagenes = [foto1, foto2];
 type Producto = {
@@ -89,7 +90,7 @@ export default function Inicio() {
           {!loading && productosAMostrar.length > 0 && productosAMostrar.map((producto) => (
             <div key={producto.idProd} className="tarjeta-producto-display">
               <img
-                src={producto.urlImg || "/placeholder.png"}
+                src={buildImageUrl(producto.urlImg)}
                 alt={producto.nombreProd}
               />
               <h3>

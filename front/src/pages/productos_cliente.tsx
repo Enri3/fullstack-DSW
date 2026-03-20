@@ -10,6 +10,7 @@ import type { Producto } from "../types/Producto";
 import type { Cliente } from "../types/Cliente";
 import { agregarProductoEnCarrito } from "../services/pedidosService";
 import BuscadorProducto from "../components/buscadorProductos";
+import { buildImageUrl } from "../utils/imageUrl";
 
 export default function DisplayProductos_C() {
   const [productos, setProductos] = useState<Producto[]>([]); 
@@ -89,7 +90,7 @@ export default function DisplayProductos_C() {
             <div key={producto.idProd} className="tarjeta-producto-display">
             <Link to="/detalleCliente" state={{ idProd: producto.idProd }}>
               <img
-                src={producto.urlImg || "/placeholder.png"}
+                src={buildImageUrl(producto.urlImg)}
                 alt={producto.nombreProd}
               />
               <h3>

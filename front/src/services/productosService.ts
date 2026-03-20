@@ -32,12 +32,21 @@ export async function getProductoById(idProd: number): Promise<Producto> {
 
 export async function updateProducto(
   idProd: string | number,
-  producto: Producto
+  producto: Producto | FormData
 ): Promise<Producto> {
-  const res = await fetch(`http://localhost:4000/productos/update/${idProd}`, {
+  const options: RequestInit = {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(producto),
+  };
+
+  if (producto instanceof FormData) {
+    options.body = producto;
+  } else {
+    options.headers = { "Content-Type": "application/json" };
+    options.body = JSON.stringify(producto);
+  }
+
+  const res = await fetch(`http://localhost:4000/productos/update/${idProd}`, {
+    ...options,
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Error al actualizar producto");

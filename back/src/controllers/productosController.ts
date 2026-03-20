@@ -27,7 +27,8 @@ export const getAllenAlta = async (req: Request, res: Response): Promise<void> =
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { nombreProd, medida, precioProd, urlImg } = req.body;
+    const { nombreProd, medida, precioProd } = req.body;
+    const file = req.file as Express.Multer.File | undefined;
 
     if (!nombreProd || !precioProd) {
       res.status(400).json({ error: "Faltan campos obligatorios" });
@@ -44,7 +45,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
       nombreProd,
       medida: medida || null,
       precioProd: precioNum,
-      urlImg: urlImg || null,
+      urlImg: file ? `/fotosProductos/${file.filename}` : "",
       deleted: 0
     });
 
@@ -78,7 +79,8 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
     const { idProd } = req.params;
-    const { nombreProd, medida, precioProd, urlImg } = req.body;
+    const { nombreProd, medida, precioProd } = req.body;
+    const file = req.file as Express.Multer.File | undefined;
 
     if (!nombreProd || !precioProd) {
       res.status(400).json({ error: "Faltan campos obligatorios" });
@@ -97,7 +99,14 @@ export const update = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    productoRepo.merge(producto, { nombreProd, medida, precioProd: precioNum, urlImg });
+    producto.nombreProd = nombreProd;
+    producto.medida = medida;
+    producto.precioProd = precioNum;
+
+    if (file) {
+      producto.urlImg = `/fotosProductos/${file.filename}`;
+    }
+
     await productoRepo.save(producto);
 
     res.json({ message: "Producto actualizado correctamente" });

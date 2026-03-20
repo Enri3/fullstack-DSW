@@ -6,6 +6,7 @@ import "../assets/styles/style.css";
 import "../assets/styles/detalle.css";
 import{ buscarDescuentoFiltro } from "../services/descunetosService";
 import type { Producto } from '../types/Producto';
+import { buildImageUrl } from "../utils/imageUrl";
 
 export default function Detalle() {
   const location = useLocation();
@@ -70,7 +71,7 @@ export default function Detalle() {
       <section id="producto-detalle-container">
         <div key={producto.idProd} className="detalle-producto-card">
           <div className="detalle-img">
-            <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
+            <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
           </div>
 
           <div className="detalle-info">

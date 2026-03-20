@@ -5,6 +5,7 @@ import "../assets/styles/cart.css";
 import "../assets/styles/style.css";
 import { obtenerCantidadCarrito, agregarAlCarrito, restarAlCarrito, reiniciarCarrito, obtenerProductosCarrito } from "../services/cartService";
 import { createPedido } from "../services/pedidosService";
+import { buildImageUrl } from "../utils/imageUrl";
 
 type ProductoCarrito = {
   idProd: number;
@@ -109,7 +110,7 @@ export default function MostrarCarrito() {
             <section id="productos-container-carrito">
               {productos.map((producto) => (
                 <div key={producto.idProd} className="tarjeta-producto-carrito">
-                  <img src={producto.urlImg} alt={producto.nombreProd} />
+                  <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
                   <h3>{producto.nombreProd}</h3>
                   <p className="precio">${producto.precioProd}</p>
                   <div className="botones-carrito">

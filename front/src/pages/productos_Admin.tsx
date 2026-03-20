@@ -8,6 +8,7 @@ import "../assets/styles/style.css";
 import HeaderAdmin from "../components/header_admin";
 import { buscarProducto } from "../services/productosService";
 import BuscadorProducto from "../components/buscadorProductos";
+import { buildImageUrl } from "../utils/imageUrl";
 
 
 
@@ -141,7 +142,7 @@ export default function DisplayProductos() {
       <div >
         <Link to="/detalleAdmin" state={{ idProd: producto.idProd }}>
           <div className="tarjeta-baja">
-            <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
+            <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
             <h3>{producto.nombreProd} </h3>
           </div>
         </Link>
@@ -158,7 +159,7 @@ export default function DisplayProductos() {
       <>
         <Link to="/detalleAdmin" state={{ idProd: producto.idProd }}>
           <div className="tarjeta-clickable">
-            <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
+            <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
             <h3>{producto.nombreProd} - {producto.medida || "N/A"} grs</h3>
             <p className="precio">${producto.precioProd}</p>
           </div>
