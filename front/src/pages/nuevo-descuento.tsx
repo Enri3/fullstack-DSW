@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/nuevo-descuento.css";
-
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import type { Producto } from "../types/Producto";
 import { getAllProductos, addDescuento } from "../services/descunetosService";
 import HeaderAdmin from "../components/header_admin";
 
 export default function NuevoDescuento() {
+  const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<Producto[]>([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState<number[]>([]);
@@ -34,7 +36,7 @@ export default function NuevoDescuento() {
 
     if (productosSeleccionados.length === 0 || !porcentaje || !fechaDesde || !fechaHasta
     ) {
-      alert("Por favor completa todos los campos y selecciona al menos un producto");
+      mostrarError("Por favor completa todos los campos y selecciona al menos un producto");
       return;
     }
 
@@ -49,25 +51,28 @@ export default function NuevoDescuento() {
       setLoading(true);
       const data = await addDescuento(nuevoDescuento, productosSeleccionados);
 
-      alert(data.message);
+      mostrarExito(data.message);
 
       setProductosSeleccionados([]);
       setPorcentaje("");
       setFechaDesde("");
       setFechaHasta("");
 
-      navigate("/gestion-descuentos");
+      setTimeout(() => navigate("/gestion-descuentos"), 2000);
 
     } catch (error: any) {
       console.error("Error al registrar descuento:", error);
-      alert(error.message || "Error al conectar con el servidor");
+      mostrarError(error.message || "Error al conectar con el servidor");
     } finally {
       setLoading(false);
     }}
 
   return (
     <>
-    <HeaderAdmin/> 
+    <HeaderAdmin/>
+    {notificacion && (
+      <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+    )}
     <div className="contenedor-descuentos">
       <h1>Gestión de Descuentos</h1>
         

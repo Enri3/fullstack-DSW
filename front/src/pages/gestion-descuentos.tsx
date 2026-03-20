@@ -1,5 +1,7 @@
 import HeaderAdmin from "../components/header_admin";
 import { Link } from "react-router-dom";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +12,7 @@ import "../assets/styles/eliminarClientes.css";
 import BuscadorDescuento from "../components/buscadorDescuento";
 
 export default function Descuentos() {
+  const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [loading, setLoading] = useState<boolean>(true);
   const [descuentos, setDescuentos] = useState<DescuentoEncontrado[]>([]);
@@ -36,7 +39,7 @@ export default function Descuentos() {
 
     const handleEliminarSeleccionados = async () => {
     if (descuentosSeleccionados.length === 0) {
-        alert("Seleccioná al menos un descuento para eliminar");
+        mostrarError("Seleccioná al menos un descuento para eliminar");
         return;
     }
 
@@ -45,14 +48,14 @@ export default function Descuentos() {
         try {
             const data = await eliminarDescuentos(descuentosSeleccionados);
 
-            alert(data.message);
+            mostrarExito(data.message);
 
             setDescuentos((prev) =>
             prev.filter((d) => !descuentosSeleccionados.includes(d.idDesc))
             );
             setDescuentosSeleccionados([]);
         } catch (error: any) {
-            alert(error.message || "No se pudo conectar con el servidor");
+            mostrarError(error.message || "No se pudo conectar con el servidor");
         }
     };
 
@@ -79,7 +82,10 @@ export default function Descuentos() {
 
  return (
      <>
-         <HeaderAdmin/> 
+         <HeaderAdmin/>
+         {notificacion && (
+           <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+         )} 
  
          <div className="admin-page-container">
              <h2 className="admin-page-title">Panel de Administración - Descuentos</h2>

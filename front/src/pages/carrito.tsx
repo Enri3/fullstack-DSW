@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import "../assets/styles/cart.css";
 import "../assets/styles/style.css";
 import { obtenerCantidadCarrito, agregarAlCarrito, restarAlCarrito, reiniciarCarrito, obtenerProductosCarrito } from "../services/cartService";
@@ -24,6 +26,7 @@ type ProductoCarrito = {
 
 export default function MostrarCarrito() {
   const navigate = useNavigate();
+  const { notificacion, mostrarError } = usarNotificacion();
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<ProductoCarrito[]>([]);
 
@@ -97,7 +100,7 @@ export default function MostrarCarrito() {
       }
     } catch (error) {
       console.error("Error al sincronizar suma de producto en carrito:", error);
-      alert("No se pudo sincronizar el carrito con el servidor");
+      mostrarError("No se pudo sincronizar el carrito con el servidor");
       refrescarCarritoLocal();
     }
   }
@@ -126,7 +129,7 @@ export default function MostrarCarrito() {
       }
     } catch (error) {
       console.error("Error al sincronizar resta de producto en carrito:", error);
-      alert("No se pudo sincronizar el carrito con el servidor");
+      mostrarError("No se pudo sincronizar el carrito con el servidor");
       refrescarCarritoLocal();
     }
   }
@@ -141,7 +144,7 @@ export default function MostrarCarrito() {
       }
     } catch (error) {
       console.error("Error al reiniciar pedido en carrito:", error);
-      alert("No se pudo reiniciar el carrito en el servidor");
+      mostrarError("No se pudo reiniciar el carrito en el servidor");
     } finally {
       setProductos([]);
       setCantidad(obtenerCantidadCarrito());
@@ -150,7 +153,7 @@ export default function MostrarCarrito() {
 
   function handleComprar() {
     if (productos.length === 0) {
-      alert("No hay productos en el carrito");
+      mostrarError("No hay productos en el carrito");
       return;
     }
 
@@ -165,6 +168,9 @@ export default function MostrarCarrito() {
     <>
       <HeaderConPanel cantidad={cantidad} />
       <main className="carrito-main">
+        {notificacion && (
+          <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+        )}
         {productos.length === 0 ? (
           <div id="carrito-vacio">
             <p>No hay productos en el carrito</p>

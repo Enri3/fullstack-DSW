@@ -2,28 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import { getProductoById, updateProducto } from "../services/productosService";
 
 export default function ModificarProducto() {
   const { idProd } = useParams<{ idProd: string }>();
+  const { notificacion, mostrarExito, mostrarError } = usarNotificacion();
   const [inputs, setInputs] = useState({
     nombreProd: "",
     medida: "",
     precioProd: "",
   });
   const [imagen, setImagen] = useState<File | null>(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(true);
 
- 
+
   if (!idProd) {
     return <p>Error: ID de producto no válido.</p>;
   }
 
-  
+
   useEffect(() => {
     const cargarProducto = async () => {
       try {
@@ -35,7 +36,7 @@ export default function ModificarProducto() {
         });
       } catch (err) {
         console.error(err);
-        setError("No se pudo conectar con el servidor.");
+        mostrarError("No se pudo conectar con el servidor.");
       } finally {
         setLoading(false);
       }
@@ -43,26 +44,24 @@ export default function ModificarProducto() {
     cargarProducto();
   }, [idProd]);
 
- 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
- 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
 
     if (!inputs.nombreProd || !inputs.precioProd) {
-      setError("Por favor, completa los campos obligatorios.");
+      mostrarError("Por favor, completa los campos obligatorios.");
       return;
     }
 
     const precioNum = parseFloat(inputs.precioProd);
     if (isNaN(precioNum)) {
-      setError("El precio debe ser un número válido.");
+      mostrarError("El precio debe ser un número válido.");
       return;
     }
 
@@ -76,10 +75,10 @@ export default function ModificarProducto() {
       }
 
       await updateProducto(idProd, formData);
-      setSuccess("✅ Producto actualizado correctamente!");
+      mostrarExito("¡Producto actualizado correctamente!");
     } catch (err) {
       console.error(err);
-      setError("❌ Error al actualizar el producto.");
+      mostrarError("Error al actualizar el producto.");
     }
   };
 
@@ -89,14 +88,14 @@ export default function ModificarProducto() {
     <>
       <Header_sinCarrito />
       <main>
+        {notificacion && (
+          <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+        )}
         <div className="contenedor-formulario">
           <form className="tarjeta-formulario" onSubmit={handleSubmit}>
             <div className="mensaje">
               <h1>Modificar Producto</h1>
             </div>
-
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
 
             <div className="item-formulario">
               <label htmlFor="nombreProd">Nombre:</label>

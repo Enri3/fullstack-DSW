@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import "../assets/styles/cart.css";
 import "../assets/styles/style.css";
 import { obtenerCantidadCarrito, agregarAlCarrito, restarAlCarrito, reiniciarCarrito, obtenerProductosCarrito } from "../services/cartService";
@@ -16,6 +18,7 @@ type ProductoCarrito = {
 };
 
 export default function MostrarCarrito() {
+    const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
     const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<ProductoCarrito[]>([]);
   const [comprando, setComprando] = useState(false);
@@ -61,7 +64,7 @@ export default function MostrarCarrito() {
       // Obtener cliente desde localStorage
       const clienteJSON = localStorage.getItem("cliente");
       if (!clienteJSON) {
-        alert("Debes estar autenticado para comprar");
+        mostrarError("Debes estar autenticado para comprar");
         return;
       }
 
@@ -78,15 +81,17 @@ export default function MostrarCarrito() {
       await createPedido(idCli, "pendienteDePago", productosParaPedido);
 
       // Mensaje de éxito
-      alert("¡Pedido creado exitosamente! Estado: Pendiente de Pago");
+      mostrarExito("¡Pedido creado exitosamente! Estado: Pendiente de Pago");
 
       // Reiniciar carrito
-      reiniciarCarrito();
-      setProductos([]);
-      setCantidad(obtenerCantidadCarrito());
+      setTimeout(() => {
+        reiniciarCarrito();
+        setProductos([]);
+        setCantidad(obtenerCantidadCarrito());
+      }, 2000);
     } catch (error: any) {
       console.error("Error al crear pedido:", error);
-      alert("Error al procesar la compra: " + (error.message || "Error desconocido"));
+      mostrarError("Error al procesar la compra: " + (error.message || "Error desconocido"));
     } finally {
       setComprando(false);
     }
@@ -100,6 +105,9 @@ export default function MostrarCarrito() {
     <>
       <HeaderConPanel cantidad={cantidad} />
       <main>
+        {notificacion && (
+          <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+        )}
         {productos.length === 0 ? (
           <div id="carrito-vacio">
             <p>No hay productos en el carrito</p>

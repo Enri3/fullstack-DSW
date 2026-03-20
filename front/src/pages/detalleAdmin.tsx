@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import HeaderAdmin from "../components/header_admin";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import Detalle from "../components/DetalleProducto";
 import { eliminarProducto } from "../services/productosService";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 
 export default function DetalleAdmin() {
+  const { notificacion, mostrarError } = usarNotificacion();
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as { idProd?: number | string; nombreProd?: string } | null;
@@ -29,7 +32,7 @@ export default function DetalleAdmin() {
       await eliminarProducto(idProd);
       navigate("/productosAdmin"); 
     } catch {
-      alert("No se pudo eliminar el producto");
+      mostrarError("No se pudo eliminar el producto");
     } finally {
       setModalVisible(false);
     }
@@ -38,7 +41,9 @@ export default function DetalleAdmin() {
   return (
     <>
       <HeaderAdmin />
-
+      {notificacion && (
+        <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+      )}
       <Detalle />
 
       <div className="botones-detalle">

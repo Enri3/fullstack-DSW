@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import "../assets/styles/medioDePago.css";
 import { obtenerCantidadCarrito, reiniciarCarrito } from "../services/cartService";
 import { getPedidoEnCarritoByCliente, updatePedidoEstado } from "../services/pedidosService";
@@ -19,6 +21,7 @@ export default function MedioDePago() {
   const location = useLocation();
   const navigate = useNavigate();
   const state = (location.state || {}) as MedioPagoState;
+  const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
 
   const [cantidad] = useState(obtenerCantidadCarrito());
   const [medioPago, setMedioPago] = useState<MedioPago | null>(null);
@@ -45,33 +48,33 @@ export default function MedioDePago() {
     try {
       const clienteJSON = localStorage.getItem("cliente");
       if (!clienteJSON) {
-        alert("Debes iniciar sesion para pagar");
+        mostrarError("Debes iniciar sesión para pagar");
         return;
       }
 
       if (!state.formaEntrega) {
-        alert("No se encontro la forma de entrega seleccionada");
+        mostrarError("No se encontró la forma de entrega seleccionada");
         return;
       }
 
       if (!medioPago) {
-        alert("Debes seleccionar un medio de pago");
+        mostrarError("Debes seleccionar un medio de pago");
         return;
       }
 
       if (!esRetiroEnLocal && medioPago === "efectivo") {
-        alert("El pago en efectivo solo esta disponible para retiro en local");
+        mostrarError("El pago en efectivo solo está disponible para retiro en local");
         return;
       }
 
       if (medioPago === "efectivo") {
         if (montoEfectivo === "") {
-          alert("Debes ingresar el monto con el que se paga en efectivo");
+          mostrarError("Debes ingresar el monto con el que se paga en efectivo");
           return;
         }
 
         if (Number.isNaN(montoNumerico) || montoNumerico < total) {
-          alert("El monto ingresado no puede ser menor al total a pagar");
+          mostrarError("El monto ingresado no puede ser menor al total a pagar");
           return;
         }
       }
@@ -79,13 +82,13 @@ export default function MedioDePago() {
       const cliente = JSON.parse(clienteJSON);
       const idCli = Number(cliente?.idCli);
       if (!idCli || Number.isNaN(idCli)) {
-        alert("No se pudo identificar el cliente");
+        mostrarError("No se pudo identificar el cliente");
         return;
       }
 
       const pedidoEnCarrito = await getPedidoEnCarritoByCliente(idCli);
       if (!pedidoEnCarrito) {
-        alert("No hay pedido en carrito para pagar");
+        mostrarError("No hay pedido en carrito para pagar");
         return;
       }
 
@@ -99,11 +102,11 @@ export default function MedioDePago() {
       });
 
       reiniciarCarrito();
-      alert("Pago registrado y pedido actualizado correctamente");
-      navigate("/clienteIngresado");
+      mostrarExito("¡Pago registrado y pedido realizado correctamente!");
+      setTimeout(() => navigate("/clienteIngresado"), 4000);
     } catch (error) {
       console.error("Error al procesar el pago:", error);
-      alert("No se pudo procesar el pago");
+      mostrarError("No se pudo procesar el pago");
     }
   };
 
@@ -111,6 +114,9 @@ export default function MedioDePago() {
     <>
       <HeaderConPanel cantidad={cantidad} />
       <main className="medio-main">
+        {notificacion && (
+          <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+        )}
         <section className="medio-card">
           <h1>Elegir medio de pago</h1>
 

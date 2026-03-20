@@ -1,5 +1,7 @@
 import { useState } from "react";
 import HeaderAdmin from "../components/header_admin";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import type { Cliente } from "../types/Cliente";
 import { useEffect } from "react";
@@ -8,7 +10,8 @@ import "../assets/styles/eliminarClientes.css";
 import BuscadorCliente from "../components/buscadorCliente";
 
 export default function EliminarClientes() {
-    
+
+    const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
     const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [clientesSeleccionados, setClientesSeleccionados] = useState<number[]>([]);
@@ -32,7 +35,7 @@ export default function EliminarClientes() {
 
     const handleEliminarSeleccionados = async () => {
     if (clientesSeleccionados.length === 0) {
-        alert("Seleccioná al menos un cliente para eliminar");
+        mostrarError("Seleccioná al menos un cliente para eliminar");
         return;
     }
 
@@ -41,14 +44,14 @@ export default function EliminarClientes() {
         try {
             const data = await deleteMultipleClientes(clientesSeleccionados);
 
-            alert(data.message);
+            mostrarExito(data.message);
 
             setClientes((prev) =>
             prev.filter((c) => !clientesSeleccionados.includes(c.idCli))
             );
             setClientesSeleccionados([]);
         } catch (error: any) {
-            alert(error.message || "No se pudo conectar con el servidor");
+            mostrarError(error.message || "No se pudo conectar con el servidor");
         }
     };
 
@@ -71,7 +74,10 @@ export default function EliminarClientes() {
 
      return (
     <>
-        <HeaderAdmin/> 
+        <HeaderAdmin/>
+        {notificacion && (
+          <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+        )} 
 
         <div className="admin-page-container">
             <h2 className="admin-page-title">Panel de Administración - Clientes</h2>

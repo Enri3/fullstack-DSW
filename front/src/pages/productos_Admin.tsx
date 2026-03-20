@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import { getProductos, eliminarProducto, darDeAltaProducto, getProductosEnAlta } from "../services/productosService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
@@ -23,6 +25,7 @@ type Producto = {
 
 export default function DisplayProductos() {
 
+  const { notificacion, mostrarError } = usarNotificacion();
   const [productos, setProductos] = useState<Producto[]>([]);
   const [cantidad, setCantidad] = useState<number>(obtenerCantidadCarrito());
   const [loading, setLoading] = useState<boolean>(true);
@@ -68,7 +71,7 @@ export default function DisplayProductos() {
         )
       );
     } catch (err) {
-      alert("No se pudo eliminar el producto");
+      mostrarError("No se pudo eliminar el producto");
     } finally {
       setModalVisible(false);
       setProductoAEliminar(null);
@@ -87,8 +90,8 @@ export default function DisplayProductos() {
         )
       );
     } catch (err) {
-        
-        alert("No se pudo dar de alta el producto");
+
+        mostrarError("No se pudo dar de alta el producto");
     }}
   const fetchProductos = async () => {
     try {
@@ -105,7 +108,10 @@ export default function DisplayProductos() {
 
   return (
     <>
-      <HeaderAdmin/> 
+      <HeaderAdmin/>
+      {notificacion && (
+        <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+      )}
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>

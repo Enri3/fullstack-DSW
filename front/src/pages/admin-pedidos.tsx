@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderAdmin from "../components/header_admin";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import "../assets/styles/admin-pedidos.css";
 import { getPedidos, updatePedidoEstado } from "../services/pedidosService";
 import type { Pedido } from "../types/Pedido";
@@ -18,6 +20,7 @@ function formatFecha(fecha: Date | string): string {
 }
 
 export default function AdminPedidos() {
+  const { notificacion, mostrarError } = usarNotificacion();
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -54,7 +57,7 @@ export default function AdminPedidos() {
       )));
     } catch (err) {
       console.error("Error al finalizar pedido:", err);
-      alert("No se pudo finalizar el pedido");
+      mostrarError("No se pudo finalizar el pedido");
     } finally {
       setFinalizandoId(null);
     }
@@ -72,6 +75,9 @@ export default function AdminPedidos() {
     <>
       <HeaderAdmin />
       <main className="admin-pedidos-main">
+        {notificacion && (
+          <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+        )}
         <section className="admin-pedidos-card">
           <div className="admin-pedidos-header">
             <h1>Gestion de pedidos</h1>

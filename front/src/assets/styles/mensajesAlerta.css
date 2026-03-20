@@ -10,7 +10,7 @@
   font-weight: 500;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  animation: fadeInOut 3s ease-in-out forwards;
+  animation: fadeInOut 6s ease-in-out forwards;
   text-align: center;
   min-width: 300px;
   max-width: 80%;
