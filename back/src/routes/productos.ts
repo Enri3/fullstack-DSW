@@ -1,18 +1,14 @@
 import { Router } from "express";
-import { buscarProducto, getAll, getById, create, update, deleteProd } from "../controllers/productosController";
+import { buscarProducto, getAll,getAllenAlta, getById, create, update, deleteProd, darDeAlta } from "../controllers/productosController";
 
 const router = Router();
-
-router.get("/", getAll);
-
-router.get("/:idProd", getById);
-
-router.post("/", create);
-
-router.put("/:idProd", update);
-
-router.delete("/:idProd", deleteProd);
-
+router.get("/enAlta", getAllenAlta);
 router.post("/buscarProductoPorNombre", buscarProducto);
+router.get("/", getAll);
+router.post("/", create);
+router.put("/darDeAlta/:idProd", darDeAlta);
+router.put("/update/:idProd", update);
+router.get("/:idProd", getById);
+router.delete("/:idProd", deleteProd);
 
 export default router;

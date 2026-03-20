@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../components/footer";
-import { getProductos, eliminarProducto } from "../services/productosService";
+import { getProductos, eliminarProducto, darDeAltaProducto, getProductosEnAlta } from "../services/productosService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
@@ -17,6 +17,7 @@ type Producto = {
   medida?: string;
   precioProd: number;
   urlImg?: string;
+  deleted?: number;
 };
 
 export default function DisplayProductos() {
@@ -28,6 +29,7 @@ export default function DisplayProductos() {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [productoAEliminar, setProductoAEliminar] = useState<Producto | null>(null);
+  
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -57,7 +59,13 @@ export default function DisplayProductos() {
     if (!productoAEliminar) return;
     try {
       await eliminarProducto(productoAEliminar.idProd);
-      setProductos((prev) => prev.filter((p) => p.idProd !== productoAEliminar.idProd));
+      setProductos((prev) =>
+        prev.map((p) =>
+          p.idProd === productoAEliminar.idProd
+            ? { ...p, deleted: 1 }
+            : p
+        )
+      );
     } catch (err) {
       alert("No se pudo eliminar el producto");
     } finally {
@@ -65,9 +73,33 @@ export default function DisplayProductos() {
       setProductoAEliminar(null);
     }
   };
-
-
-
+  const handleAlta = async (productoId: number | string) => {
+    try {
+      await darDeAltaProducto(productoId);
+      const producto = productos.find((p) => p.idProd === productoId);
+      if (!producto) return;
+      setProductos((prev) =>
+        prev.map((p) =>
+          p.idProd === producto.idProd
+            ? { ...p, deleted: 0 }
+            : p
+        )
+      );
+    } catch (err) {
+        
+        alert("No se pudo dar de alta el producto");
+    }}
+  const fetchProductos = async () => {
+    try {
+      setLoading(true);
+      const data = await getProductos();
+      setProductos(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      setError("No se pudo conectar con el servidor.");
+    } finally {
+      setLoading(false);
+    }
+};
 
 
   return (
@@ -79,7 +111,8 @@ export default function DisplayProductos() {
           <p>Explora nuestros productos y disfruta de una experiencia única.</p>
         </div>
         
-       <BuscadorProducto onResultados={setProductos} setLoading={setLoading} />
+       <BuscadorProducto onResultados={setProductos} setLoading={setLoading} onReset={fetchProductos} admin={true}
+/>
         
         <section id="productos-container-display">
           <div className="tarjeta-add">
@@ -101,23 +134,50 @@ export default function DisplayProductos() {
           {error && <p style={{ color: "red" }}>{error}</p>}
           
           {!loading && productos.length > 0 && productos.map((producto) => (
-          <div key={producto.idProd} className="tarjeta-producto-display">
-            <Link to="/detalleAdmin" state={{ idProd: producto.idProd }}>
-              <div className="tarjeta-clickable">
-                <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
-                <h3>{producto.nombreProd} - {producto.medida || "N/A"} grs</h3>
-                <p className="precio">${producto.precioProd}</p>
-              </div>
-            </Link>
+  <div key={producto.idProd} className="tarjeta-producto-display">
 
-            <div className="botones-admin">
-              <Link to={`/modificarProducto/${producto.idProd}`}>
-                <button>Modificar</button>
-              </Link>
-              <button onClick={() => handleEliminar(producto.idProd)}>Eliminar</button>
-            </div>
+    {producto.deleted === 1 ? (
+      
+      <div >
+        <Link to="/detalleAdmin" state={{ idProd: producto.idProd }}>
+          <div className="tarjeta-baja">
+            <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
+            <h3>{producto.nombreProd} </h3>
           </div>
-        ))}
+        </Link>
+        <p style={{ color: "red", fontWeight: "bold" }}>
+          Producto dado de baja
+        </p>
+
+        <button onClick={() => handleAlta(producto.idProd)}>
+          Dar de alta
+        </button>
+      </div>
+    ) : (
+      
+      <>
+        <Link to="/detalleAdmin" state={{ idProd: producto.idProd }}>
+          <div className="tarjeta-clickable">
+            <img src={producto.urlImg || "/placeholder.png"} alt={producto.nombreProd} />
+            <h3>{producto.nombreProd} - {producto.medida || "N/A"} grs</h3>
+            <p className="precio">${producto.precioProd}</p>
+          </div>
+        </Link>
+
+        <div className="botones-admin">
+          <Link to={`/modificarProducto/${producto.idProd}`}>
+            <button>Modificar</button>
+          </Link>
+          <button onClick={() => handleEliminar(producto.idProd)}>
+            Eliminar
+          </button>
+        </div>
+      </>
+    )}
+
+  </div>
+))}
+      
 
           {!loading && productos.length === 0 && !error && (
             <p>No hay productos disponibles.</p>
@@ -139,4 +199,5 @@ export default function DisplayProductos() {
       )}
     </>
   );
-}
+
+  }

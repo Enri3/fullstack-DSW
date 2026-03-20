@@ -1,4 +1,3 @@
-
 import "../assets/styles/index.css"; 
 import "../assets/styles/style.css"; 
 import React, { useState, useEffect } from "react";
@@ -7,14 +6,32 @@ import { buscarProducto } from "../services/productosService";
 interface BuscadorProductoProps {
   onResultados: (productos: any[]) => void;
   setLoading: (loading: boolean) => void;
+  onReset?: () => void;
+  admin: boolean; 
 }
 
-export default function BuscadorProducto({ onResultados, setLoading }: BuscadorProductoProps) {
+export default function BuscadorProducto({
+  onResultados,
+  setLoading,
+  onReset,
+  admin
+}: BuscadorProductoProps) {
+
   const [termino, setTermino] = useState("");
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
+
+      
+      if (termino.trim() === "") {
+        if (onReset) {
+          onReset(); 
+        }
+        return;
+      }
+
       handleBuscar(termino);
+
     }, 400);
 
     return () => clearTimeout(delayDebounce);
@@ -23,11 +40,14 @@ export default function BuscadorProducto({ onResultados, setLoading }: BuscadorP
   const handleBuscar = async (nombreProd: string) => {
     try {
       setLoading(true);
-      const data = await buscarProducto(nombreProd);
+
+      const data = await buscarProducto(nombreProd, admin);
+
       onResultados(Array.isArray(data) ? data : [data]);
+
     } catch (err) {
       console.error("Error al buscar producto:", err);
-      onResultados([]); 
+      onResultados([]);
     } finally {
       setLoading(false);
     }
@@ -35,16 +55,19 @@ export default function BuscadorProducto({ onResultados, setLoading }: BuscadorP
 
   return (
     <div className="buscador-container">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Buscar Productos</h2>
-    <div className="flex justify-center">
-      <input
-        type="text"
-        placeholder="Escribe el nombre del producto..."
-        value={termino}
-        onChange={(e) => setTermino(e.target.value)}
-        className="w-1/4 min-w-[200px] max-w-[400px] p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
-      />
+      <h2 className="text-2xl font-semibold mb-4 text-center">
+        Buscar Productos
+      </h2>
+
+      <div className="flex justify-center">
+        <input
+          type="text"
+          placeholder="Escribe el nombre del producto..."
+          value={termino}
+          onChange={(e) => setTermino(e.target.value)}
+          className="w-1/4 min-w-[200px] max-w-[400px] p-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
+        />
+      </div>
     </div>
-  </div>
   );
 }

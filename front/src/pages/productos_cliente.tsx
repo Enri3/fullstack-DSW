@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
-import { getProductos } from "../services/productosService";
+import { getProductosEnAlta } from "../services/productosService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/index.css";
@@ -21,7 +21,7 @@ export default function DisplayProductos_C() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const data = await getProductos();
+        const data = await getProductosEnAlta();
         console.log("Productos recibidos del backend:", data);
         setProductos(Array.isArray(data) ? data : [data]); 
       } catch (err) {
@@ -55,6 +55,17 @@ export default function DisplayProductos_C() {
       setError("No se pudo agregar el producto al carrito.");
     }
   };
+    const fetchProductos = async () => {
+      try {
+        setLoading(true);
+        const data = await getProductosEnAlta();
+        setProductos(Array.isArray(data) ? data : [data]);
+      } catch (err) {
+        setError("No se pudo conectar con el servidor.");
+      } finally {
+        setLoading(false);
+      }
+  };
 
   return (
     <>
@@ -64,7 +75,7 @@ export default function DisplayProductos_C() {
           <h1>Bienvenido a Vivelas</h1>
           <p>Explora nuestros productos y disfruta de una experiencia única.</p>
         </div>
-        <BuscadorProducto onResultados={setProductos} setLoading={setLoading} />
+        <BuscadorProducto onResultados={setProductos} setLoading={setLoading} onReset={fetchProductos} admin={false} />
                 
 
         <section id="productos-container-display">

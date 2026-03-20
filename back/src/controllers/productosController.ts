@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import { AppDataSource } from "../database";
 import { Producto} from "../../../entidades/producto";
 
@@ -12,6 +12,16 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
   } catch (error: any) {
     console.error("Error al obtener productos:", error.message || error);
     res.status(500).json({ error: "Error al obtener productos" });
+  }
+};
+
+export const getAllenAlta = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const result = await productoRepo.find({ where: { deleted: 0 } });
+    res.json(result);
+  } catch (error: any) {
+    console.error("Error al obtener productos en alta:", error.message || error);
+    res.status(500).json({ error: "Error al obtener productos en alta" });
   }
 };
 
@@ -118,22 +128,57 @@ export const deleteProd = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+export const darDeAlta = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { idProd } = req.params;
+    const producto = await productoRepo.findOne({ where: { idProd: Number(idProd) } });
+
+    if (!producto) {
+      res.status(404).json({ error: "Producto no encontrado" });
+      return;
+    }
+
+    producto.deleted = 0;
+    await productoRepo.save(producto);
+
+    res.json({ message: "Producto dado de alta correctamente" });
+  } catch (error: any) {
+    console.error("Error al dar de alta producto:", error.message || error);
+    res.status(500).json({ error: "Error al dar de alta producto" });
+  }
+};
+
 export const buscarProducto = async (req: Request, res: Response): Promise<void> => {
-  const { nombreProdBuscado } = req.body;
+  const { nombreProdBuscado, admin } = req.body;
 
   try {
     let productos;
+
+    
     if (!nombreProdBuscado || nombreProdBuscado.trim() === "") {
-      productos = await productoRepo.find({ where: { deleted: 0 } });
+
+      productos = admin
+        ? await productoRepo.find() 
+        : await productoRepo.find({ where: { deleted: 0 } }); // 👈 CLIENTE solo activos
+
     } else {
-      productos = await productoRepo
+
+      let query = productoRepo
         .createQueryBuilder("producto")
-        .where("producto.deleted = 0")
-        .andWhere("producto.nombreProd LIKE :nombre", { nombre: `%${nombreProdBuscado}%` })
-        .getMany();
+        .where("producto.nombreProd LIKE :nombre", {
+          nombre: `%${nombreProdBuscado}%`,
+        });
+
+      
+      if (!admin) {
+        query = query.andWhere("producto.deleted = 0");
+      }
+
+      productos = await query.getMany();
     }
 
     res.json(productos);
+
   } catch (error: any) {
     console.error("Error al buscar productos:", error.message || error);
     res.status(500).json({ message: "Error interno del servidor al buscar." });

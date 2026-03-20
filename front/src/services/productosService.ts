@@ -4,6 +4,7 @@ type Producto = {
   medida?: string;
   precioProd: number;
   urlImg?: string;
+  deleted?: number;
 
 };
 
@@ -14,6 +15,13 @@ export async function getProductos() {
   console.log("Datos recibidos del backend:", data); 
   return data; }
   
+
+export async function getProductosEnAlta() {
+  const res = await fetch("http://localhost:4000/productos/enAlta"); 
+  if (!res.ok) throw new Error("Error al obtener productos en alta"); 
+  const data = await res.json(); 
+  console.log("Datos recibidos del backend:", data); 
+  return data; }
 
 export async function getProductoById(idProd: number): Promise<Producto> {
   const res = await fetch(`http://localhost:4000/productos/${idProd}`);
@@ -26,7 +34,7 @@ export async function updateProducto(
   idProd: string | number,
   producto: Producto
 ): Promise<Producto> {
-  const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
+  const res = await fetch(`http://localhost:4000/productos/update/${idProd}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(producto),
@@ -42,14 +50,19 @@ export async function eliminarProducto(idProd: string | number): Promise<void> {
   });
   if (!res.ok) throw new Error("Error al eliminar producto");
 }
+export async function darDeAltaProducto(idProd: string | number): Promise<void> {
+  const res = await fetch(`http://localhost:4000/productos/darDeAlta/${idProd}`, {
+    method: "PUT",
+  });
+  if (!res.ok) throw new Error("Error al dar de alta producto");
+}
 
-
-export const buscarProducto = async (nombreProdBuscado: string) => {
+export const buscarProducto = async (nombreProdBuscado: string, admin: boolean) => {
   try {
     const res = await fetch(`http://localhost:4000/productos/buscarProductoPorNombre`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombreProdBuscado }),
+      body: JSON.stringify({ nombreProdBuscado, admin }),
     });
 
     const data = await res.json();
