@@ -15,6 +15,7 @@ export default function ModificarProducto() {
     nombreProd: "",
     medida: "",
     precioProd: "",
+    stock: "",
   });
   const [imagen, setImagen] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,6 +34,7 @@ export default function ModificarProducto() {
           nombreProd: data.nombreProd || "",
           medida: data.medida || "",
           precioProd: data.precioProd?.toString() || "",
+          stock: data.stock?.toString() || "",
         });
       } catch (err) {
         console.error(err);
@@ -54,7 +56,7 @@ export default function ModificarProducto() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!inputs.nombreProd || !inputs.precioProd) {
+    if (!inputs.nombreProd || !inputs.precioProd || !inputs.stock) {
       mostrarError("Por favor, completa los campos obligatorios.");
       return;
     }
@@ -64,12 +66,18 @@ export default function ModificarProducto() {
       mostrarError("El precio debe ser un número válido.");
       return;
     }
+    const stockNum = parseInt(inputs.stock, 10);
+    if (isNaN(stockNum) || stockNum < 0) {
+      mostrarError("El stock debe ser un número entero no negativo.");
+      return;
+    }
 
     try {
       const formData = new FormData();
       formData.append("nombreProd", inputs.nombreProd);
       formData.append("medida", inputs.medida);
       formData.append("precioProd", precioNum.toString());
+      formData.append("stock", stockNum.toString());
       if (imagen) {
         formData.append("imagen", imagen);
       }
@@ -124,6 +132,15 @@ export default function ModificarProducto() {
                 step="0.01"
                 name="precioProd"
                 value={inputs.precioProd}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="item-formulario">
+              <label htmlFor="stock">Stock:</label>
+              <input
+                type="number"
+                name="stock"
+                value={inputs.stock}
                 onChange={handleChange}
               />
             </div>

@@ -86,10 +86,10 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
     const { idProd } = req.params;
-    const { nombreProd, medida, precioProd } = req.body;
+    const { nombreProd, medida, precioProd, stock } = req.body;
     const file = req.file as Express.Multer.File | undefined;
 
-    if (!nombreProd || !precioProd) {
+    if (!nombreProd || !precioProd || !stock) {
       res.status(400).json({ error: "Faltan campos obligatorios" });
       return;
     }
@@ -97,6 +97,11 @@ export const update = async (req: Request, res: Response): Promise<void> => {
     const precioNum = parseFloat(precioProd);
     if (isNaN(precioNum)) {
       res.status(400).json({ error: "El precio debe ser un número válido" });
+      return;
+    }
+    const stockNum = parseInt(stock, 10);
+    if (isNaN(stockNum) || stockNum < 0) {
+      res.status(400).json({ error: "El stock debe ser un número entero no negativo" });
       return;
     }
 
@@ -109,6 +114,7 @@ export const update = async (req: Request, res: Response): Promise<void> => {
     producto.nombreProd = nombreProd;
     producto.medida = medida;
     producto.precioProd = precioNum;
+    producto.stock = stockNum;
 
     if (file) {
       producto.urlImg = `/fotosProductos/${file.filename}`;
