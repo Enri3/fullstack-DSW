@@ -8,18 +8,25 @@
     --tarjeta: #cbc9b6;
     --oscuro: #342c26;
 }
+
+html {
+    height: 100%;
+}
+
 #logo{
     height: 70px;
-} 
+}
+
 body{
     background-color: var(--principal);
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    flex: 1;
+    min-height: 100vh;
 }
+
 .icono{
     font-size: 40px;
     color: var(--icono);
@@ -69,15 +76,20 @@ header{
     position: absolute;
 }
 
+#root:has(footer) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 footer{
     width: 100%;
     color: var(--texto);
-    margin-top: auto;
     text-align: center;
     padding: 30px 0;
     box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
-
-  
+    background-color: var(--principal);
+    margin-top: auto;
 }
 
 button{

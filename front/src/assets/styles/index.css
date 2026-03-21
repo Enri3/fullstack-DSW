@@ -53,3 +53,55 @@
   display: flex;
   gap: 10px;
 }
+
+.buscador-container {
+  display: flex;
+  flex-direction: column;
+  margin: 30px auto;
+  padding: 15px 20px;
+  max-width: 1500px;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--principal);
+  border-radius: 12px;
+  gap: 12px;
+}
+
+.buscador-container h2 {
+  font-size: 24px;
+  color: var(--oscuro);
+  margin: 0;
+  font-weight: 600;
+  text-align: left;
+}
+
+.buscador-container input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #bbb;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: var(--tarjeta);
+  color: var(--oscuro);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.buscador-container input:hover {
+  border-color: var(--click);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.buscador-container input:focus {
+  outline: none;
+  border-color: var(--oscuro);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  background-color: #f9f8f4;
+}
+
+.buscador-container input::placeholder {
+  color: #888;
+  font-size: 14px;
+  font-weight: 600;
+}
