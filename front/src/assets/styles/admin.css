@@ -80,6 +80,62 @@
     color: var(--color-texto-secundario);
 }
 
+.pedidos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.pedido-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--click);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.pedido-id {
+    font-weight: 600;
+    color: var(--oscuro);
+    font-size: 14px;
+}
+
+.pedido-estado {
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.pedido-cliente {
+    color: var(--oscuro);
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 15px;
+}
+
+.pedido-fecha {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.pedido-monto {
+    color: var(--oscuro);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+
 
 @media (max-width: 992px) {
     .stats-grid {

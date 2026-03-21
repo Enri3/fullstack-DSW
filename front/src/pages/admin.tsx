@@ -5,15 +5,19 @@ import logo from "../assets/img/logo.png";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
 import "../assets/styles/admin.css";
-import MensajeAlerta from "../components/mensajesAlerta"; 
+import MensajeAlerta from "../components/mensajesAlerta";
+import { getPedidos } from "../services/pedidosService";
 
 import type { Cliente } from "../types/Cliente";
+import type { Pedido } from "../types/Pedido";
 import { clienteVacio } from "../types/Cliente";
 
 export default function Admin() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
   const [mensaje, setMensaje] = useState<{ tipo: "success" | "error" | "info"; texto: string } | null>(null);
+  const [pedidosPendientes, setPedidosPendientes] = useState<Pedido[]>([]);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
@@ -27,6 +31,41 @@ export default function Admin() {
       window.history.replaceState({}, document.title);
     }
   }, [location]);
+
+  useEffect(() => {
+    const fetchPedidos = async () => {
+      try {
+        setLoading(true);
+        const todos = await getPedidos();
+        // Filtrar pedidos NO finalizados ni en carrito
+        const pendientes = todos
+          .filter((p) => p.estadoPedido !== "finalizado" && p.estadoPedido !== "enCarrito")
+          .sort((a, b) => new Date(b.fechaPedido).getTime() - new Date(a.fechaPedido).getTime())
+          .slice(0, 3);
+        setPedidosPendientes(pendientes);
+      } catch (error) {
+        console.error("Error al obtener pedidos:", error);
+        setPedidosPendientes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPedidos();
+  }, []);
+
+  const obtenerTextoEstado = (estado: string): string => {
+    switch (estado) {
+      case "envio":
+        return "Confirmado para envío";
+      case "retiro":
+        return "Confirmado para retiro";
+      case "finalizado":
+        return "Entregado";
+      default:
+        return estado;
+    }
+  };
 
   return (
     <>
@@ -67,9 +106,37 @@ export default function Admin() {
         <div className="info-layout admin-activity">
           <section className="recent-activity admin-recent-orders">
             <h2>Últimos Pedidos Pendientes</h2>
-            <p>Pedido #1234 - Cliente A - $1.200</p>
-            <p>Pedido #1233 - Cliente B - $950</p>
-            <p>No hay pedidos urgentes.</p>
+
+            {loading ? (
+              <p>Cargando pedidos...</p>
+            ) : pedidosPendientes.length > 0 ? (
+              <div className="pedidos-list">
+                {pedidosPendientes.map((pedido) => (
+                  <div key={pedido.idPedido} className="pedido-item">
+                    <div className="pedido-header">
+                      <span className="pedido-id">Pedido #{pedido.idPedido}</span>
+                      <span className="pedido-estado" style={{
+                        backgroundColor: pedido.estadoPedido === "envio" ? "#4caf50" : "#ff9800"
+                      }}>
+                        {obtenerTextoEstado(pedido.estadoPedido)}
+                      </span>
+                    </div>
+                    <div className="pedido-cliente">
+                      <strong>{pedido.cliente?.nombreCli} {pedido.cliente?.apellido}</strong>
+                    </div>
+                    <div className="pedido-fecha">
+                      {new Date(pedido.fechaPedido).toLocaleDateString()}
+                    </div>
+                    <div className="pedido-monto">
+                      ${pedido.montoTotal}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No hay pedidos pendientes.</p>
+            )}
+
             <Link to="/admin/pedidos" className="view-all">Ver todos los pedidos</Link>
           </section>
 

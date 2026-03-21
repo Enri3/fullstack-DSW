@@ -117,7 +117,7 @@ export default function ClienteIngresado() {
             <h3>Ver Mis Facturas</h3>
             <p>Accedé y descargá tu historial de pagos.</p>
           </Link>
-          <Link to="/carrito" className="cta-card cta-history">
+          <Link to="/historial-pedidos" className="cta-card cta-history">
             <i className="icon">📦</i>
             <h3>Historial de Pedidos</h3>
             <p>Revisá el estado de tus compras pasadas.</p>
