@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
@@ -13,6 +13,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
@@ -31,6 +32,11 @@ export default function Login() {
     }
   }, [location]);
 
+  const resetearCaptcha = () => {
+    recaptchaRef.current?.reset();
+    setCaptcha(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMensaje(null);
@@ -39,6 +45,7 @@ export default function Login() {
     if (!captcha) {
       setMensaje({ tipo: "error", texto: "Por favor completa el captcha." });
       setLoading(false);
+      resetearCaptcha();
       return;
     }
 
@@ -104,6 +111,7 @@ export default function Login() {
         tipo: "error",
         texto: mensajeError,
       });
+      resetearCaptcha();
     } finally {
       setLoading(false);
     }
@@ -139,6 +147,7 @@ export default function Login() {
 
            <div style={{ margin: "15px 0", display: "flex", justifyContent: "center" }}>
                 <ReCAPTCHA
+                ref={recaptchaRef}
                 sitekey="6LcId4wsAAAAACh1zDxtPNzTFaCmzh89LVrSkJw7"
                 onChange={(value: string | null) => setCaptcha(value)}
                 />

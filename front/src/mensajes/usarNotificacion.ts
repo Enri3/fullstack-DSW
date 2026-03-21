@@ -19,7 +19,6 @@ export function usarNotificacion() {
 
   const mostrar = useCallback(
     (tipo: "success" | "error" | "info", texto: string, duracionMs = 6000) => {
-      console.log("🔔 Mostrando notificación:", tipo, texto, duracionMs);
       // Limpiar temporizador anterior si existe
       if (temporizadorRef.current) {
         clearTimeout(temporizadorRef.current);
@@ -30,7 +29,6 @@ export function usarNotificacion() {
 
       // Configurar nuevo temporizador
       temporizadorRef.current = setTimeout(() => {
-        console.log("⏱️ Limpiando notificación");
         setNotificacion(null);
         temporizadorRef.current = null;
       }, duracionMs);

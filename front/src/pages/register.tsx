@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "../assets/styles/login.css";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
@@ -7,6 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Register() {
   const navigate = useNavigate();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [nombreCli, setNombreCli] = useState("");
   const [apellido, setApellido] = useState("");
   const [email, setEmail] = useState("");
@@ -20,17 +21,24 @@ export default function Register() {
     tipo: "success" | "error" | "info";
   } | null>(null);
 
+  const resetearCaptcha = () => {
+    recaptchaRef.current?.reset();
+    setCaptcha(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMensaje(null);
 
     if (password !== confirmPassword) {
       setMensaje({ texto: "Las contraseñas no coinciden ❌", tipo: "error" });
+      resetearCaptcha();
       return;
     }
 
     if (!captcha) {
       setMensaje({ texto: "Por favor completa el captcha.", tipo: "error" });
+      resetearCaptcha();
       return;
     }
 
@@ -64,6 +72,7 @@ export default function Register() {
           texto: data.message || "Error al registrarse",
           tipo: "error",
         });
+        resetearCaptcha();
       }
     } catch (error) {
       console.error("Error al conectar con el servidor:", error);
@@ -71,6 +80,7 @@ export default function Register() {
         texto: "No se pudo conectar con el servidor.",
         tipo: "error",
       });
+      resetearCaptcha();
     }
   };
 
@@ -135,6 +145,7 @@ export default function Register() {
 
            <div style={{ margin: "15px 0", display: "flex", justifyContent: "center" }}>
                 <ReCAPTCHA
+                ref={recaptchaRef}
                 sitekey="6LcId4wsAAAAACh1zDxtPNzTFaCmzh89LVrSkJw7"
                 onChange={(value: string | null) => setCaptcha(value)}
                 />
