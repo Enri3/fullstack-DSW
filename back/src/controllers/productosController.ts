@@ -27,10 +27,10 @@ export const getAllenAlta = async (req: Request, res: Response): Promise<void> =
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { nombreProd, medida, precioProd } = req.body;
+    const { nombreProd, medida, precioProd, stock } = req.body;
     const file = req.file as Express.Multer.File | undefined;
 
-    if (!nombreProd || !precioProd) {
+    if (!nombreProd || !precioProd || !stock) {
       res.status(400).json({ error: "Faltan campos obligatorios" });
       return;
     }
@@ -41,12 +41,19 @@ export const create = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const stockNum = parseInt(stock, 10);
+    if (isNaN(stockNum) || stockNum < 0) {
+      res.status(400).json({ error: "El stock debe ser un número entero no negativo" });
+      return;
+    }
+
     const nuevoProducto = productoRepo.create({
       nombreProd,
       medida: medida || null,
       precioProd: precioNum,
       urlImg: file ? `/fotosProductos/${file.filename}` : "",
-      deleted: 0
+      deleted: 0,
+      stock: stockNum
     });
 
     await productoRepo.save(nuevoProducto);

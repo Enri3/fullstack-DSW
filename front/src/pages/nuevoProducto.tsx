@@ -11,6 +11,7 @@ export default function NuevoProducto() {
     nombreProd: "",
     medida: "",
     precioProd: "",
+    stock: "",
   });
   const [imagen, setImagen] = useState<File | null>(null);
 
@@ -27,7 +28,7 @@ export default function NuevoProducto() {
     setError("");
     setSuccess("");
 
-    if (!inputs.nombreProd || !inputs.medida || !inputs.precioProd) {
+    if (!inputs.nombreProd || !inputs.medida || !inputs.precioProd || !inputs.stock) {
       setError("Por favor, completa todos los campos obligatorios.");
       return;
     }
@@ -38,11 +39,18 @@ export default function NuevoProducto() {
       return;
     }
 
+    const stockNum = parseInt(inputs.stock, 10);
+    if (isNaN(stockNum) || stockNum < 0) {
+      setError("El stock debe ser un número entero no negativo.");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("nombreProd", inputs.nombreProd);
       formData.append("medida", inputs.medida);
       formData.append("precioProd", precioNum.toString());
+      formData.append("stock", stockNum.toString());
       if (imagen) {
         formData.append("imagen", imagen);
       }
@@ -60,7 +68,7 @@ export default function NuevoProducto() {
       }
 
       setSuccess("Producto agregado correctamente!");
-      setInputs({ nombreProd: "", medida: "", precioProd: "" });
+      setInputs({ nombreProd: "", medida: "", precioProd: "" , stock: ""});
       setImagen(null);
     } catch (err) {
       setError("No se pudo conectar con el servidor");
@@ -111,7 +119,16 @@ export default function NuevoProducto() {
                 onChange={handleChange}
               />
             </div>
-
+              <div className="item-formulario">
+              <label htmlFor="stock">Stock:</label>
+              <input
+                type="number"
+                name="stock"
+                value={inputs.stock}
+                onChange={handleChange}
+              />
+            </div>
+          
             <div className="item-formulario">
               <label htmlFor="imagen">Imagen:</label>
               <input

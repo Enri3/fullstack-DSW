@@ -5,6 +5,7 @@ type Producto = {
   precioProd: number;
   urlImg?: string;
   deleted?: number;
+  stock: number;
 
 };
 

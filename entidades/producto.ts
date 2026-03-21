@@ -22,6 +22,9 @@ export class Producto {
 
   @Column({ length: 45, nullable: true })
   medida!: string;
+  
+  @Column({ type: "int", default: 0 })
+  stock!: number;
 
   @OneToMany(() => ProductoDescuento, productoDescuento => productoDescuento.producto)
   productoDescuento!: ProductoDescuento[];
