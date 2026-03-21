@@ -11,6 +11,19 @@ import { clienteVacio } from "../types/Cliente";
 import { getPedidosByIdCliente } from "../services/pedidosService";
 import type { Pedido } from "../types/Pedido";
 
+function obtenerTextoEstado(estado: string): string {
+  switch (estado) {
+    case "envio":
+      return "Confirmado para envío";
+    case "retiro":
+      return "Confirmado para retiro";
+    case "finalizado":
+      return "Entregado";
+    default:
+      return estado;
+  }
+}
+
 export default function ClienteIngresado() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
@@ -42,12 +55,13 @@ export default function ClienteIngresado() {
       try {
         setLoadingPedidos(true);
         const todosLosPedidos = await getPedidosByIdCliente(cliente.idCli);
-      
-        const pedidosCompletados = todosLosPedidos
+        // Mostrar últimos 3 pedidos realizados (envio, retiro, finalizado)
+        // Excluye solo "enCarrito" que es el carrito actual sin confirmar
+        const pedidosRealizados = todosLosPedidos
           .filter((p) => p.estadoPedido !== "enCarrito")
           .sort((a, b) => new Date(b.fechaPedido).getTime() - new Date(a.fechaPedido).getTime())
           .slice(0, 3);
-        setPedidosRecientes(pedidosCompletados);
+        setPedidosRecientes(pedidosRealizados);
       } catch (err) {
         console.error("Error al obtener pedidos:", err);
         setPedidosRecientes([]);
@@ -124,7 +138,7 @@ export default function ClienteIngresado() {
                     <div className="pedido-header">
                       <span className="pedido-id">Pedido #{pedido.idPedido}</span>
                       <span className={`pedido-estado ${pedido.estadoPedido?.toLowerCase()}`}>
-                        {pedido.estadoPedido}
+                        {obtenerTextoEstado(pedido.estadoPedido || "")}
                       </span>
                     </div>
                     <p className="pedido-fecha">

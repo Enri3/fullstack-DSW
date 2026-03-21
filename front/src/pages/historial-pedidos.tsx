@@ -9,6 +9,19 @@ import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
 import '../assets/styles/historialPedidos.css';
 
+function obtenerTextoEstado(estado: string): string {
+  switch (estado) {
+    case "envio":
+      return "Confirmado para envío";
+    case "retiro":
+      return "Confirmado para retiro";
+    case "finalizado":
+      return "Entregado";
+    default:
+      return estado;
+  }
+}
+
 export default function HistorialPedidos() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [cliente, setCliente] = useState<Cliente>(clienteVacio);
@@ -85,7 +98,7 @@ export default function HistorialPedidos() {
                     <td>{new Date(pedido.fechaPedido).toLocaleDateString()}</td>
                     <td>
                       <span className={`estado-badge ${pedido.estadoPedido?.toLowerCase()}`}>
-                        {pedido.estadoPedido}
+                        {obtenerTextoEstado(pedido.estadoPedido || "")}
                       </span>
                     </td>
                     <td>{pedido.medioPago || "N/A"}</td>
