@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import { getProductosEnAlta } from "../services/productosService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { Link } from "react-router-dom";
@@ -13,18 +15,23 @@ import BuscadorProducto from "../components/buscadorProductos";
 import { buildImageUrl } from "../utils/imageUrl";
 
 export default function DisplayProductos_C() {
-  const [productos, setProductos] = useState<Producto[]>([]); 
-  
+  const { notificacion, mostrarError, mostrarExito, limpiar } = usarNotificacion();
+  const [productos, setProductos] = useState<Producto[]>([]);
+
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    limpiar();
+  }, [limpiar]);
 
   useEffect(() => {
     const fetchProductos = async () => {
       try {
         const data = await getProductosEnAlta();
         console.log("Productos recibidos del backend:", data);
-        setProductos(Array.isArray(data) ? data : [data]); 
+        setProductos(Array.isArray(data) ? data : [data]);
       } catch (err) {
         console.error("Error al obtener productos:", err);
         setError("No se pudo conectar con el servidor.");
@@ -42,7 +49,7 @@ export default function DisplayProductos_C() {
       const clienteStorage = localStorage.getItem("cliente");
 
       if (!clienteStorage) {
-        setError("Debe iniciar sesion para agregar productos al carrito.");
+        mostrarError("Debe iniciar sesión para agregar productos al carrito.");
         return;
       }
 
@@ -51,9 +58,10 @@ export default function DisplayProductos_C() {
       await agregarProductoEnCarrito(cliente.idCli, producto.idProd, 1);
       agregarAlCarrito(producto);
       setCantidad(obtenerCantidadCarrito());
+      mostrarExito(`${producto.nombreProd} agregado al carrito`);
     } catch (err) {
       console.error("Error al agregar producto al pedido en carrito:", err);
-      setError("No se pudo agregar el producto al carrito.");
+      mostrarError("No se pudo agregar el producto al carrito.");
     }
   };
     const fetchProductos = async () => {
@@ -71,6 +79,9 @@ export default function DisplayProductos_C() {
   return (
     <>
       <HeaderConPanel cantidad={cantidad} />
+      {notificacion && (
+        <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+      )}
       <main>
         <div className="mensaje">
           <h1>Bienvenido a Vivelas</h1>

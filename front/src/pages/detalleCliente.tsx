@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 import Detalle from "../components/DetalleProducto";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import { getProductoById } from "../services/productosService";
@@ -24,6 +26,7 @@ export default function DetalleCliente() {
   const location = useLocation();
   const state = location.state as { idProd?: number } | null;
   const idProd = state?.idProd;
+  const { notificacion, mostrarError, mostrarExito, limpiar } = usarNotificacion();
 
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [producto, setProducto] = useState<Producto | null>(null);
@@ -38,6 +41,7 @@ export default function DetalleCliente() {
   useEffect(() => {
     const cargarProducto = async () => {
       try {
+        limpiar();
         const data = await getProductoById(idProd);
         setProducto(data);
       } catch (err) {
@@ -48,7 +52,7 @@ export default function DetalleCliente() {
       }
     };
     cargarProducto();
-  }, [idProd]);
+  }, [idProd, limpiar]);
 
   const handleAgregar = async () => {
     if (!producto) return;
@@ -57,7 +61,7 @@ export default function DetalleCliente() {
       const clienteStorage = localStorage.getItem("cliente");
 
       if (!clienteStorage) {
-        setError("Debe iniciar sesion para agregar productos al carrito.");
+        mostrarError("Debe iniciar sesión para agregar productos al carrito.");
         return;
       }
 
@@ -66,9 +70,10 @@ export default function DetalleCliente() {
 
       agregarAlCarrito(producto);
       setCantidad(obtenerCantidadCarrito());
+      mostrarExito(`${producto.nombreProd} agregado al carrito`);
     } catch (err) {
       console.error("Error al agregar producto al pedido en carrito:", err);
-      setError("No se pudo agregar el producto al carrito.");
+      mostrarError("No se pudo agregar el producto al carrito.");
     }
   };
 
@@ -80,6 +85,9 @@ export default function DetalleCliente() {
   return (
     <>
       <HeaderConPanel cantidad={cantidad} />
+      {notificacion && (
+        <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+      )}
 
       <Detalle/>
 

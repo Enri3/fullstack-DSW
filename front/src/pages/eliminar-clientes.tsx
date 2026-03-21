@@ -44,8 +44,12 @@ export default function EliminarClientes() {
         try {
             const data = await deleteMultipleClientes(clientesSeleccionados);
 
-            mostrarExito(data.message);
-
+            if (clientesSeleccionados.length === 1) {
+                mostrarExito("Se ha eliminado 1 cliente correctamente.");
+            } else {
+                mostrarExito("Se han eliminado " + clientesSeleccionados.length + " clientes correctamente.");
+            }
+            
             setClientes((prev) =>
             prev.filter((c) => !clientesSeleccionados.includes(c.idCli))
             );
