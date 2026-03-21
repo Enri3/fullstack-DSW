@@ -33,22 +33,24 @@ export default function DisplayProductos() {
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [productoAEliminar, setProductoAEliminar] = useState<Producto | null>(null);
-  
+
+
+  const fetchProductos = async () => {
+    try {
+      setLoading(true);
+      const data = await getProductos();
+      console.log("Productos recibidos del backend:", data);
+      setProductos(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error("Error al obtener productos:", err);
+      setError("No se pudo conectar con el servidor.");
+      setProductos([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const data = await getProductos();
-        console.log("Productos recibidos del backend:", data);
-        setProductos(Array.isArray(data) ? data : [data]);
-      } catch (err) {
-        console.error("Error al obtener productos:", err);
-        setError("No se pudo conectar con el servidor.");
-        setProductos([]);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProductos();
   }, []);
 
@@ -77,6 +79,7 @@ export default function DisplayProductos() {
       setProductoAEliminar(null);
     }
   };
+
   const handleAlta = async (productoId: number | string) => {
     try {
       await darDeAltaProducto(productoId);
@@ -90,21 +93,9 @@ export default function DisplayProductos() {
         )
       );
     } catch (err) {
-
-        mostrarError("No se pudo dar de alta el producto");
-    }}
-  const fetchProductos = async () => {
-    try {
-      setLoading(true);
-      const data = await getProductos();
-      setProductos(Array.isArray(data) ? data : [data]);
-    } catch (err) {
-      setError("No se pudo conectar con el servidor.");
-    } finally {
-      setLoading(false);
+      mostrarError("No se pudo dar de alta el producto");
     }
-};
-
+  };
 
   return (
     <>
@@ -117,10 +108,10 @@ export default function DisplayProductos() {
           <h1>Bienvenido a Vivelas</h1>
           <p>Explora nuestros productos y disfruta de una experiencia única.</p>
         </div>
-        
+
        <BuscadorProducto onResultados={setProductos} setLoading={setLoading} onReset={fetchProductos} admin={true}
 />
-        
+
         <section id="productos-container-display">
           <div className="tarjeta-add">
             <div className="mensaje">
@@ -139,14 +130,14 @@ export default function DisplayProductos() {
 
           {loading && <p>Cargando productos...</p>}
           {error && <p style={{ color: "red" }}>{error}</p>}
-          
+
           {!loading && productos.length > 0 && productos.map((producto) => (
   <div key={producto.idProd} className="tarjeta-producto-display">
 
     {producto.deleted === 1 ? (
-      
+
       <div >
-        <Link to="/detalleAdmin" state={{ idProd: producto.idProd, nombreProd: producto.nombreProd }}>
+        <Link to="/detalleAdmin" state={{ idProd: producto.idProd, nombreProd: producto.nombreProd, deleted: producto.deleted }}>
           <div className="tarjeta-baja">
             <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
             <h3>{producto.nombreProd} </h3>
@@ -161,9 +152,9 @@ export default function DisplayProductos() {
         </button>
       </div>
     ) : (
-      
+
       <>
-        <Link to="/detalleAdmin" state={{ idProd: producto.idProd, nombreProd: producto.nombreProd }}>
+        <Link to="/detalleAdmin" state={{ idProd: producto.idProd, nombreProd: producto.nombreProd, deleted: producto.deleted }}>
           <div className="tarjeta-clickable">
             <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
             <h3>{producto.nombreProd} - {producto.medida || "N/A"} grs</h3>
@@ -184,7 +175,7 @@ export default function DisplayProductos() {
 
   </div>
 ))}
-      
+
 
           {!loading && productos.length === 0 && !error && (
             <p>No hay productos disponibles.</p>
@@ -220,4 +211,4 @@ export default function DisplayProductos() {
     </>
   );
 
-  }
+}

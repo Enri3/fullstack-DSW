@@ -13,9 +13,10 @@ export default function DetalleAdmin() {
   const { notificacion, mostrarError } = usarNotificacion();
   const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as { idProd?: number | string; nombreProd?: string } | null;
+  const state = location.state as { idProd?: number | string; nombreProd?: string; deleted?: number } | null;
   const idProd = state?.idProd;
   const nombreProducto = state?.nombreProd || "Producto";
+  const deleted = state?.deleted;
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -30,7 +31,7 @@ export default function DetalleAdmin() {
   const confirmarEliminar = async () => {
     try {
       await eliminarProducto(idProd);
-      navigate("/productosAdmin"); 
+      navigate("/productosAdmin");
     } catch {
       mostrarError("No se pudo eliminar el producto");
     } finally {
@@ -47,13 +48,21 @@ export default function DetalleAdmin() {
       <Detalle />
 
       <div className="botones-detalle">
-        <Link to={`/modificarProducto/${idProd}`} >
-        <button className="boton-detalle">Modificar</button>
-        </Link>
-        <button onClick={handleEliminar} className="boton-detalle">Dar de baja</button>
-        <Link to="/productosAdmin">
-            <button className="boton-detalle">Volver</button>
-         </Link>
+        {deleted === 1 && (
+          <p style={{ color: "red", fontWeight: "bold", margin: 0 }}>Producto dado de baja</p>
+        )}
+        <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+          <Link to="/productosAdmin">
+              <button className="boton-detalle">Volver</button>
+           </Link>
+          <Link to={`/modificarProducto/${idProd}`} >
+            <button className="boton-detalle">Modificar</button>
+          </Link>
+          {deleted !== 1 && (
+            <button onClick={handleEliminar} className="boton-detalle">Dar de baja</button>
+          )}
+
+        </div>
       </div>
 
       <Footer />
