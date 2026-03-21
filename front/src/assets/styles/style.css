@@ -41,6 +41,7 @@ header nav{
     display: flex;
     justify-content: space-between;
     margin: 0 40px;
+    font-weight: 550;
 }
 
 #menu{
@@ -64,6 +65,7 @@ header{
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
     padding: 10px 0;
     width: 100%;
+    font-weight: 550;
 }
 #cuenta_carrito{
     background-color: var(--contador);

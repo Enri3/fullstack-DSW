@@ -23,6 +23,8 @@
 
 .mensaje-alerta.error {
   background-color: #e74c3c;
+  color: #fff;
+  font-weight: 500;
 }
 
 .mensaje-alerta.info {

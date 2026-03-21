@@ -112,7 +112,7 @@ export const loginCliente = async (req: Request, res: Response): Promise<void> =
     const cliente = await clienteRepo.findOne({ where: { email } });
 
     if (!cliente) {
-      res.status(400).json({ message: "El cliente ingresado no existe" });
+      res.status(400).json({ message: "El mail ingresado no existe" });
       return;
     }
 
