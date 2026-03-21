@@ -71,7 +71,7 @@ export default function DisplayProductos() {
         )
       );
     } catch (err) {
-      mostrarError("No se pudo eliminar el producto");
+      mostrarError("No se pudo dar de baja el producto");
     } finally {
       setModalVisible(false);
       setProductoAEliminar(null);
@@ -176,7 +176,7 @@ export default function DisplayProductos() {
             <button>Modificar</button>
           </Link>
           <button onClick={() => handleEliminar(producto.idProd)}>
-            Eliminar
+            Dar de baja
           </button>
         </div>
       </>
@@ -196,9 +196,9 @@ export default function DisplayProductos() {
       {modalVisible && (
         <div className="modal-overlay">
           <div className="modal">
-            <p>¿Estás seguro de eliminar {productoAEliminar?.nombreProd}?</p>
+            <p>¿Estás seguro de dar de baja {productoAEliminar?.nombreProd}?</p>
             <div className="modal-buttons botones-admin">
-              <button onClick={confirmarEliminar}>Sí, eliminar</button>
+              <button onClick={confirmarEliminar}>Sí, dar de baja</button>
               <button onClick={() => setModalVisible(false)}>Cancelar</button>
             </div>
           </div>
