@@ -1,0 +1,212 @@
+/* Historial de Pedidos */
+.historial-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 60vh;
+}
+
+.historial-header {
+  margin-bottom: 30px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #3498db;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.back-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.historial-container h1 {
+  font-size: 32px;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+/* No pedidos */
+.no-pedidos {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.no-pedidos p {
+  font-size: 18px;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #27ae60;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #229954;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 16px;
+  padding: 40px 0;
+}
+
+/* Error */
+.error {
+  color: #e74c3c;
+  background-color: #fadbd8;
+  padding: 15px;
+  border-radius: 4px;
+  border-left: 4px solid #e74c3c;
+}
+
+/* Tabla de pedidos */
+.pedidos-table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pedidos-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.pedidos-table thead {
+  background-color: #ecf0f1;
+  border-bottom: 2px solid #bdc3c7;
+}
+
+.pedidos-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.pedidos-table tbody tr {
+  border-bottom: 1px solid #ecf0f1;
+  transition: background-color 0.3s ease;
+}
+
+.pedidos-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.pedidos-table td {
+  padding: 15px;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.pedido-id {
+  font-weight: 600;
+  color: #3498db;
+}
+
+/* Estado badge */
+.estado-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.estado-badge.completado {
+  background-color: #d5f4e6;
+  color: #27ae60;
+}
+
+.estado-badge.pendiente {
+  background-color: #fef3cd;
+  color: #f39c12;
+}
+
+.estado-badge.cancelado {
+  background-color: #fadbd8;
+  color: #e74c3c;
+}
+
+.estado-badge.encarrito {
+  background-color: #d6eaf8;
+  color: #3498db;
+}
+
+/* Filas con estado */
+.pedidos-table tr.estado-completado {
+  border-left: 4px solid #27ae60;
+}
+
+.pedidos-table tr.estado-pendiente {
+  border-left: 4px solid #f39c12;
+}
+
+.pedidos-table tr.estado-cancelado {
+  border-left: 4px solid #e74c3c;
+}
+
+.pedidos-table tr.estado-encarrito {
+  border-left: 4px solid #3498db;
+}
+
+/* Botón Ver detalles */
+.btn-ver-detalles {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-ver-detalles:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .historial-container {
+    padding: 20px 15px;
+  }
+
+  .historial-container h1 {
+    font-size: 24px;
+  }
+
+  .pedidos-table {
+    font-size: 12px;
+  }
+
+  .pedidos-table th,
+  .pedidos-table td {
+    padding: 10px;
+  }
+
+  .btn-ver-detalles {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}

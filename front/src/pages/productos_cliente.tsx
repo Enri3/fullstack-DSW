@@ -22,25 +22,26 @@ export default function DisplayProductos_C() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const fetchProductos = async () => {
+    try {
+      setLoading(true);
+      const data = await getProductosEnAlta();
+      console.log("Productos recibidos del backend:", data);
+      setProductos(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error("Error al obtener productos:", err);
+      setError("No se pudo conectar con el servidor.");
+      setProductos([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     limpiar();
-  }, [limpiar]);
+  }, []);
 
   useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const data = await getProductosEnAlta();
-        console.log("Productos recibidos del backend:", data);
-        setProductos(Array.isArray(data) ? data : [data]);
-      } catch (err) {
-        console.error("Error al obtener productos:", err);
-        setError("No se pudo conectar con el servidor.");
-        setProductos([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProductos();
   }, []);
 
@@ -63,17 +64,6 @@ export default function DisplayProductos_C() {
       console.error("Error al agregar producto al pedido en carrito:", err);
       mostrarError("No se pudo agregar el producto al carrito.");
     }
-  };
-    const fetchProductos = async () => {
-      try {
-        setLoading(true);
-        const data = await getProductosEnAlta();
-        setProductos(Array.isArray(data) ? data : [data]);
-      } catch (err) {
-        setError("No se pudo conectar con el servidor.");
-      } finally {
-        setLoading(false);
-      }
   };
 
   return (

@@ -52,7 +52,7 @@ export default function DetalleCliente() {
       }
     };
     cargarProducto();
-  }, [idProd, limpiar]);
+  }, [idProd]);
 
   const handleAgregar = async () => {
     if (!producto) return;
