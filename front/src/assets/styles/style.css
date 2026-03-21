@@ -215,7 +215,7 @@ button:hover{
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; 
+        z-index: 1000;
         }
 
         .modal {
@@ -226,6 +226,88 @@ button:hover{
         width: 90%;
         text-align: center;
         z-index: 1001;
+        }
+
+        .modal-confirmacion {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 32px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        animation: slideIn 0.3s ease-out;
+        z-index: 1001;
+        }
+
+        @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        }
+
+        .modal-confirmacion h2 {
+        margin: 0 0 12px 0;
+        font-size: 24px;
+        color: #342c26;
+        font-weight: 600;
+        }
+
+        .modal-confirmacion p {
+        color: #2a4661;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 0 0 28px 0;
+        }
+
+        .modal-botones {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        }
+
+        .modal-btn-confirmar,
+        .modal-btn-cancelar {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s ease;
+        flex: 1;
+        }
+
+        .modal-btn-confirmar {
+        background: #8B6F47;
+        color: #ffffff;
+        }
+
+        .modal-btn-confirmar:hover:not(:disabled) {
+        background: #6B5636;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+        }
+
+        .modal-btn-cancelar {
+        background: #f0ede9;
+        color: #2a4661;
+        border: 1px solid #dfe5eb;
+        }
+
+        .modal-btn-cancelar:hover:not(:disabled) {
+        background: #e5e1db;
+        border-color: #8B6F47;
+        }
+
+        .modal-btn-confirmar:disabled,
+        .modal-btn-cancelar:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
         }
 
         

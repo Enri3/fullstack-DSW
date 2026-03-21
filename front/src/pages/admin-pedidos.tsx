@@ -26,6 +26,7 @@ export default function AdminPedidos() {
   const [error, setError] = useState("");
   const [finalizandoId, setFinalizandoId] = useState<number | null>(null);
   const [vistaActiva, setVistaActiva] = useState<VistaPedidos>("enProceso");
+  const [pedidoConfirmacion, setPedidoConfirmacion] = useState<Pedido | null>(null);
 
   const cargarPedidos = async () => {
     try {
@@ -46,21 +47,32 @@ export default function AdminPedidos() {
     void cargarPedidos();
   }, []);
 
-  const handleFinalizar = async (pedido: Pedido) => {
+  const handleAbrirConfirmacion = (pedido: Pedido) => {
+    setPedidoConfirmacion(pedido);
+  };
+
+  const handleConfirmarFinalizacion = async () => {
+    if (!pedidoConfirmacion) return;
+
     try {
-      setFinalizandoId(pedido.idPedido);
-      await updatePedidoEstado(pedido.idPedido, "finalizado");
+      setFinalizandoId(pedidoConfirmacion.idPedido);
+      await updatePedidoEstado(pedidoConfirmacion.idPedido, "finalizado");
       setPedidos((prev) => prev.map((p) => (
-        p.idPedido === pedido.idPedido
+        p.idPedido === pedidoConfirmacion.idPedido
           ? { ...p, estadoPedido: "finalizado" }
           : p
       )));
+      setPedidoConfirmacion(null);
     } catch (err) {
       console.error("Error al finalizar pedido:", err);
       mostrarError("No se pudo finalizar el pedido");
     } finally {
       setFinalizandoId(null);
     }
+  };
+
+  const handleCancelarConfirmacion = () => {
+    setPedidoConfirmacion(null);
   };
 
   const pedidosFiltrados = pedidos.filter((pedido) => {
@@ -84,17 +96,17 @@ export default function AdminPedidos() {
             <div className="admin-filtros">
               <button
                 type="button"
-                className={`admin-filtro-btn ${vistaActiva === "finalizados" ? "activo" : ""}`}
-                onClick={() => setVistaActiva("finalizados")}
-              >
-                Finalizados
-              </button>
-              <button
-                type="button"
                 className={`admin-filtro-btn ${vistaActiva === "enProceso" ? "activo" : ""}`}
                 onClick={() => setVistaActiva("enProceso")}
               >
                 En proceso
+              </button>
+              <button
+                type="button"
+                className={`admin-filtro-btn ${vistaActiva === "finalizados" ? "activo" : ""}`}
+                onClick={() => setVistaActiva("finalizados")}
+              >
+                Finalizados
               </button>
             </div>
           </div>
@@ -140,7 +152,7 @@ export default function AdminPedidos() {
                     <button
                       type="button"
                       className="admin-finalizar-btn"
-                      onClick={() => void handleFinalizar(pedido)}
+                      onClick={() => handleAbrirConfirmacion(pedido)}
                       disabled={finalizandoId === pedido.idPedido}
                     >
                       {finalizandoId === pedido.idPedido ? "Finalizando..." : "Finalizar"}
@@ -151,6 +163,33 @@ export default function AdminPedidos() {
             </div>
           )}
         </section>
+
+        {pedidoConfirmacion && (
+          <div className="modal-overlay" onClick={handleCancelarConfirmacion}>
+            <div className="modal-confirmacion" onClick={(e) => e.stopPropagation()}>
+              <h2>¿Estás seguro de que quieres finalizar este pedido?</h2>
+              <p>Pedido <strong>#{pedidoConfirmacion.idPedido}</strong></p>
+              <div className="modal-botones">
+                <button
+                  type="button"
+                  className="modal-btn-confirmar"
+                  onClick={handleConfirmarFinalizacion}
+                  disabled={finalizandoId === pedidoConfirmacion.idPedido}
+                >
+                  {finalizandoId === pedidoConfirmacion.idPedido ? "Finalizando..." : "Sí, finalizar"}
+                </button>
+                <button
+                  type="button"
+                  className="modal-btn-cancelar"
+                  onClick={handleCancelarConfirmacion}
+                  disabled={finalizandoId === pedidoConfirmacion.idPedido}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );

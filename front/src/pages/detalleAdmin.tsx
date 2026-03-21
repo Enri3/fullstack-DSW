@@ -50,7 +50,7 @@ export default function DetalleAdmin() {
         <Link to={`/modificarProducto/${idProd}`} >
         <button className="boton-detalle">Modificar</button>
         </Link>
-        <button onClick={handleEliminar} className="boton-detalle">Eliminar</button>
+        <button onClick={handleEliminar} className="boton-detalle">Dar de baja</button>
         <Link to="/productosAdmin">
             <button className="boton-detalle">Volver</button>
          </Link>
@@ -59,12 +59,25 @@ export default function DetalleAdmin() {
       <Footer />
 
       {modalVisible && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <p>¿Estás seguro de eliminar {nombreProducto}?</p>
-            <div className="modal-buttons botones-admin">
-              <button onClick={confirmarEliminar}>Sí, eliminar</button>
-              <button onClick={() => setModalVisible(false)}>Cancelar</button>
+        <div className="modal-overlay" onClick={() => setModalVisible(false)}>
+          <div className="modal-confirmacion" onClick={(e) => e.stopPropagation()}>
+            <h2>¿Estás seguro de que quieres dar de baja este producto?</h2>
+            <p><strong>{nombreProducto}</strong></p>
+            <div className="modal-botones">
+              <button
+                type="button"
+                className="modal-btn-confirmar"
+                onClick={confirmarEliminar}
+              >
+                Sí, dar de baja
+              </button>
+              <button
+                type="button"
+                className="modal-btn-cancelar"
+                onClick={() => setModalVisible(false)}
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>

@@ -146,7 +146,7 @@ export default function DisplayProductos() {
     {producto.deleted === 1 ? (
       
       <div >
-        <Link to="/detalleAdmin" state={{ idProd: producto.idProd }}>
+        <Link to="/detalleAdmin" state={{ idProd: producto.idProd, nombreProd: producto.nombreProd }}>
           <div className="tarjeta-baja">
             <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
             <h3>{producto.nombreProd} </h3>
@@ -163,7 +163,7 @@ export default function DisplayProductos() {
     ) : (
       
       <>
-        <Link to="/detalleAdmin" state={{ idProd: producto.idProd }}>
+        <Link to="/detalleAdmin" state={{ idProd: producto.idProd, nombreProd: producto.nombreProd }}>
           <div className="tarjeta-clickable">
             <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
             <h3>{producto.nombreProd} - {producto.medida || "N/A"} grs</h3>
@@ -194,12 +194,25 @@ export default function DisplayProductos() {
       <Footer />
 
       {modalVisible && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <p>¿Estás seguro de dar de baja {productoAEliminar?.nombreProd}?</p>
-            <div className="modal-buttons botones-admin">
-              <button onClick={confirmarEliminar}>Sí, dar de baja</button>
-              <button onClick={() => setModalVisible(false)}>Cancelar</button>
+        <div className="modal-overlay" onClick={() => setModalVisible(false)}>
+          <div className="modal-confirmacion" onClick={(e) => e.stopPropagation()}>
+            <h2>¿Estás seguro de que quieres dar de baja este producto?</h2>
+            <p><strong>{productoAEliminar?.nombreProd}</strong></p>
+            <div className="modal-botones">
+              <button
+                type="button"
+                className="modal-btn-confirmar"
+                onClick={confirmarEliminar}
+              >
+                Sí, dar de baja
+              </button>
+              <button
+                type="button"
+                className="modal-btn-cancelar"
+                onClick={() => setModalVisible(false)}
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
