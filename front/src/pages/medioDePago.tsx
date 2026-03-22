@@ -119,6 +119,7 @@ export default function MedioDePago() {
         )}
         <section className="medio-card">
           <h1>Elegir medio de pago</h1>
+          <Link to="/formaDeEntrega" className="link-secundario">Volver a forma de entrega</Link>
 
           <div className="resumen-pago">
             <p><strong>Forma de entrega:</strong> {formaEntregaLabel}</p>
@@ -181,7 +182,6 @@ export default function MedioDePago() {
           )}
 
           <div className="acciones-pago">
-            <Link to="/formaDeEntrega" className="link-secundario">Volver a forma de entrega</Link>
             <button type="button" className="link-principal" onClick={() => void handlePagar()}>
               Pagar
             </button>

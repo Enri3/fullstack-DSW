@@ -82,6 +82,7 @@ export default function FormaDeEntrega() {
       <main className="entrega-main">
         <section className="entrega-card">
           <h1>Forma de entrega</h1>
+          <Link className="link-productos" to="/productosCliente">Volver a ver productos</Link>
 
           {productos.length === 0 ? (
             <div className="entrega-vacio">
@@ -150,14 +151,13 @@ export default function FormaDeEntrega() {
               </div>
 
               <div className="acciones-entrega">
-                <Link className="link-productos" to="/productosCliente">Volver a ver productos</Link>
                 <button
                   type="button"
                   className="btn-medio-pago"
                   disabled={!opcionEntrega}
                   onClick={handleElegirMedioPago}
                 >
-                  Elegir medio de pago
+                  Continuar
                 </button>
               </div>
             </>

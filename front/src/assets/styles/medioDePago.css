@@ -18,6 +18,11 @@
   color: #1c2b39;
 }
 
+.link-secundario {
+  display: block;
+  margin-bottom: 20px;
+}
+
 .resumen-pago {
   border: 1px solid #dfe5eb;
   border-radius: 10px;
@@ -141,19 +146,32 @@
   border-radius: 10px;
   padding: 10px 14px;
   font-weight: 600;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .link-principal {
-  background: linear-gradient(120deg, #2f80ed, #1f5fb8);
-  border: 1px solid #1f5fb8;
+  background-color: #8b5e3c;
+  border: 1px solid #8b5e3c;
   color: #ffffff;
   cursor: pointer;
 }
 
+.link-principal:hover {
+  background-color: #6B4423;
+  border-color: #6B4423;
+  box-shadow: 0 4px 12px rgba(139, 94, 60, 0.25);
+}
+
 .link-secundario {
-  background: #ffffff;
-  border: 1px solid #bccbdb;
-  color: #2a4661;
+  background-color: #8b5e3c;
+  border: 1px solid #8b5e3c;
+  color: #ffffff;
+}
+
+.link-secundario:hover {
+  background-color: #6B4423;
+  border-color: #6B4423;
+  box-shadow: 0 4px 12px rgba(139, 94, 60, 0.25);
 }
 
 @media (max-width: 768px) {

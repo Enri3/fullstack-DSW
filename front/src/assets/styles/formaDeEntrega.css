@@ -146,25 +146,27 @@
 
 .link-productos {
   display: inline-block;
-  background: linear-gradient(120deg, #2f80ed, #1f5fb8);
-  border: 1px solid #1f5fb8;
+  background-color: #8b5e3c;
+  border: 1px solid #8b5e3c;
   padding: 10px 16px;
   border-radius: 10px;
   font-weight: 600;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  color: #ffffff;
 }
 
 .link-productos:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(31, 95, 184, 0.25);
+  background-color: #6B4423;
+  border-color: #6B4423;
+  box-shadow: 0 4px 12px rgba(139, 94, 60, 0.25);
 }
 
 .btn-medio-pago {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #1f5fb8;
-  background: linear-gradient(120deg, #2f80ed, #1f5fb8);
+  border: 1px solid #8b5e3c;
+  background-color: #8b5e3c;
   color: #ffffff;
   padding: 10px 16px;
   min-height: 42px;
@@ -173,19 +175,20 @@
   font-size: 1rem;
   line-height: 1.2;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
   margin-left: 0;
 }
 
 .btn-medio-pago:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(31, 95, 184, 0.25);
+  background-color: #6B4423;
+  border-color: #6B4423;
+  box-shadow: 0 4px 12px rgba(139, 94, 60, 0.25);
 }
 
 .btn-medio-pago:disabled {
-  border-color: #c6d0db;
-  background: #e7edf3;
-  color: #7c8c9d;
+  border-color: #d3ccc0;
+  background-color: #e8e3d3;
+  color: #8b5e3c;
   cursor: not-allowed;
 }
 
