@@ -106,8 +106,7 @@ export default function HistorialPedidos() {
                     <td>${pedido.montoTotal || 0}</td>
                     <td>
                       <Link
-                        to={`/detalleCliente`}
-                        state={{ idPedido: pedido.idPedido }}
+                        to={`/detallePedido/${pedido.idPedido}`}
                         className="btn-ver-detalles"
                       >
                         Ver detalles

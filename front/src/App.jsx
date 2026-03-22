@@ -24,6 +24,7 @@ import FormaDeEntrega from "./pages/formaDeEntrega";
 import MedioDePago from "./pages/medioDePago";
 import AdminPedidos from "./pages/admin-pedidos";
 import HistorialPedidos from "./pages/historial-pedidos";
+import DetallePedido from "./pages/detallePedido";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -56,6 +57,7 @@ function App() {
         <Route path="/modificarProducto/:idProd" element={<ProtectedRoute><ModificarProducto /></ProtectedRoute>} />
         <Route path="/clienteIngresado" element={<ProtectedRoute><ClienteIngresado /></ProtectedRoute>} />
         <Route path="/historial-pedidos" element={<ProtectedRoute><HistorialPedidos /></ProtectedRoute>} />
+        <Route path="/detallePedido/:idPedido" element={<ProtectedRoute><DetallePedido /></ProtectedRoute>} />
         <Route path="/cerrar-sesion" element={<ProtectedRoute><CerrarSesion /></ProtectedRoute>} />
         <Route path="/editar-cliente" element={<ProtectedRoute><EditarCliente /></ProtectedRoute>} />
         <Route path="/eliminar-clientes" element={<ProtectedRoute><EliminarClientes /></ProtectedRoute>} />
