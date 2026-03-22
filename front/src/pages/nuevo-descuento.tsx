@@ -5,11 +5,13 @@ import MensajeAlerta from "../components/mensajesAlerta";
 import { usarNotificacion } from "../mensajes/usarNotificacion";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import type { Producto } from "../types/Producto";
-import { getAllProductos, addDescuento } from "../services/descunetosService";
+import { addDescuento } from "../services/descunetosService";
+import { buscarProducto } from "../services/productosService";
 import HeaderAdmin from "../components/header_admin";
 
 export default function NuevoDescuento() {
   const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
+  const hoy = new Date().toISOString().slice(0, 10);
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<Producto[]>([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState<number[]>([]);
@@ -22,7 +24,7 @@ export default function NuevoDescuento() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const data = await getAllProductos();
+        const data = await buscarProducto("", false);
         setProductos(data);
       } catch (error) {
         console.error("Error al cargar productos:", error);
@@ -37,6 +39,16 @@ export default function NuevoDescuento() {
     if (productosSeleccionados.length === 0 || !porcentaje || !fechaDesde || !fechaHasta
     ) {
       mostrarError("Por favor completa todos los campos y selecciona al menos un producto");
+      return;
+    }
+
+    if (fechaDesde < hoy) {
+      mostrarError("La fecha desde no puede ser menor al dia de hoy");
+      return;
+    }
+
+    if (fechaHasta < fechaDesde) {
+      mostrarError("La fecha hasta no puede ser menor a la fecha desde");
       return;
     }
 
@@ -120,6 +132,7 @@ export default function NuevoDescuento() {
           id="fechaDesde"
           name="fechaDesde"
           value={fechaDesde}
+          min={hoy}
           onChange={(e) => setFechaDesde(e.target.value)}
           required
         />
@@ -130,6 +143,7 @@ export default function NuevoDescuento() {
           id="fechaHasta"
           name="fechaHasta"
           value={fechaHasta}
+          min={fechaDesde || hoy}
           onChange={(e) => setFechaHasta(e.target.value)}
           required
         />

@@ -92,7 +92,8 @@ export const buscarDescuentoFiltro = async (req: Request, res: Response): Promis
       .createQueryBuilder("pd")
       .innerJoinAndSelect("pd.producto", "producto")
       .innerJoinAndSelect("pd.descuento", "descuento")
-      .where("producto.deleted = 0");
+      .where("producto.deleted = 0")
+      .andWhere("descuento.fechaHasta > CURRENT_DATE");
 
     if (nomProdBuscados && String(nomProdBuscados).trim() !== "") {
       const filtro = nomProdBuscados.trim().toLowerCase();
