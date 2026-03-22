@@ -5,6 +5,7 @@ export interface Producto {
   urlImg?: string;
   deleted?: number;
   medida?: string;
+  stock: number;
 }
 
 

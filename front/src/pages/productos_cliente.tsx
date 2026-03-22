@@ -46,25 +46,37 @@ export default function DisplayProductos_C() {
   }, []);
 
   const handleAgregar = async (producto: Producto) => {
-    try {
-      const clienteStorage = localStorage.getItem("cliente");
+  try {
+    const clienteStorage = localStorage.getItem("cliente");
 
-      if (!clienteStorage) {
-        mostrarError("Debe iniciar sesión para agregar productos al carrito.");
-        return;
-      }
-
-      const cliente = JSON.parse(clienteStorage) as Cliente;
-
-      await agregarProductoEnCarrito(cliente.idCli, producto.idProd, 1);
-      agregarAlCarrito(producto);
-      setCantidad(obtenerCantidadCarrito());
-      mostrarExito(`${producto.nombreProd} agregado al carrito`);
-    } catch (err) {
-      console.error("Error al agregar producto al pedido en carrito:", err);
-      mostrarError("No se pudo agregar el producto al carrito.");
+    if (!clienteStorage) {
+      mostrarError("Debe iniciar sesión para agregar productos al carrito.");
+      return;
     }
-  };
+
+    const cliente = JSON.parse(clienteStorage) as Cliente;
+
+    await agregarProductoEnCarrito(cliente.idCli, producto.idProd, 1);
+
+    
+    const nuevaCantidad = agregarAlCarrito(producto);
+
+    setCantidad(obtenerCantidadCarrito());
+
+    const stockDisponible = Number(producto.stock) - nuevaCantidad;
+    if (stockDisponible < 0) {
+      mostrarError(
+        "Este producto no tiene stock suficiente. Tu pedido será por encargo y puede tardar aproximadamente 15 días."
+      );
+    } else {
+      mostrarExito(`${producto.nombreProd} agregado al carrito`);
+    }
+
+  } catch (err) {
+    console.error("Error al agregar producto al pedido en carrito:", err);
+    mostrarError("No se pudo agregar el producto al carrito.");
+  }
+};
 
   return (
     <>

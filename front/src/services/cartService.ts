@@ -5,6 +5,7 @@ export interface Producto {
   precioProd: number;
   urlImg?: string;
   medida?: string;
+  stock: number;
 }
 
 export interface ProductoConCantidad extends Producto {
