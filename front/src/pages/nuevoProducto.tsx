@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Header_sinCarrito from "../components/header_sinCarrito";
 import Footer from "../components/footer";
+import MensajeAlerta from "../components/mensajesAlerta";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import { Link } from "react-router-dom";
+import { usarNotificacion } from "../mensajes/usarNotificacion";
 
 
 export default function NuevoProducto() {
@@ -15,8 +17,7 @@ export default function NuevoProducto() {
   });
   const [imagen, setImagen] = useState<File | null>(null);
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,23 +26,21 @@ export default function NuevoProducto() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
 
     if (!inputs.nombreProd || !inputs.medida || !inputs.precioProd || !inputs.stock) {
-      setError("Por favor, completa todos los campos obligatorios.");
+      mostrarError("Por favor, completa todos los campos obligatorios.");
       return;
     }
 
     const precioNum = parseFloat(inputs.precioProd);
     if (isNaN(precioNum)) {
-      setError("El precio debe ser un número válido.");
+      mostrarError("El precio debe ser un número válido.");
       return;
     }
 
     const stockNum = parseInt(inputs.stock, 10);
     if (isNaN(stockNum) || stockNum < 0) {
-      setError("El stock debe ser un número entero no negativo.");
+      mostrarError("El stock debe ser un número entero no negativo.");
       return;
     }
 
@@ -63,15 +62,15 @@ export default function NuevoProducto() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Error en el servidor");
+        mostrarError(data.error || "Error en el servidor");
         return;
       }
 
-      setSuccess("Producto agregado correctamente!");
+      mostrarExito("Producto agregado correctamente!");
       setInputs({ nombreProd: "", medida: "", precioProd: "" , stock: ""});
       setImagen(null);
     } catch (err) {
-      setError("No se pudo conectar con el servidor");
+      mostrarError("No se pudo conectar con el servidor");
       console.error(err);
     }
   };
@@ -79,15 +78,15 @@ export default function NuevoProducto() {
   return (
     <>
       <Header_sinCarrito />
+      {notificacion && (
+        <MensajeAlerta tipo={notificacion.tipo} texto={notificacion.texto} />
+      )}
       <main>
         <div className="contenedor-formulario">
           <form className="tarjeta-formulario" onSubmit={handleSubmit}>
             <div className="mensaje">
               <h1>Nuevo Producto</h1>
             </div>
-
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
 
             <div className="item-formulario">
               <label htmlFor="nombreProd">Nombre:</label>
