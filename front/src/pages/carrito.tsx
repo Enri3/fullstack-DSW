@@ -22,6 +22,7 @@ type ProductoCarrito = {
   precioProd: number;
   cantidad: number;
   urlImg: string;
+  stock: number;
 };
 
 export default function MostrarCarrito() {

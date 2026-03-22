@@ -20,6 +20,7 @@ interface Producto {
   precioProd: number;
   medida?: string;
   urlImg?: string;
+  stock: number;
 }
 
 export default function DetalleCliente() {
