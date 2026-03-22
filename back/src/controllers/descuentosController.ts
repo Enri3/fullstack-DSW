@@ -100,6 +100,11 @@ export const buscarDescuentoFiltro = async (req: Request, res: Response): Promis
       qb = qb.andWhere("LOWER(producto.nombreProd) LIKE :filtro", { filtro: `%${filtro}%` });
     }
 
+    qb = qb
+      .orderBy("descuento.fechaDesde", "ASC")
+      .addOrderBy("descuento.idDesc", "ASC")
+      .addOrderBy("producto.nombreProd", "ASC");
+
     const resultados = await qb.getMany();
 
     const descuentosEncontrados = resultados.map((pd) => {

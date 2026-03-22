@@ -24,6 +24,20 @@ export default function Descuentos() {
   const [error, setError] = useState<string>("");
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
+  const fetchDescuentos = async () => {
+    try {
+      setLoading(true);
+      const data = await buscarDescuentoFiltro("");
+      setDescuentos(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error("Error al obtener Descuento:", err);
+      setError("No se pudo conectar con el servidor.");
+      setDescuentos([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const toggleSeleccion = (id: number) => {
         setDescuentosSeleccionados((prev) =>
         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
@@ -52,9 +66,7 @@ export default function Descuentos() {
 
       mostrarExito(data.message);
 
-      setDescuentos((prev) =>
-        prev.filter((d) => !descuentosSeleccionados.includes(d.idDesc))
-      );
+      await fetchDescuentos();
       setDescuentosSeleccionados([]);
     } catch (error: any) {
       mostrarError(error.message || "No se pudo conectar con el servidor");
@@ -65,20 +77,7 @@ export default function Descuentos() {
 
    
     useEffect(() => {
-        const fetchDescuentos = async () => {
-            try {
-            const data = await buscarDescuentoFiltro("");
-            console.log("Descuentos recibidos del backend:", data);
-            setDescuentos(Array.isArray(data) ? data : [data]);
-            } catch (err) {
-            console.error("Error al obtener Descuento:", err);
-            setError("No se pudo conectar con el servidor.");
-            setDescuentos([]);
-            } finally {
-            setLoading(false);
-            }
-        };
-        fetchDescuentos();
+      void fetchDescuentos();
     }, []);
 
 
