@@ -75,7 +75,7 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
       await productosDescuentoRepository.save(nuevasRelaciones);
     }
 
-    res.status(200).json({ message: "Descuento creado y asociado correctamente ✅", idDesc });
+    res.status(200).json({ message: "Descuento creado y asociado correctamente", idDesc });
   } catch (error: any) {
     console.error("Error en addDescuento:", error.message || error);
     res.status(500).json({ message: "Error interno al agregar el descuento" });

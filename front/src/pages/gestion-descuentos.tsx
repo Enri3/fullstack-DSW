@@ -18,10 +18,11 @@ export default function Descuentos() {
   const [descuentos, setDescuentos] = useState<DescuentoEncontrado[]>([]);
 
 
-  const navigator = useNavigate(); 
+  const navigator = useNavigate();
   const [descuentosSeleccionados, setDescuentosSeleccionados] = useState<number[]>([]);
   const [termino, setTermino] = useState("");
   const [error, setError] = useState<string>("");
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const toggleSeleccion = (id: number) => {
         setDescuentosSeleccionados((prev) =>
@@ -37,27 +38,30 @@ export default function Descuentos() {
         }
     };
 
-    const handleEliminarSeleccionados = async () => {
+  const handleEliminarSeleccionados = () => {
     if (descuentosSeleccionados.length === 0) {
-        mostrarError("Seleccioná al menos un descuento para eliminar");
-        return;
+      mostrarError("Seleccioná al menos un descuento para eliminar");
+      return;
     }
+    setModalVisible(true);
+  };
 
-    if (!window.confirm("¿Seguro que deseas eliminar los descuentos seleccionados?")) return;
+  const confirmarEliminar = async () => {
+    try {
+      const data = await eliminarDescuentos(descuentosSeleccionados);
 
-        try {
-            const data = await eliminarDescuentos(descuentosSeleccionados);
+      mostrarExito(data.message);
 
-            mostrarExito(data.message);
-
-            setDescuentos((prev) =>
-            prev.filter((d) => !descuentosSeleccionados.includes(d.idDesc))
-            );
-            setDescuentosSeleccionados([]);
-        } catch (error: any) {
-            mostrarError(error.message || "No se pudo conectar con el servidor");
-        }
-    };
+      setDescuentos((prev) =>
+        prev.filter((d) => !descuentosSeleccionados.includes(d.idDesc))
+      );
+      setDescuentosSeleccionados([]);
+    } catch (error: any) {
+      mostrarError(error.message || "No se pudo conectar con el servidor");
+    } finally {
+      setModalVisible(false);
+    }
+  };
 
    
     useEffect(() => {
@@ -97,22 +101,19 @@ export default function Descuentos() {
              
              
              <div className="admin-actions-bar">
-                
-                 <button 
-                     onClick={handleEliminarSeleccionados} 
+
+                 <button
+                     onClick={handleEliminarSeleccionados}
                      className="btn-delete-selected"
                      disabled={descuentosSeleccionados.length === 0}
                  >
                      Eliminar seleccionados ({descuentosSeleccionados.length})
                  </button>
+
+                 <Link to="/nuevo-descuento" className="btn-new-item">
+                     Crear Nuevo Descuento
+                 </Link>
              </div>
-
-
-            <div className="admin-actions-bar">
-              <Link to="/nuevo-descuento" className="btn-new-item">
-                  Crear Nuevo Descuento
-              </Link>
-            </div>
 
  
              {(!loading && descuentos.length === 0) && (
@@ -160,6 +161,31 @@ export default function Descuentos() {
                  </table>
              )}
          </div>
+
+         {modalVisible && (
+           <div className="modal-overlay" onClick={() => setModalVisible(false)}>
+             <div className="modal-confirmacion" onClick={(e) => e.stopPropagation()}>
+               <h2>¿Estás seguro de que quieres eliminar los descuentos seleccionados?</h2>
+               <p><strong>{descuentosSeleccionados.length} descuento(s) será(n) eliminado(s)</strong></p>
+               <div className="modal-botones">
+                 <button
+                   type="button"
+                   className="modal-btn-confirmar"
+                   onClick={confirmarEliminar}
+                 >
+                   Sí, eliminar
+                 </button>
+                 <button
+                   type="button"
+                   className="modal-btn-cancelar"
+                   onClick={() => setModalVisible(false)}
+                 >
+                   Cancelar
+                 </button>
+               </div>
+             </div>
+           </div>
+         )}
      </>
    );
 }
