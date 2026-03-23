@@ -245,32 +245,44 @@ export default function Descuentos() {
                  <strong>{descuentoEnModal.porcentaje}%</strong> | Desde {new Date(descuentoEnModal.fechaDesde).toLocaleDateString()} hasta {new Date(descuentoEnModal.fechaHasta).toLocaleDateString()}
                </p>
 
-               <table className="admin-table" style={{ marginTop: "1rem" }}>
-                 <thead>
-                   <tr>
-                     <th>Imagen</th>
-                     <th>Nombre</th>
-                     <th>Medida</th>
-                     <th>Stock</th>
-                   </tr>
-                 </thead>
-                 <tbody>
-                   {descuentoEnModal.productos.map((producto) => (
-                     <tr key={`${descuentoEnModal.idDesc}-${producto.idProd}`}>
-                       <td>
-                         <img
-                           src={buildImageUrl(producto.urlImg)}
-                           alt={producto.nombreProd}
-                           style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: "6px" }}
-                         />
-                       </td>
-                       <td>{producto.nombreProd}</td>
-                       <td>{producto.medida || "-"}</td>
-                       <td>{producto.stock}</td>
+               <div style={{ 
+                 maxHeight: "530px", 
+                 overflowY: "scroll", 
+                 marginTop: "1rem",
+                 border: "1px solid #ddd",
+                 borderRadius: "4px"
+               }}>
+                 <table className="admin-table" style={{ marginTop: 0 }}>
+                   <thead style={{ position: "sticky", top: 0, backgroundColor: "white" }}>
+                     <tr>
+                       <th>Imagen</th>
+                       <th>Nombre</th>
+                       <th>Medida</th>
+                       <th>Stock</th>
                      </tr>
-                   ))}
-                 </tbody>
-               </table>
+                   </thead>
+                   <tbody>
+                     {descuentoEnModal.productos.map((producto) => (
+                       <tr key={`${descuentoEnModal.idDesc}-${producto.idProd}`}>
+                         <td>
+                           <img
+                             src={buildImageUrl(producto.urlImg)}
+                             alt={producto.nombreProd}
+                             style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: "6px" }}
+                           />
+                         </td>
+                         <td>{producto.nombreProd}</td>
+                         <td>{producto.medida || "-"}</td>
+                         <td>{producto.stock}</td>
+                       </tr>
+                     ))}
+                   </tbody>
+                 </table>
+               </div>
+
+               <p style={{ textAlign: "center", marginTop: "0.8rem", fontSize: "0.85rem", color: "#999" }}>
+                 Total: {descuentoEnModal.productos.length} producto(s)
+               </p>
 
                <div className="modal-botones">
                  <button
