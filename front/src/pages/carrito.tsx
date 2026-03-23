@@ -15,6 +15,7 @@ import {
   reiniciarPedidoEnCarrito
 } from "../services/pedidosService";
 import { buildImageUrl } from "../utils/imageUrl";
+import { getProductoById } from "../services/productosService";
 
 type ProductoCarrito = {
   idProd: number;
@@ -30,6 +31,7 @@ export default function MostrarCarrito() {
   const { notificacion, mostrarError } = usarNotificacion();
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<ProductoCarrito[]>([]);
+  
 
   const obtenerIdCliente = (): number => {
     const clienteJSON = localStorage.getItem("cliente");
@@ -76,8 +78,20 @@ export default function MostrarCarrito() {
   }, []);
 
   async function handleAgregar(producto: ProductoCarrito) {
-    agregarAlCarrito(producto);
+    console.log("producto original:", producto);
+    const productoReal = await getProductoById(producto.idProd);
+    const prods = obtenerProductosCarrito() as ProductoCarrito[];
+    const prod = prods.find(p => p.idProd === producto.idProd);
+    const cantidadActual = prod?.cantidad ?? 0;
+    const stockDisponible = Number(productoReal.stock) - cantidadActual;
 
+   if (stockDisponible < 0) {
+      mostrarError(
+        "Este producto no tiene stock suficiente. Tu pedido será por encargo y puede tardar aproximadamente 15 días."
+      );}
+      
+    agregarAlCarrito(producto);
+    
     try {
       const idCli = obtenerIdCliente();
       if (!idCli) {

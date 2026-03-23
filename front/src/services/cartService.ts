@@ -19,11 +19,16 @@ export function agregarAlCarrito(producto: Producto): number {
   const indiceProducto = memoria.findIndex((p) => p.idProd === producto.idProd);
 
   if (indiceProducto === -1) {
-    memoria.push({ ...producto, cantidad: 1 });
+    memoria.push({ 
+      ...producto, 
+      cantidad: 1,
+      stock: producto.stock ?? 0 
+    });
     cuenta = 1;
   } else {
     if (memoria[indiceProducto]) {
       memoria[indiceProducto].cantidad += 1;
+      memoria[indiceProducto].stock = producto.stock ?? memoria[indiceProducto].stock ?? 0; 
       cuenta = memoria[indiceProducto].cantidad;
     }
   }
@@ -50,7 +55,7 @@ export function restarAlCarrito(producto: Producto): void {
 
 export function obtenerProductosCarrito(): Producto[] {
   return JSON.parse(localStorage.getItem("productos") || "[]");
-}
+}               
 
 export function getNuevoProducto(producto: Producto): ProductoConCantidad {
   return { ...producto, cantidad: 1 };
