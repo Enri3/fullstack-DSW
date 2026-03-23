@@ -114,6 +114,9 @@ export const buscarDescuentoFiltro = async (req: Request, res: Response): Promis
       return {
         idProd: prod?.idProd ?? null,
         nombreProd: prod?.nombreProd ?? "",
+        medida: prod?.medida ?? "",
+        stock: prod?.stock ?? 0,
+        urlImg: prod?.urlImg ?? "",
         idDesc: desc?.idDesc ?? null,
         porcentaje: desc ? Number(desc.porcentaje) : null,
         fechaDesde: desc?.fechaDesde ?? null,

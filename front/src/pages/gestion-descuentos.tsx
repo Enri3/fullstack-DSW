@@ -6,10 +6,19 @@ import { obtenerCantidadCarrito } from "../services/cartService";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import type { DescuentoEncontrado } from "../types/Descuentos";
+import { buildImageUrl } from "../utils/imageUrl";
 
 import { eliminarDescuentos, buscarDescuentoFiltro } from "../services/descunetosService";
 import "../assets/styles/eliminarClientes.css";
 import BuscadorDescuento from "../components/buscadorDescuento";
+
+type DescuentoPorIdMap = Record<number, {
+  idDesc: number;
+  porcentaje: number;
+  fechaDesde: Date;
+  fechaHasta: Date;
+  productos: DescuentoEncontrado[];
+}>;
 
 export default function Descuentos() {
   const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
@@ -23,6 +32,40 @@ export default function Descuentos() {
   const [termino, setTermino] = useState("");
   const [error, setError] = useState<string>("");
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalProductosVisible, setModalProductosVisible] = useState<boolean>(false);
+  const [descuentoEnModal, setDescuentoEnModal] = useState<{
+    idDesc: number;
+    porcentaje: number;
+    fechaDesde: Date;
+    fechaHasta: Date;
+    productos: DescuentoEncontrado[];
+  } | null>(null);
+
+  const descuentosPorId = descuentos.reduce<DescuentoPorIdMap>((acc, item) => {
+    if (!acc[item.idDesc]) {
+      acc[item.idDesc] = {
+        idDesc: item.idDesc,
+        porcentaje: item.porcentaje,
+        fechaDesde: item.fechaDesde,
+        fechaHasta: item.fechaHasta,
+        productos: [],
+      };
+    }
+    const grupo = acc[item.idDesc];
+    if (grupo) {
+      grupo.productos.push(item);
+    }
+    return acc;
+  }, {});
+
+  const listaDescuentos = Object.values(descuentosPorId);
+
+  const abrirModalProductos = (idDesc: number) => {
+    const descuentoSeleccionado = descuentosPorId[idDesc];
+    if (!descuentoSeleccionado) return;
+    setDescuentoEnModal(descuentoSeleccionado);
+    setModalProductosVisible(true);
+  };
 
   const fetchDescuentos = async () => {
     try {
@@ -45,10 +88,10 @@ export default function Descuentos() {
     };
 
     const toggleSeleccionTodos = () => {
-        if (descuentosSeleccionados.length === descuentos.length && descuentos.length > 0) {
+      if (descuentosSeleccionados.length === listaDescuentos.length && listaDescuentos.length > 0) {
         setDescuentosSeleccionados([]);
         } else {
-        setDescuentosSeleccionados(descuentos.map((d) => d.idDesc));
+      setDescuentosSeleccionados(listaDescuentos.map((d) => d.idDesc));
         }
     };
 
@@ -119,7 +162,7 @@ export default function Descuentos() {
                  <p className="no-data-message">No se encontraron descuentos que coincidan con la búsqueda.</p>
              )}
  
-             {!loading && descuentos.length > 0 && (
+             {!loading && listaDescuentos.length > 0 && (
                  <table className="admin-table">
                      <thead>
                          <tr>
@@ -127,33 +170,41 @@ export default function Descuentos() {
                                  
                                  <input
                                      type="checkbox"
-                                     checked={descuentosSeleccionados.length === descuentos.length && descuentos.length > 0}
+                         checked={descuentosSeleccionados.length === listaDescuentos.length && listaDescuentos.length > 0}
                                      onChange={toggleSeleccionTodos}
-                                     title={descuentosSeleccionados.length === descuentos.length ? "Deseleccionar todos" : "Seleccionar todos"}
+                         title={descuentosSeleccionados.length === listaDescuentos.length ? "Deseleccionar todos" : "Seleccionar todos"}
                                  />
                              </th>
                              
                              <th>Descuento</th>
                              <th>Fecha Desde</th>
                              <th>Fecha Hasta</th>
-                             <th>Producto </th>
+                     <th>Productos</th>
                          </tr>
                      </thead>
                      <tbody>
-                         {descuentos.map((descuento) => (
-                             <tr key={(descuento.idDesc)}>
+                   {listaDescuentos.map((itemDescuento) => (
+                     <tr key={(itemDescuento.idDesc)}>
                                  <td className="td-checkbox">
                                      <input
                                          type="checkbox"
-                                         checked={descuentosSeleccionados.includes(descuento.idDesc)}
-                                         onChange={() => toggleSeleccion(descuento.idDesc)}
+                           checked={descuentosSeleccionados.includes(itemDescuento.idDesc)}
+                           onChange={() => toggleSeleccion(itemDescuento.idDesc)}
                                      />
                                  </td>
                                   
-                                 <td>{descuento.porcentaje} %</td>
-                                <td>{new Date(descuento.fechaDesde).toLocaleDateString()}</td>
-                                <td>{new Date(descuento.fechaHasta).toLocaleDateString()}</td>
-                                 <td>{descuento.nombreProd}</td>
+                       <td>{itemDescuento.porcentaje} %</td>
+                      <td>{new Date(itemDescuento.fechaDesde).toLocaleDateString()}</td>
+                      <td>{new Date(itemDescuento.fechaHasta).toLocaleDateString()}</td>
+                                 <td>
+                                  <button
+                                    type="button"
+                                    className="btn-new-item"
+                        onClick={() => abrirModalProductos(itemDescuento.idDesc)}
+                                  >
+                        Ver productos ({itemDescuento.productos.length})
+                                  </button>
+                                 </td>
                              </tr>
                          ))}
                      </tbody>
@@ -180,6 +231,54 @@ export default function Descuentos() {
                    onClick={() => setModalVisible(false)}
                  >
                    Cancelar
+                 </button>
+               </div>
+             </div>
+           </div>
+         )}
+
+         {modalProductosVisible && descuentoEnModal && (
+           <div className="modal-overlay" onClick={() => setModalProductosVisible(false)}>
+             <div className="modal-confirmacion" onClick={(e) => e.stopPropagation()}>
+               <h2>Productos del descuento #{descuentoEnModal.idDesc}</h2>
+               <p>
+                 <strong>{descuentoEnModal.porcentaje}%</strong> | Desde {new Date(descuentoEnModal.fechaDesde).toLocaleDateString()} hasta {new Date(descuentoEnModal.fechaHasta).toLocaleDateString()}
+               </p>
+
+               <table className="admin-table" style={{ marginTop: "1rem" }}>
+                 <thead>
+                   <tr>
+                     <th>Imagen</th>
+                     <th>Nombre</th>
+                     <th>Medida</th>
+                     <th>Stock</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   {descuentoEnModal.productos.map((producto) => (
+                     <tr key={`${descuentoEnModal.idDesc}-${producto.idProd}`}>
+                       <td>
+                         <img
+                           src={buildImageUrl(producto.urlImg)}
+                           alt={producto.nombreProd}
+                           style={{ width: "64px", height: "64px", objectFit: "cover", borderRadius: "6px" }}
+                         />
+                       </td>
+                       <td>{producto.nombreProd}</td>
+                       <td>{producto.medida || "-"}</td>
+                       <td>{producto.stock}</td>
+                     </tr>
+                   ))}
+                 </tbody>
+               </table>
+
+               <div className="modal-botones">
+                 <button
+                   type="button"
+                   className="modal-btn-cancelar"
+                   onClick={() => setModalProductosVisible(false)}
+                 >
+                   Cerrar
                  </button>
                </div>
              </div>
