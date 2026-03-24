@@ -7,6 +7,7 @@ import path from "path";
 import fs from "fs";
 import { AppDataSource } from "./database"; 
 import "reflect-metadata";
+import { MercadoPagoConfig, Preference } from 'mercadopago';
 
 import productosRoutes from "./routes/productos";
 import authRoutes from "./routes/auth";
@@ -58,3 +59,6 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Error al inicializar la base de datos:", err);
   });
+
+
+const client = new MercadoPagoConfig({ accessToken: process.env.YOUR_ACCESS_TOKEN || "" });

@@ -100,7 +100,6 @@ export default function MedioDePago() {
         montoPagado: medioPago === "efectivo" ? montoNumerico : total,
         vuelto: medioPago === "efectivo" ? vuelto : 0,
       });
-
       reiniciarCarrito();
       mostrarExito("¡Pago registrado y pedido realizado correctamente!");
       setTimeout(() => navigate("/clienteIngresado"), 4000);

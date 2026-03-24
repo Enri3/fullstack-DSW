@@ -25,6 +25,9 @@ import MedioDePago from "./pages/medioDePago";
 import AdminPedidos from "./pages/admin-pedidos";
 import HistorialPedidos from "./pages/historial-pedidos";
 import DetallePedido from "./pages/detallePedido";
+import Exito from "./pages/exito";
+import Fracaso from "./pages/fracaso";
+import Pendiente from "./pages/pendiente";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -65,6 +68,9 @@ function App() {
         <Route path="/gestion-descuentos" element={<ProtectedRoute><Descuentos /></ProtectedRoute>} />
         <Route path="/cambiar-password" element={<ProtectedRoute><CambiarPassword /></ProtectedRoute>} />
         <Route path="/nuevo-descuento" element={<ProtectedRoute><NuevoDescuento /></ProtectedRoute>} />
+        <Route path="/exito" element={<ProtectedRoute><Exito /></ProtectedRoute>} />
+        <Route path="/fracaso" element={<ProtectedRoute><Fracaso /></ProtectedRoute>} />
+        <Route path="/pendiente" element={<ProtectedRoute><Pendiente /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

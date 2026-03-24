@@ -7,7 +7,8 @@ import {
 	create,
 	updateEstado,
 	updateProductoCantidad,
-	deletePedido
+	deletePedido,
+	crearPreferencia
 } from "../controllers/pedidosController";
 
 const router = Router();
@@ -27,5 +28,7 @@ router.put("/:idPedido", updateEstado);
 router.put("/:idPedido/productos/:idProd", updateProductoCantidad);
 
 router.delete("/:idPedido", deletePedido);
+
+router.post("/crear-preferencia/:idPedido", crearPreferencia);
 
 export default router;

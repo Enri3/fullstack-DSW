@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../database";
 import { Pedido } from "../../../entidades/pedido";
 import { PedidoProducto } from "../../../entidades/pedido_productos";
+import { Preference } from "mercadopago";
+import client from "../config/mercadopago";
 
 const pedidoRepo = AppDataSource.getRepository(Pedido);
 const pedidoProductoRepo = AppDataSource.getRepository(PedidoProducto);
@@ -313,5 +315,78 @@ export const deletePedido = async (req: Request, res: Response): Promise<void> =
   } catch (error: any) {
     console.error("Error al eliminar pedido:", error.message || error);
     res.status(500).json({ error: "Error al eliminar pedido" });
+  }
+};
+
+export const crearPreferencia = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { idPedido } = req.params;
+
+    const pedido = await pedidoRepo.findOne({
+      where: { idPedido: Number(idPedido) },
+      relations: ["pedidoProductos", "pedidoProductos.producto"]
+    });
+
+    if (!pedido) {
+      res.status(404).json({ error: "Pedido no encontrado" });
+      return;
+    }
+
+
+    const items = pedido.pedidoProductos.map((pp: any) => {
+      const producto = pp.producto;
+
+      if (!producto) {
+        throw new Error("Producto no cargado en la relación");
+      }
+
+      const precio = Number(producto.precioProd) ;
+      const cantidad = Number(pp.cantidadProdPed);
+
+      if (!producto.nombreProd) {
+        throw new Error(`Producto sin nombre (id ${producto.idProd})`);
+      }
+
+      if (isNaN(precio)) {
+        throw new Error(`Precio inválido para producto ${producto.nombreProd}`);
+      }
+
+      if (isNaN(cantidad)) {
+        throw new Error(`Cantidad inválida para producto ${producto.nombreProd}`);
+      }
+
+      return {
+        id: producto.idProd.toString(),
+        title: producto.nombreProd,
+        quantity: cantidad,
+        unit_price: precio
+      };
+    });
+
+
+    const preference = new Preference(client);
+   
+    const response = await preference.create({
+      body: {
+        items,
+        external_reference: pedido.idPedido.toString(),
+        back_urls: {
+          
+          success: "http://localhost:5173/exito",
+          failure: "http://localhost:5173/fracaso",
+          pending: "http://localhost:5173/pendiente",
+        },
+        //auto_return NO va cuando estoy trabajando en prueba
+        //auto_return: "approved",
+      }
+    });
+
+    res.json({
+      id: response.id
+    });
+
+  } catch (error: any) {
+    console.error("ERROR COMPLETO:", error);
+    res.status(500).json({ error: error.message });
   }
 };
