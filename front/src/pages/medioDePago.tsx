@@ -100,6 +100,23 @@ export default function MedioDePago() {
         montoPagado: medioPago === "efectivo" ? montoNumerico : total,
         vuelto: medioPago === "efectivo" ? vuelto : 0,
       });
+      if (medioPago === "mercadoPago") {
+        mostrarExito("Redirigiendo a Mercado Pago...");
+
+        const res = await fetch(
+          `http://localhost:4000/pedidos/crear-preferencia/${pedidoEnCarrito.idPedido}`,
+          {
+            method: "POST",
+          }
+        );
+
+        const data = await res.json();
+
+        
+        window.location.href = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${data.id}`;
+
+        return;
+      }
       reiniciarCarrito();
       mostrarExito("¡Pago registrado y pedido realizado correctamente!");
       setTimeout(() => navigate("/clienteIngresado"), 4000);
