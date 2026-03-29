@@ -2,6 +2,8 @@ import { Router } from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { verificarToken } from "../middleware/authMiddleware";
+import { verificarAdmin } from "../middleware/adminMiddleware";
 import { buscarProducto, getAll,getAllenAlta, getById, create, update, deleteProd, darDeAlta } from "../controllers/productosController";
 
 const router = Router();
@@ -34,13 +36,13 @@ const upload = multer({
 	limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-router.get("/enAlta", getAllenAlta);
+router.get("/enAlta", verificarToken, verificarAdmin, getAllenAlta);
 router.post("/buscarProductoPorNombre", buscarProducto);
 router.get("/", getAll);
-router.post("/", upload.single("imagen"), create);
-router.put("/darDeAlta/:idProd", darDeAlta);
-router.put("/update/:idProd", upload.single("imagen"), update);
+router.post("/", verificarToken, verificarAdmin, upload.single("imagen"), create);
+router.put("/darDeAlta/:idProd", verificarToken, verificarAdmin, darDeAlta);
+router.put("/update/:idProd", verificarToken, verificarAdmin, upload.single("imagen"), update);
 router.get("/:idProd", getById);
-router.delete("/:idProd", deleteProd);
+router.delete("/:idProd", verificarToken, verificarAdmin, deleteProd);
 
 export default router;

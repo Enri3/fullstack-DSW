@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { verificarToken } from "../middleware/authMiddleware";
+import { verificarAdmin } from "../middleware/adminMiddleware";
 import {
 	getAll,
 	getById,
@@ -13,22 +15,22 @@ import {
 
 const router = Router();
 
-router.get("/", getAll);
+router.get("/", verificarToken, verificarAdmin, getAll);
 
-router.get("/cliente/:idCli/enCarrito", getEnCarritoByIdCliente);
+router.get("/cliente/:idCli/enCarrito", verificarToken, getEnCarritoByIdCliente);
 
-router.get("/cliente/:idCli", getByIdCliente);
+router.get("/cliente/:idCli", verificarToken, getByIdCliente);
 
-router.get("/:idPedido", getById);
+router.get("/:idPedido", verificarToken, getById);
 
-router.post("/", create);
+router.post("/", verificarToken, create);
 
-router.put("/:idPedido", updateEstado);
+router.put("/:idPedido", verificarToken, updateEstado);
 
-router.put("/:idPedido/productos/:idProd", updateProductoCantidad);
+router.put("/:idPedido/productos/:idProd", verificarToken, updateProductoCantidad);
 
-router.delete("/:idPedido", deletePedido);
+router.delete("/:idPedido", verificarToken, deletePedido);
 
-router.post("/crear-preferencia/:idPedido", crearPreferencia);
+router.post("/crear-preferencia/:idPedido", verificarToken, crearPreferencia);
 
 export default router;
