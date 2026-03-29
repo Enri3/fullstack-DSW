@@ -1,12 +1,12 @@
 # Vivelas - Aplicación de E-Commerce Fullstack
 
-Sistema de gestión de tienda online desarrollado con **arquitectura agnóstica**. Cuenta con un backend en **Node.js + Express + TypeORM** y un frontend en **React + Vite**.
+Sistema de gestión de tienda online. Cuenta con un backend en **Node.js + Express + TypeORM** y un frontend en **React + Vite**.
 
 ## 📋 Tabla de Contenidos
 
 - [Requisitos Previos](#requisitos-previos)
 - [Instalación](#instalación)
-- [Ejecución del Proyecto](#ejecución-del-proyecto)
+- [Ejecución del Proyecto](#ejecución-del-proyecto)s
 - [Configuración de Variables de Entorno](#configuración-de-variables-de-entorno)
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Arquitectura](#arquitectura)
@@ -22,7 +22,7 @@ Sistema de gestión de tienda online desarrollado con **arquitectura agnóstica*
 
 Antes de instalar, asegurate de tener:
 
-- **Node.js** >= 16.x (Descargar desde [nodejs.org](https://nodejs.org))
+- **Node.js** >= 16.x (Descargar desde [nodejs.org](https://nodejs.org))s
 - **npm** >= 8.x 
 - **MySQL** >= 5.7 (Descargar desde [mysql.com](https://dev.mysql.com/downloads/mysql/))
 - **Git** 
