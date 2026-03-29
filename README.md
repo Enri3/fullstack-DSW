@@ -185,13 +185,13 @@ fullstack-DSW/
 ```
 HTTP Request
     ↓
-Routes (Enrutamiento)
+Routes 
     ↓
-Middleware (Autenticación, Autorización)
+Middleware 
     ↓
-Controllers (Lógica de negocios)
+Controllers
     ↓
-Database (TypeORM/Entities)
+Database
     ↓
 MySQL
 ```
@@ -327,7 +327,7 @@ DELETE /descuentos/delete          Eliminar descuento (solo admin)
 ```
 ---
 
-## 👥 Datos de Prueba
+## Datos de Prueba
 
 ### Crear usuario de prueba en frontend:
 1. Ir a `/register`
