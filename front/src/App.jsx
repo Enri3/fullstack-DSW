@@ -50,24 +50,24 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/productosCliente" element={<DisplayProductos_C />} />
         <Route path="/detalleCliente" element={<DetalleCliente />} />
-        <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>}/>
-        <Route path="/admin/pedidos" element={<ProtectedRoute><AdminPedidos /></ProtectedRoute>} />
-        <Route path="/productosAdmin" element={<ProtectedRoute><DisplayProductos /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute tipoRequerido={1}><Admin /></ProtectedRoute>}/>
+        <Route path="/admin/pedidos" element={<ProtectedRoute tipoRequerido={1}><AdminPedidos /></ProtectedRoute>} />
+        <Route path="/productosAdmin" element={<ProtectedRoute tipoRequerido={1}><DisplayProductos /></ProtectedRoute>} />
         <Route path="/carrito" element={<ProtectedRoute><MostrarCarrito /></ProtectedRoute>} />
         <Route path="/formaDeEntrega" element={<ProtectedRoute><FormaDeEntrega /></ProtectedRoute>} />
         <Route path="/medioDePago" element={<ProtectedRoute><MedioDePago /></ProtectedRoute>} />
-        <Route path="/nuevoProducto" element={<ProtectedRoute><NuevoProducto /></ProtectedRoute>} />
-        <Route path="/modificarProducto/:idProd" element={<ProtectedRoute><ModificarProducto /></ProtectedRoute>} />
+        <Route path="/nuevoProducto" element={<ProtectedRoute tipoRequerido={1}><NuevoProducto /></ProtectedRoute>} />
+        <Route path="/modificarProducto/:idProd" element={<ProtectedRoute tipoRequerido={1}><ModificarProducto /></ProtectedRoute>} />
         <Route path="/clienteIngresado" element={<ProtectedRoute><ClienteIngresado /></ProtectedRoute>} />
         <Route path="/historial-pedidos" element={<ProtectedRoute><HistorialPedidos /></ProtectedRoute>} />
         <Route path="/detallePedido/:idPedido" element={<ProtectedRoute><DetallePedido /></ProtectedRoute>} />
         <Route path="/cerrar-sesion" element={<ProtectedRoute><CerrarSesion /></ProtectedRoute>} />
         <Route path="/editar-cliente" element={<ProtectedRoute><EditarCliente /></ProtectedRoute>} />
-        <Route path="/eliminar-clientes" element={<ProtectedRoute><EliminarClientes /></ProtectedRoute>} />
-        <Route path="/detalleAdmin" element={<ProtectedRoute><DetalleAdmin /></ProtectedRoute>} />
-        <Route path="/gestion-descuentos" element={<ProtectedRoute><Descuentos /></ProtectedRoute>} />
+        <Route path="/eliminar-clientes" element={<ProtectedRoute tipoRequerido={1}><EliminarClientes /></ProtectedRoute>} />
+        <Route path="/detalleAdmin" element={<ProtectedRoute tipoRequerido={1}><DetalleAdmin /></ProtectedRoute>} />
+        <Route path="/gestion-descuentos" element={<ProtectedRoute tipoRequerido={1}><Descuentos /></ProtectedRoute>} />
         <Route path="/cambiar-password" element={<ProtectedRoute><CambiarPassword /></ProtectedRoute>} />
-        <Route path="/nuevo-descuento" element={<ProtectedRoute><NuevoDescuento /></ProtectedRoute>} />
+        <Route path="/nuevo-descuento" element={<ProtectedRoute tipoRequerido={1}><NuevoDescuento /></ProtectedRoute>} />
         <Route path="/exito" element={<ProtectedRoute><Exito /></ProtectedRoute>} />
         <Route path="/fracaso" element={<ProtectedRoute><Fracaso /></ProtectedRoute>} />
         <Route path="/pendiente" element={<ProtectedRoute><Pendiente /></ProtectedRoute>} />
