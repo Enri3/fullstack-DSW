@@ -193,3 +193,19 @@ export async function hidratarCarritoDesdePedidoEnCarrito(idCli: number): Promis
 
   localStorage.setItem("productos", JSON.stringify(productos));
 }
+
+export async function crearPreferencia(idPedido: number): Promise<{ id: string }> {
+  const res = await fetch(`http://localhost:4000/pedidos/crear-preferencia/${idPedido}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Error al crear preferencia");
+  }
+
+  return await res.json();
+}

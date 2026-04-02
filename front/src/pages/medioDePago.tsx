@@ -6,7 +6,7 @@ import MensajeAlerta from "../components/mensajesAlerta";
 import { usarNotificacion } from "../mensajes/usarNotificacion";
 import "../assets/styles/medioDePago.css";
 import { obtenerCantidadCarrito, reiniciarCarrito } from "../services/cartService";
-import { getPedidoEnCarritoByCliente, updatePedidoEstado } from "../services/pedidosService";
+import { getPedidoEnCarritoByCliente, updatePedidoEstado , crearPreferencia} from "../services/pedidosService";
 
 type MedioPago = "mercadoPago" | "efectivo";
 
@@ -103,16 +103,8 @@ export default function MedioDePago() {
       if (medioPago === "mercadoPago") {
         mostrarExito("Redirigiendo a Mercado Pago...");
 
-        const res = await fetch(
-          `http://localhost:4000/pedidos/crear-preferencia/${pedidoEnCarrito.idPedido}`,
-          {
-            method: "POST",
-          }
-        );
+        const data = await crearPreferencia(pedidoEnCarrito.idPedido);
 
-        const data = await res.json();
-
-        
         window.location.href = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${data.id}`;
 
         return;
