@@ -36,7 +36,7 @@ const upload = multer({
 	limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-router.get("/enAlta", verificarToken, verificarAdmin, getAllenAlta);
+router.get("/enAlta", getAllenAlta);
 router.post("/buscarProductoPorNombre", buscarProducto);
 router.get("/", getAll);
 router.post("/", verificarToken, verificarAdmin, upload.single("imagen"), create);

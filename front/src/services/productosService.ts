@@ -9,8 +9,18 @@ type Producto = {
 
 };
 
+function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit {
+  const token = localStorage.getItem("token");
+  return {
+    ...extraHeaders,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 export async function getProductos() { 
-  const res = await fetch("http://localhost:4000/productos"); 
+  const res = await fetch("http://localhost:4000/productos", {
+    headers: getAuthHeaders(),
+  }); 
   if (!res.ok) throw new Error("Error al obtener productos"); 
   const data = await res.json(); 
   console.log("Datos recibidos del backend:", data); 
@@ -18,11 +28,16 @@ export async function getProductos() {
   
 
 export async function getProductosEnAlta() {
-  const res = await fetch("http://localhost:4000/productos/enAlta"); 
-  if (!res.ok) throw new Error("Error al obtener productos en alta"); 
-  const data = await res.json(); 
-  console.log("Datos recibidos del backend:", data); 
-  return data; }
+  const res = await fetch("http://localhost:4000/productos/enAlta", {
+    headers: getAuthHeaders(),
+  });
+
+  if (!res.ok) throw new Error("Error al obtener productos en alta");
+
+  const data = await res.json();
+  console.log("Datos recibidos del backend:", data);
+  return data;
+}
 
 export async function getProductoById(idProd: number): Promise<Producto> {
   const res = await fetch(`http://localhost:4000/productos/${idProd}`);
@@ -41,8 +56,9 @@ export async function updateProducto(
 
   if (producto instanceof FormData) {
     options.body = producto;
+    options.headers = getAuthHeaders();
   } else {
-    options.headers = { "Content-Type": "application/json" };
+    options.headers = getAuthHeaders({ "Content-Type": "application/json" });
     options.body = JSON.stringify(producto);
   }
 
@@ -57,12 +73,14 @@ export async function updateProducto(
 export async function eliminarProducto(idProd: string | number): Promise<void> {
   const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
     method: "DELETE",
+    headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Error al eliminar producto");
 }
 export async function darDeAltaProducto(idProd: string | number): Promise<void> {
   const res = await fetch(`http://localhost:4000/productos/darDeAlta/${idProd}`, {
     method: "PUT",
+    headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Error al dar de alta producto");
 }
@@ -71,7 +89,7 @@ export const buscarProducto = async (nombreProdBuscado: string, admin: boolean) 
   try {
     const res = await fetch(`http://localhost:4000/productos/buscarProductoPorNombre`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ nombreProdBuscado, admin }),
     });
 

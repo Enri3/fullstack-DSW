@@ -5,9 +5,19 @@ const API_URL = "http://localhost:4000/pedidos";
 
 type PedidoProductoPayload = Pick<PedidoProducto, "idProd" | "cantidadProdPed">;
 
+function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit {
+  const token = localStorage.getItem("token");
+  return {
+    ...extraHeaders,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 export async function getPedidos(): Promise<Pedido[]> {
   try {
-    const res = await fetch(`${API_URL}`);
+    const res = await fetch(`${API_URL}`, {
+      headers: getAuthHeaders(),
+    });
     if (!res.ok) throw new Error("Error al obtener pedidos");
     const data = await res.json();
     return data as Pedido[];
@@ -19,7 +29,9 @@ export async function getPedidos(): Promise<Pedido[]> {
 
 export async function getPedidosByIdCliente(idCli: number): Promise<Pedido[]> {
   try {
-    const res = await fetch(`${API_URL}/cliente/${idCli}`);
+    const res = await fetch(`${API_URL}/cliente/${idCli}`, {
+      headers: getAuthHeaders(),
+    });
     if (!res.ok) throw new Error("Error al obtener pedidos del cliente");
     const data = await res.json();
     return data as Pedido[];
@@ -31,7 +43,9 @@ export async function getPedidosByIdCliente(idCli: number): Promise<Pedido[]> {
 
 export async function getPedidoEnCarritoByCliente(idCli: number): Promise<Pedido | null> {
   try {
-    const res = await fetch(`${API_URL}/cliente/${idCli}/enCarrito`);
+    const res = await fetch(`${API_URL}/cliente/${idCli}/enCarrito`, {
+      headers: getAuthHeaders(),
+    });
     if (res.status === 404) return null;
     if (!res.ok) throw new Error("Error al obtener pedido en carrito del cliente");
     const data = await res.json();
@@ -44,7 +58,9 @@ export async function getPedidoEnCarritoByCliente(idCli: number): Promise<Pedido
 
 export async function getPedidoById(idPedido: number): Promise<Pedido> {
   try {
-    const res = await fetch(`${API_URL}/${idPedido}`);
+    const res = await fetch(`${API_URL}/${idPedido}`, {
+      headers: getAuthHeaders(),
+    });
     if (!res.ok) throw new Error("Error al obtener pedido");
     const data = await res.json();
     return data as Pedido;
@@ -62,7 +78,7 @@ export async function createPedido(
   try {
     const res = await fetch(`${API_URL}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({
         idCli,
         estadoPedido,
@@ -94,7 +110,7 @@ export async function actualizarCantidadProductoEnPedido(
   try {
     const res = await fetch(`${API_URL}/${idPedido}/productos/${idProd}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ cantidadProdPed })
     });
 
@@ -119,7 +135,7 @@ export async function updatePedidoEstado(
   try {
     const res = await fetch(`${API_URL}/${idPedido}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({
         estadoPedido,
         ...metadata
@@ -135,7 +151,8 @@ export async function updatePedidoEstado(
 export async function deletePedido(idPedido: number): Promise<void> {
   try {
     const res = await fetch(`${API_URL}/${idPedido}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: getAuthHeaders(),
     });
     if (!res.ok) throw new Error("Error al eliminar pedido");
   } catch (error) {
