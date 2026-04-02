@@ -25,9 +25,11 @@ export default function DisplayProductos_C() {
   const fetchProductos = async () => {
     try {
       setLoading(true);
+      setError("");
       const data = await getProductosEnAlta();
       console.log("Productos recibidos del backend:", data);
       setProductos(Array.isArray(data) ? data : [data]);
+      setError("");
     } catch (err) {
       console.error("Error al obtener productos:", err);
       setError("No se pudo conectar con el servidor.");

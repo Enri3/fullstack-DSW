@@ -17,8 +17,9 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
 
 export const getAllenAlta = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await productoRepo.find({ where: { deleted: 0 } });
-    res.json(result);
+    const result = await productoRepo.find();
+    const productosEnAlta = result.filter((producto) => Number(producto.deleted ?? 0) === 0);
+    res.json(productosEnAlta);
   } catch (error: any) {
     console.error("Error al obtener productos en alta:", error.message || error);
     res.status(500).json({ error: "Error al obtener productos en alta" });

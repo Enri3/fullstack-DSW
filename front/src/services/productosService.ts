@@ -18,9 +18,7 @@ function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit 
 }
 
 export async function getProductos() { 
-  const res = await fetch("http://localhost:4000/productos", {
-    headers: getAuthHeaders(),
-  }); 
+  const res = await fetch("http://localhost:4000/productos"); 
   if (!res.ok) throw new Error("Error al obtener productos"); 
   const data = await res.json(); 
   console.log("Datos recibidos del backend:", data); 
@@ -28,15 +26,9 @@ export async function getProductos() {
   
 
 export async function getProductosEnAlta() {
-  const res = await fetch("http://localhost:4000/productos/enAlta", {
-    headers: getAuthHeaders(),
-  });
-
-  if (!res.ok) throw new Error("Error al obtener productos en alta");
-
-  const data = await res.json();
-  console.log("Datos recibidos del backend:", data);
-  return data;
+  const data = await getProductos();
+  const productos = Array.isArray(data) ? data : [];
+  return productos.filter((p) => Number(p.deleted ?? 0) === 0);
 }
 
 export async function getProductoById(idProd: number): Promise<Producto> {
@@ -89,7 +81,7 @@ export const buscarProducto = async (nombreProdBuscado: string, admin: boolean) 
   try {
     const res = await fetch(`http://localhost:4000/productos/buscarProductoPorNombre`, {
       method: "POST",
-      headers: getAuthHeaders({ "Content-Type": "application/json" }),
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombreProdBuscado, admin }),
     });
 

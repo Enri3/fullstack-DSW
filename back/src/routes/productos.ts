@@ -37,6 +37,7 @@ const upload = multer({
 });
 
 router.get("/enAlta", getAllenAlta);
+router.get("/enalta", getAllenAlta);
 router.post("/buscarProductoPorNombre", buscarProducto);
 router.get("/", getAll);
 router.post("/", verificarToken, verificarAdmin, upload.single("imagen"), create);
