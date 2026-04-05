@@ -1,4 +1,4 @@
-import { MercadoPagoConfig, Preference} from "mercadopago";
+import { MercadoPagoConfig, Payment} from "mercadopago";
 
 
 const client = new MercadoPagoConfig({

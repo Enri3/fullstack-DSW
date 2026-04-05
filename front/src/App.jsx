@@ -68,9 +68,9 @@ function App() {
         <Route path="/gestion-descuentos" element={<ProtectedRoute tipoRequerido={1}><Descuentos /></ProtectedRoute>} />
         <Route path="/cambiar-password" element={<ProtectedRoute><CambiarPassword /></ProtectedRoute>} />
         <Route path="/nuevo-descuento" element={<ProtectedRoute tipoRequerido={1}><NuevoDescuento /></ProtectedRoute>} />
-        <Route path="/exito" element={<ProtectedRoute><Exito /></ProtectedRoute>} />
-        <Route path="/fracaso" element={<ProtectedRoute><Fracaso /></ProtectedRoute>} />
-        <Route path="/pendiente" element={<ProtectedRoute><Pendiente /></ProtectedRoute>} />
+        <Route path="/exito" element={<Exito />} />
+        <Route path="/fracaso" element={<Fracaso />} />
+        <Route path="/pendiente" element={<Pendiente />} />
       </Routes>
     </BrowserRouter>
   );

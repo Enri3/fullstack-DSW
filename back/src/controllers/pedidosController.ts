@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../database";
 import { Pedido } from "../../../entidades/pedido";
 import { PedidoProducto } from "../../../entidades/pedido_productos";
-import { Preference } from "mercadopago";
+import { Preference, Payment } from "mercadopago";
 import client from "../config/mercadopago";
 
 const pedidoRepo = AppDataSource.getRepository(Pedido);
@@ -371,13 +371,15 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
         items,
         external_reference: pedido.idPedido.toString(),
         back_urls: {
-          
-          success: "http://localhost:5173/exito",
-          failure: "http://localhost:5173/fracaso",
-          pending: "http://localhost:5173/pendiente",
+          //las urls hay que escribirlas como dice el ngrok en el puerto de FRONT
+          success: "https://barb-illtempered-nakia.ngrok-free.dev/exito",
+          failure: "https://barb-illtempered-nakia.ngrok-free.dev/fracaso",
+          pending: "https://barb-illtempered-nakia.ngrok-free.dev/pendiente",
         },
         //auto_return NO va cuando estoy trabajando en prueba
-        //auto_return: "approved",
+        auto_return: "approved",
+        //la url hay que escribirlas como dice el ngrok en el puerto de BACK
+        notification_url: "https://barb-illtempered-nakia.ngrok-free.dev/pedidos/webhook",
       }
     });
 
@@ -388,5 +390,56 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
   } catch (error: any) {
     console.error("ERROR COMPLETO:", error);
     res.status(500).json({ error: error.message });
+  }
+
+  
+};
+
+export const recibirWebhookMP = async (req: Request, res: Response) => {
+  try {
+    const { type, data } = req.body;
+
+    console.log("Webhook recibido:", req.body);
+
+    if (type === "payment") {
+      const paymentClient = new Payment(client);
+
+      const payment = await paymentClient.get({
+        id: data.id,
+      });
+
+      const estado = payment.status;
+      const idPedido = payment.external_reference;
+
+      console.log("Pedido:", idPedido, "Estado:", estado);
+
+      if (!idPedido) {
+        return res.sendStatus(200);
+      }
+
+     
+      const pedido = await pedidoRepo.findOne({
+        where: { idPedido: Number(idPedido) }
+      });
+
+      if (!pedido) {
+        return res.sendStatus(200);
+      }
+
+      if (estado === "approved") {
+        pedido.estadoPedido = "pagado";
+      }
+
+      if (estado === "rejected" || estado === "cancelled") {
+        pedido.estadoPedido = "cancelado";
+      }
+
+      await pedidoRepo.save(pedido);
+    }
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error webhook:", error);
+    res.sendStatus(500);
   }
 };

@@ -10,7 +10,8 @@ import {
 	updateEstado,
 	updateProductoCantidad,
 	deletePedido,
-	crearPreferencia
+	crearPreferencia,
+	recibirWebhookMP
 } from "../controllers/pedidosController";
 
 const router = Router();
@@ -20,6 +21,8 @@ router.get("/", verificarToken, verificarAdmin, getAll);
 router.get("/cliente/:idCli/enCarrito", verificarToken, getEnCarritoByIdCliente);
 
 router.get("/cliente/:idCli", verificarToken, getByIdCliente);
+
+router.post("/webhook", recibirWebhookMP);
 
 router.get("/:idPedido", verificarToken, getById);
 
