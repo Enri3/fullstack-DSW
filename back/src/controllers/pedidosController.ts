@@ -419,7 +419,8 @@ export const recibirWebhookMP = async (req: Request, res: Response) => {
 
      
       const pedido = await pedidoRepo.findOne({
-        where: { idPedido: Number(idPedido) }
+        where: { idPedido: Number(idPedido) },
+        relations: ["pedidoProductos", "pedidoProductos.producto"]
       });
 
       if (!pedido) {
@@ -428,6 +429,20 @@ export const recibirWebhookMP = async (req: Request, res: Response) => {
 
       if (estado === "approved") {
         pedido.estadoPedido = "pagado";
+
+        for (const pp of pedido.pedidoProductos) {
+          const producto = pp.producto;
+
+          if (!producto) continue;
+
+          producto.stock = Number(producto.stock) - Number(pp.cantidadProdPed);
+
+          if (producto.stock < 0) {
+            producto.stock = 0; 
+          }
+
+          await AppDataSource.getRepository("Producto").save(producto);
+        }
       }
 
       if (estado === "rejected" || estado === "cancelled") {
