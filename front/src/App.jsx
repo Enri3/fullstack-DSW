@@ -28,6 +28,7 @@ import DetallePedido from "./pages/detallePedido";
 import Exito from "./pages/exito";
 import Fracaso from "./pages/fracaso";
 import Pendiente from "./pages/pendiente";
+import Faq from "./pages/faq";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -60,6 +61,7 @@ function App() {
         <Route path="/modificarProducto/:idProd" element={<ProtectedRoute tipoRequerido={1}><ModificarProducto /></ProtectedRoute>} />
         <Route path="/clienteIngresado" element={<ProtectedRoute><ClienteIngresado /></ProtectedRoute>} />
         <Route path="/historial-pedidos" element={<ProtectedRoute><HistorialPedidos /></ProtectedRoute>} />
+        <Route path="/faq" element={<Faq />} />
         <Route path="/detallePedido/:idPedido" element={<ProtectedRoute><DetallePedido /></ProtectedRoute>} />
         <Route path="/cerrar-sesion" element={<ProtectedRoute><CerrarSesion /></ProtectedRoute>} />
         <Route path="/editar-cliente" element={<ProtectedRoute><EditarCliente /></ProtectedRoute>} />

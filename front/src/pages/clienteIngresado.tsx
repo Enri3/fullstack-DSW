@@ -169,7 +169,9 @@ export default function ClienteIngresado() {
               <h2>¿Necesitás Ayuda?</h2>
               <div className="support-links">
                 <Link to="/faq">Preguntas Frecuentes (FAQ)</Link>
-                <Link to="/contacto">Contactar a Soporte</Link>
+                <a href="https://www.instagram.com/vivelas_art/" target="_blank" rel="noopener noreferrer">
+                  ¡Contactate con nosotros!
+                </a>
               </div>
             </section>
           </div>
