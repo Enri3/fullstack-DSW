@@ -68,7 +68,7 @@ function App() {
         <Route path="/gestion-descuentos" element={<ProtectedRoute tipoRequerido={1}><Descuentos /></ProtectedRoute>} />
         <Route path="/cambiar-password" element={<ProtectedRoute><CambiarPassword /></ProtectedRoute>} />
         <Route path="/nuevo-descuento" element={<ProtectedRoute tipoRequerido={1}><NuevoDescuento /></ProtectedRoute>} />
-        <Route path="/exito" element={<Exito />} />
+        <Route path="/exito/:idPedido" element={<Exito />} />
         <Route path="/fracaso" element={<Fracaso />} />
         <Route path="/pendiente" element={<Pendiente />} />
       </Routes>
