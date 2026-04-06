@@ -244,13 +244,13 @@
 }
 
 .modal-btn-confirmar {
-    background: #8B6F47;
+    background: var(--marron-boton, #7a624a);
     color: #ffffff;
 }
 
 .modal-btn-confirmar:hover:not(:disabled) {
-    background: #6B5636;
-    box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+    background: var(--marron-boton-hover, #6b5636);
+    box-shadow: 0 4px 12px rgba(122, 98, 74, 0.3);
 }
 
 .modal-btn-cancelar {
@@ -261,7 +261,7 @@
 
 .modal-btn-cancelar:hover:not(:disabled) {
     background: #e5e1db;
-    border-color: #8B6F47;
+    border-color: var(--marron-boton, #7a624a);
 }
 
 .modal-btn-confirmar:disabled,

@@ -7,6 +7,8 @@
     --contador: #d34c4c;
     --tarjeta: #cbc9b6;
     --oscuro: #342c26;
+    --marron-boton: #7a624a;
+    --marron-boton-hover: #6b5636;
 }
 
 html {
@@ -214,13 +216,16 @@ button:hover{
         .botones-admin button {
         flex: 1;               
         padding: 10px 20px;     
-        width: auto;      }
+                width: auto;
+                background-color: var(--marron-boton);
+                color: var(--principal);
+            }
         .botones-admin link {
         flex: 1;    
            padding: 10px 20px;     
         width: auto;  }
         .botones-admin button:hover {
-        background-color: var(--click);
+                background-color: var(--marron-boton-hover);
     }
     .modal-overlay {
         position: fixed;

@@ -104,7 +104,7 @@
         .boton-detalle {
         margin-bottom: 2%;
         padding: 10px 20px;
-        background-color: var(--oscuro);
+        background-color: var(--marron-boton, #7a624a);
         color: white;
         border: none;
         font-size: 1.1rem;
@@ -115,5 +115,5 @@
         }
 
         .boton-detalle:hover {
-        background-color: var(--click);
+        background-color: var(--marron-boton-hover, #6b5636);
         }

@@ -17,7 +17,7 @@
 .tarjeta-producto-carrito img {
     height: 100px;
     aspect-ratio: 1.35;
-    border: 1px solid #7a624a;
+    border: 1px solid var(--marron-boton, #7a624a);
     border-radius: 6px;
 }
 
@@ -77,7 +77,7 @@
 
 #carrito-vacio a {
     display: inline-block;
-    background: #7a624a;
+    background: var(--marron-boton, #7a624a);
     color: white;
     padding: 12px 24px;
     text-decoration: none;
@@ -86,7 +86,7 @@
 }
 
 #carrito-vacio a:hover {
-    background: #7a624a;
+    background: var(--marron-boton-hover, #6b5636);
 }
 
 .botones-carrito{
@@ -99,7 +99,7 @@
 
 .botones-carrito button,
 .contenedor-botones button {
-    background: #7a624a;
+    background: var(--marron-boton, #7a624a);
     color: #fff;
     border-radius: 8px;
 }
@@ -120,7 +120,7 @@
 
 .botones-carrito button:hover,
 .contenedor-botones button:hover {
-    background: #7a624a;
+    background: var(--marron-boton-hover, #6b5636);
 }
 
 .botones-carrito .cantidad {
