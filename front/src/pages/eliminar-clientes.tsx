@@ -18,6 +18,8 @@ export default function EliminarClientes() {
     const [loading, setLoading] = useState<boolean>(true);
     const [termino, setTermino] = useState("");
     const [error, setError] = useState<string>("");
+    const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+    const [eliminando, setEliminando] = useState(false);
     
     const toggleSeleccion = (id: number) => {
         setClientesSeleccionados((prev) =>
@@ -39,9 +41,17 @@ export default function EliminarClientes() {
         return;
     }
 
-    if (!window.confirm("¿Seguro que deseas eliminar los clientes seleccionados?")) return;
+    setMostrarConfirmacion(true);
+    };
+
+    const confirmarEliminarSeleccionados = async () => {
+    if (clientesSeleccionados.length === 0) {
+        setMostrarConfirmacion(false);
+        return;
+    }
 
         try {
+            setEliminando(true);
             const data = await deleteMultipleClientes(clientesSeleccionados);
 
             if (clientesSeleccionados.length === 1) {
@@ -54,9 +64,17 @@ export default function EliminarClientes() {
             prev.filter((c) => !clientesSeleccionados.includes(c.idCli))
             );
             setClientesSeleccionados([]);
+            setMostrarConfirmacion(false);
         } catch (error: any) {
             mostrarError(error.message || "No se pudo conectar con el servidor");
+        } finally {
+            setEliminando(false);
         }
+    };
+
+    const cancelarEliminarSeleccionados = () => {
+        if (eliminando) return;
+        setMostrarConfirmacion(false);
     };
 
       useEffect(() => {
@@ -144,6 +162,37 @@ export default function EliminarClientes() {
                 </table>
             )}
         </div>
+
+        {mostrarConfirmacion && (
+            <div className="modal-overlay" onClick={cancelarEliminarSeleccionados}>
+                <div className="modal-confirmacion" onClick={(e) => e.stopPropagation()}>
+                    <h2>¿Estás seguro de que quieres eliminar estos clientes?</h2>
+                    <p>
+                        {clientesSeleccionados.length === 1 ? "Se va a eliminar " : "Se van a eliminar "}
+                        <strong>{clientesSeleccionados.length}</strong>
+                        {clientesSeleccionados.length === 1 ? " cliente" : " clientes"}.
+                    </p>
+                    <div className="modal-botones">
+                        <button
+                            type="button"
+                            className="modal-btn-confirmar"
+                            onClick={() => void confirmarEliminarSeleccionados()}
+                            disabled={eliminando}
+                        >
+                            {eliminando ? "Eliminando..." : "Sí, eliminar"}
+                        </button>
+                        <button
+                            type="button"
+                            className="modal-btn-cancelar"
+                            onClick={cancelarEliminarSeleccionados}
+                            disabled={eliminando}
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
     </>
   );
 }

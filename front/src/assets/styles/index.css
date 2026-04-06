@@ -36,6 +36,8 @@
   width: 100%;
   height: auto;
   aspect-ratio: 1.35;
+  border: 1px solid #7a624a;
+  border-radius: 6px;
 }
 .tarjeta-add {
   max-width: 300px;
