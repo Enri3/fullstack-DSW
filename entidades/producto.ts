@@ -26,9 +26,9 @@ export class Producto {
   @Column({ type: "int", default: 0 })
   stock!: number;
 
-  @OneToMany(() => ProductoDescuento, productoDescuento => productoDescuento.producto)
+  @OneToMany(() => ProductoDescuento, (productoDescuento: ProductoDescuento) => productoDescuento.producto)
   productoDescuento!: ProductoDescuento[];
 
-  @OneToMany(() => PedidoProducto, pedidoProducto => pedidoProducto.producto)
+  @OneToMany(() => PedidoProducto, (pedidoProducto: PedidoProducto) => pedidoProducto.producto)
   pedidoProductos!: PedidoProducto[];
 }
