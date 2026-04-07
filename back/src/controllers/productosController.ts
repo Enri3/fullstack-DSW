@@ -1,14 +1,49 @@
 import e, { Request, Response } from "express";
 import { AppDataSource } from "../database";
 import { Producto} from "../../../entidades/producto";
+import { calcularPrecioFinalProducto } from "../services/preciosService";
+import jwt from "jsonwebtoken";
 
 const productoRepo = AppDataSource.getRepository(Producto);
+
+function getIdTipoCliFromToken(req: Request): number | undefined {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return undefined;
+  }
+
+  const token = authHeader.split(" ")[1];
+  if (!token) {
+    return undefined;
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "clave_secreta_super_segura") as { tipo?: number | string };
+    const tipo = Number(decoded?.tipo);
+    return Number.isNaN(tipo) ? undefined : tipo;
+  } catch {
+    return undefined;
+  }
+}
+
+async function mapProductoConPrecioFinal(producto: Producto, idTipoCli?: number) {
+  const precio = await calcularPrecioFinalProducto(Number(producto.precioProd), producto.idProd, idTipoCli);
+
+  return {
+    ...producto,
+    precioFinalProd: precio.precioFinalProd,
+    porcentajeDescuentoProducto: precio.porcentajeDescuentoProducto,
+    porcentajeDescuentoTipoCliente: precio.porcentajeDescuentoTipoCliente,
+  };
+}
 
 
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await productoRepo.find();
-    res.json(result);
+    const idTipoCli = getIdTipoCliFromToken(req);
+    const productosConPrecioFinal = await Promise.all(result.map((p) => mapProductoConPrecioFinal(p, idTipoCli)));
+    res.json(productosConPrecioFinal);
   } catch (error: any) {
     console.error("Error al obtener productos:", error.message || error);
     res.status(500).json({ error: "Error al obtener productos" });
@@ -19,7 +54,9 @@ export const getAllenAlta = async (req: Request, res: Response): Promise<void> =
   try {
     const result = await productoRepo.find();
     const productosEnAlta = result.filter((producto) => Number(producto.deleted ?? 0) === 0);
-    res.json(productosEnAlta);
+    const idTipoCli = getIdTipoCliFromToken(req);
+    const productosConPrecioFinal = await Promise.all(productosEnAlta.map((p) => mapProductoConPrecioFinal(p, idTipoCli)));
+    res.json(productosConPrecioFinal);
   } catch (error: any) {
     console.error("Error al obtener productos en alta:", error.message || error);
     res.status(500).json({ error: "Error al obtener productos en alta" });
@@ -76,7 +113,10 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.json(producto);
+    const idTipoCli = getIdTipoCliFromToken(req);
+    const productoConPrecioFinal = await mapProductoConPrecioFinal(producto, idTipoCli);
+
+    res.json(productoConPrecioFinal);
   } catch (error: any) {
     console.error("Error al obtener producto por ID:", error.message || error);
     res.status(500).json({ error: "Error al obtener producto" });
@@ -182,7 +222,7 @@ export const buscarProducto = async (req: Request, res: Response): Promise<void>
 
       productos = admin
         ? await productoRepo.find() 
-        : await productoRepo.find({ where: { deleted: 0 } }); // 👈 CLIENTE solo activos
+        : await productoRepo.find({ where: { deleted: 0 } });
 
     } else {
 
@@ -200,7 +240,10 @@ export const buscarProducto = async (req: Request, res: Response): Promise<void>
       productos = await query.getMany();
     }
 
-    res.json(productos);
+    const tipoCli = getIdTipoCliFromToken(req);
+    const productosConPrecioFinal = await Promise.all(productos.map((p: Producto) => mapProductoConPrecioFinal(p, tipoCli)));
+
+    res.json(productosConPrecioFinal);
 
   } catch (error: any) {
     console.error("Error al buscar productos:", error.message || error);

@@ -1,14 +1,14 @@
 export interface Descuento {
   idDesc: number;
   porcentaje: number;
-  fechaDesde: Date;
-  fechaHasta: Date;
+  fechaDesde: string | Date;
+  fechaHasta: string | Date;
 }
 
 export interface DescuentoConProductos {
   porcentaje: number;
-  fechaDesde: Date;
-  fechaHasta: Date;
+  fechaDesde: string | Date;
+  fechaHasta: string | Date;
   idsProductos: number[];
 }
 
@@ -20,6 +20,6 @@ export interface DescuentoEncontrado {
   urlImg?: string;
   idDesc: number;
   porcentaje: number;
-  fechaDesde: Date;
-  fechaHasta: Date;
+  fechaDesde: string | Date;
+  fechaHasta: string | Date;
 }

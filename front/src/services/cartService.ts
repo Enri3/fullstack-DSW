@@ -3,6 +3,7 @@ export interface Producto {
   idProd: number;
   nombreProd: string;
   precioProd: number;
+  precioFinalProd?: number;
   urlImg?: string;
   medida?: string;
   stock: number;

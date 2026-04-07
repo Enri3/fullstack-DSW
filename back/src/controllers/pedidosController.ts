@@ -4,9 +4,69 @@ import { Pedido } from "../../../entidades/pedido";
 import { PedidoProducto } from "../../../entidades/pedido_productos";
 import { Preference, Payment } from "mercadopago";
 import client from "../config/mercadopago";
+import { calcularPrecioFinalProductoConFecha } from "../services/preciosService";
 
 const pedidoRepo = AppDataSource.getRepository(Pedido);
 const pedidoProductoRepo = AppDataSource.getRepository(PedidoProducto);
+
+const mapPedidoProductoConPrecioHistorico = async (pp: any, idTipoCli: number, fechaReferencia: Date | string) => {
+  if (!pp.producto) {
+    return pp;
+  }
+
+  const precio = await calcularPrecioFinalProductoConFecha(
+    Number(pp.producto.precioProd),
+    pp.producto.idProd,
+    idTipoCli,
+    fechaReferencia
+  );
+
+  return {
+    ...pp,
+    producto: {
+      ...pp.producto,
+      precioFinalProd: precio.precioFinalProd,
+      porcentajeDescuentoProducto: precio.porcentajeDescuentoProducto,
+      porcentajeDescuentoTipoCliente: precio.porcentajeDescuentoTipoCliente,
+    },
+  };
+};
+
+const mapPedidoProductoToMpItem = async (pp: any, idTipoCli: number) => {
+  const producto = pp.producto;
+
+  if (!producto) {
+    throw new Error("Producto no cargado en la relación");
+  }
+
+  const precioCalculado = await calcularPrecioFinalProductoConFecha(
+    Number(producto.precioProd),
+    producto.idProd,
+    idTipoCli,
+    new Date()
+  );
+  const precio = Number(precioCalculado.precioFinalProd);
+  const cantidad = Number(pp.cantidadProdPed);
+
+  if (!producto.nombreProd) {
+    throw new Error(`Producto sin nombre (id ${producto.idProd})`);
+  }
+
+  if (isNaN(precio)) {
+    throw new Error(`Precio inválido para producto ${producto.nombreProd}`);
+  }
+
+  if (isNaN(cantidad)) {
+    throw new Error(`Cantidad inválida para producto ${producto.nombreProd}`);
+  }
+
+  return {
+    id: producto.idProd.toString(),
+    title: producto.nombreProd,
+    quantity: cantidad,
+    unit_price: precio,
+  };
+};
 
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -35,7 +95,21 @@ export const getByIdCliente = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    res.json(resultado);
+    const pedidosConPrecio = await Promise.all(
+      resultado.map(async (pedido) => {
+        const idTipoCli = Number(pedido.cliente?.idTipoCli ?? 0);
+        const pedidoProductos = await Promise.all(
+          pedido.pedidoProductos.map((pp) => mapPedidoProductoConPrecioHistorico(pp, idTipoCli, pedido.fechaPedido))
+        );
+
+        return {
+          ...pedido,
+          pedidoProductos,
+        };
+      })
+    );
+
+    res.json(pedidosConPrecio);
   } catch (error: any) {
     console.error("Error al obtener pedidos del cliente:", error.message || error);
     res.status(500).json({ error: "Error al obtener pedidos del cliente" });
@@ -59,7 +133,16 @@ export const getEnCarritoByIdCliente = async (req: Request, res: Response): Prom
       return;
     }
 
-    res.json(pedido);
+    const idTipoCli = Number(pedido.cliente?.idTipoCli ?? 0);
+    const fechaPedido = pedido.fechaPedido;
+    const pedidoProductosConPrecio = await Promise.all(
+      pedido.pedidoProductos.map((pp) => mapPedidoProductoConPrecioHistorico(pp, idTipoCli, fechaPedido))
+    );
+
+    res.json({
+      ...pedido,
+      pedidoProductos: pedidoProductosConPrecio,
+    });
   } catch (error: any) {
     console.error("Error al obtener pedido en carrito del cliente:", error.message || error);
     res.status(500).json({ error: "Error al obtener pedido en carrito" });
@@ -79,7 +162,15 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.json(pedido);
+    const idTipoCli = Number(pedido.cliente?.idTipoCli ?? 0);
+    const pedidoProductos = await Promise.all(
+      pedido.pedidoProductos.map((pp) => mapPedidoProductoConPrecioHistorico(pp, idTipoCli, pedido.fechaPedido))
+    );
+
+    res.json({
+      ...pedido,
+      pedidoProductos,
+    });
   } catch (error: any) {
     console.error("Error al obtener pedido por ID:", error.message || error);
     res.status(500).json({ error: "Error al obtener pedido" });
@@ -324,7 +415,7 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
 
     const pedido = await pedidoRepo.findOne({
       where: { idPedido: Number(idPedido) },
-      relations: ["pedidoProductos", "pedidoProductos.producto"]
+      relations: ["cliente", "pedidoProductos", "pedidoProductos.producto"]
     });
 
     if (!pedido) {
@@ -333,35 +424,12 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
     }
 
 
-    const items = pedido.pedidoProductos.map((pp: any) => {
-      const producto = pp.producto;
+    const idTipoCli = Number(pedido.cliente?.idTipoCli ?? 0);
+    const fechaPedido = pedido.fechaPedido;
 
-      if (!producto) {
-        throw new Error("Producto no cargado en la relación");
-      }
-
-      const precio = Number(producto.precioProd) ;
-      const cantidad = Number(pp.cantidadProdPed);
-
-      if (!producto.nombreProd) {
-        throw new Error(`Producto sin nombre (id ${producto.idProd})`);
-      }
-
-      if (isNaN(precio)) {
-        throw new Error(`Precio inválido para producto ${producto.nombreProd}`);
-      }
-
-      if (isNaN(cantidad)) {
-        throw new Error(`Cantidad inválida para producto ${producto.nombreProd}`);
-      }
-
-      return {
-        id: producto.idProd.toString(),
-        title: producto.nombreProd,
-        quantity: cantidad,
-        unit_price: precio
-      };
-    });
+    const items = await Promise.all(
+      pedido.pedidoProductos.map((pp: any) => mapPedidoProductoToMpItem(pp, idTipoCli))
+    );
 
 
     const preference = new Preference(client);

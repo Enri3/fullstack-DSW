@@ -22,6 +22,15 @@ export default function DisplayProductos_C() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const obtenerPrecioMostrar = (producto: Producto): number => {
+    const precioFinal = Number(producto.precioFinalProd);
+    if (!Number.isNaN(precioFinal) && precioFinal > 0) {
+      return precioFinal;
+    }
+
+    return Number(producto.precioProd);
+  };
+
   const fetchProductos = async () => {
     try {
       setLoading(true);
@@ -111,7 +120,7 @@ export default function DisplayProductos_C() {
               <h3>
                 {producto.nombreProd} - {producto.medida || "N/A"} grs
               </h3>
-              <p className="precio">${producto.precioProd}</p>
+              <p className="precio">${obtenerPrecioMostrar(producto)}</p>
               </Link>
               <button onClick={() => void handleAgregar(producto)}>
                 Agregar al carrito

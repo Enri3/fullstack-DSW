@@ -18,6 +18,15 @@ export default function Detalle() {
   const [loading, setLoading] = useState(true);
     const [resultados, setResultados] = useState<any[]>([]);
 
+  const obtenerPrecioMostrar = (precioProd: number, precioFinalProd?: number): number => {
+    const precioFinal = Number(precioFinalProd);
+    if (!Number.isNaN(precioFinal) && precioFinal > 0) {
+      return precioFinal;
+    }
+
+    return Number(precioProd);
+  };
+
   if (!idProd) {
     return <p style={{ color: "red" }}>ID de producto no válido o no recibido.</p>;
   }
@@ -77,7 +86,7 @@ export default function Detalle() {
           <div className="detalle-info">
             <h2>{producto.nombreProd}</h2>
             <p><strong>Medida:</strong> {producto.medida || "N/A"} grs</p>
-            <p><strong>Precio:</strong> ${producto.precioProd}</p>
+            <p><strong>Precio:</strong> ${obtenerPrecioMostrar(producto.precioProd, producto.precioFinalProd)}</p>
             <p className="detalle-descripcion">
               Vela artesanal de <strong>cera de soja</strong>, elaborada con fragancias de alta calidad. 
               Su presentación de <strong>{producto.medida || "N/A"} grs</strong> ofrece una combustión limpia 

@@ -11,7 +11,7 @@ import HeaderAdmin from "../components/header_admin";
 
 export default function NuevoDescuento() {
   const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
-  const hoy = new Date().toISOString().slice(0, 10);
+  const hoy = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<Producto[]>([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState<number[]>([]);
@@ -55,8 +55,8 @@ export default function NuevoDescuento() {
     const nuevoDescuento = {
       idDesc: Number(),
       porcentaje: Number(porcentaje),
-      fechaDesde: new Date(fechaDesde),
-      fechaHasta: new Date(fechaHasta),
+      fechaDesde,
+      fechaHasta,
     };
 
     try {

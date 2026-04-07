@@ -84,10 +84,10 @@ export default function ClienteIngresado() {
         setTipoNombre("Inicial");
         break;
       case 3:
-        setTipoNombre("Premium");
+        setTipoNombre("Intermedio");
         break;
       default:
-        setTipoNombre("Desconocido");
+        setTipoNombre("Premium");
         break;
     }
   }, [cliente]);

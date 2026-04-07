@@ -76,9 +76,10 @@ export default function Login() {
             navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
             break;
           case 3:
-            navigate("/productos-especiales", {
-              state: { mensaje: mensajeExito },
-            });
+            navigate("/clienteIngresado", { state: { mensaje: mensajeExito },});
+            break;
+          case 4:
+            navigate("/clienteIngresado", { state: { mensaje: mensajeExito } });
             break;
           default:
             navigate("/", { state: { mensaje: mensajeExito } });

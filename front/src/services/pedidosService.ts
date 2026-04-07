@@ -180,10 +180,12 @@ export async function hidratarCarritoDesdePedidoEnCarrito(idCli: number): Promis
     .map((pp) => ({
       idProd: pp.idProd,
       nombreProd: pp.producto!.nombreProd,
-      precioProd: pp.producto!.precioProd,
+      precioProd: pp.producto!.precioFinalProd ?? pp.producto!.precioProd,
+      precioFinalProd: pp.producto!.precioFinalProd,
       urlImg: pp.producto!.urlImg,
       medida: pp.producto!.medida,
       cantidad: pp.cantidadProdPed,
+      stock: pp.producto!.stock,
     }));
 
   if (productos.length === 0) {

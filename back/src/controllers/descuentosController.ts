@@ -5,6 +5,23 @@ import { ProductoDescuento } from "../../../entidades/productos_descuentos"
 import { Producto } from "../../../entidades/producto";
 import { In } from "typeorm"; 
 
+function normalizeDateOnly(input: unknown): string {
+  if (!input) return "";
+  const raw = String(input);
+  if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
+    return raw.slice(0, 10);
+  }
+
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+
+  return new Date(parsed.getTime() - parsed.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 10);
+}
+
 export const getAllProductos = async (req: Request, res: Response): Promise<void> => {
     try {
         const productoRepository = AppDataSource.getRepository(Producto);
@@ -34,8 +51,25 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
     const descuentosRepository = AppDataSource.getRepository(Descuento);
     const productosDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
 
-    const fdStr = new Date(fechaDesde).toISOString().slice(0, 10);
-    const fhStr = new Date(fechaHasta).toISOString().slice(0, 10);
+    const fdStr = normalizeDateOnly(fechaDesde);
+    const fhStr = normalizeDateOnly(fechaHasta);
+
+    if (!fdStr || !fhStr) {
+      res.status(400).json({ message: "Formato de fecha inválido" });
+      return;
+    }
+
+    const cantidadSolapados = await productosDescuentoRepository
+      .createQueryBuilder("pd")
+      .innerJoin("pd.descuento", "d")
+      .where("pd.idProd IN (:...idsProductos)", { idsProductos })
+      .andWhere("NOT (d.fechaHasta < :fd OR d.fechaDesde > :fh)", { fd: fdStr, fh: fhStr })
+      .getCount();
+
+    if (cantidadSolapados > 0) {
+      res.status(400).json({ message: "Ya existe un descuento activo/solapado para al menos un producto" });
+      return;
+    }
 
     const descuento = await descuentosRepository
       .createQueryBuilder("d")
@@ -93,7 +127,8 @@ export const buscarDescuentoFiltro = async (req: Request, res: Response): Promis
       .innerJoinAndSelect("pd.producto", "producto")
       .innerJoinAndSelect("pd.descuento", "descuento")
       .where("producto.deleted = 0")
-      .andWhere("descuento.fechaHasta > CURRENT_DATE");
+      .andWhere("descuento.fechaDesde <= CURRENT_DATE")
+      .andWhere("descuento.fechaHasta >= CURRENT_DATE");
 
     if (nomProdBuscados && String(nomProdBuscados).trim() !== "") {
       const filtro = nomProdBuscados.trim().toLowerCase();

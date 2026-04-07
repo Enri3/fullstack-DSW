@@ -12,9 +12,19 @@ type ProductoDetalle = {
   idProd: number;
   nombreProd: string;
   precioProd: number;
+  precioFinalProd: number | undefined;
   cantidad: number;
   urlImg: string | undefined;
 };
+
+function obtenerPrecioUnitario(producto: ProductoDetalle): number {
+  const precioFinal = Number(producto.precioFinalProd);
+  if (!Number.isNaN(precioFinal) && precioFinal > 0) {
+    return precioFinal;
+  }
+
+  return Number(producto.precioProd);
+}
 
 export default function Exito() {
   const { idPedido } = useParams();
@@ -60,12 +70,13 @@ export default function Exito() {
         idProd: pp.idProd,
         nombreProd: pp.producto!.nombreProd,
         precioProd: Number(pp.producto!.precioProd || 0),
+        precioFinalProd: pp.producto!.precioFinalProd,
         cantidad: Number(pp.cantidadProdPed || 0),
         urlImg: pp.producto!.urlImg,
       }))
     : [];
 
-  const totalCalculado = productos.reduce((acumulador, prod) => acumulador + prod.precioProd * prod.cantidad, 0);
+  const totalCalculado = productos.reduce((acumulador, prod) => acumulador + obtenerPrecioUnitario(prod) * prod.cantidad, 0);
 
   const montoTotal = pedido?.montoTotal != null ? Number(pedido.montoTotal) : totalCalculado;
 
@@ -96,8 +107,8 @@ export default function Exito() {
                     <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
                     <h3>{producto.nombreProd}</h3>
                     <p>Cantidad: <strong>{producto.cantidad}</strong></p>
-                    <p>Precio unitario: <strong>${producto.precioProd.toFixed(2)}</strong></p>
-                    <p>Subtotal: <strong>${(producto.precioProd * producto.cantidad).toFixed(2)}</strong></p>
+                    <p>Precio unitario: <strong>${obtenerPrecioUnitario(producto).toFixed(2)}</strong></p>
+                    <p>Subtotal: <strong>${(obtenerPrecioUnitario(producto) * producto.cantidad).toFixed(2)}</strong></p>
                   </article>
                 ))}
               </div>

@@ -1,6 +1,14 @@
 const API_URL = "http://localhost:4000/descuentos"; 
 import type { Descuento, DescuentoConProductos as DescuentoP } from "../types/Descuentos";
 
+function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit {
+  const token = localStorage.getItem("token");
+  return {
+    ...extraHeaders,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 export const addDescuento = async (descuento: Descuento, idsProductos: number[]
 ) => {
   try {
@@ -11,7 +19,7 @@ export const addDescuento = async (descuento: Descuento, idsProductos: number[]
 
     const res = await fetch(`${API_URL}/add`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify(body),
     });
 
@@ -78,9 +86,7 @@ export const eliminarDescuentos = async (idsDescuentos: number[]) => {
   try {
     const response = await fetch(`${API_URL}/delete`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ idsDescuentos }),
     });
 

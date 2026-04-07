@@ -3,6 +3,7 @@ type Producto = {
   nombreProd: string;
   medida?: string;
   precioProd: number;
+  precioFinalProd?: number;
   urlImg?: string;
   deleted?: number;
   stock: number;
@@ -18,7 +19,9 @@ function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit 
 }
 
 export async function getProductos() { 
-  const res = await fetch("http://localhost:4000/productos"); 
+  const res = await fetch("http://localhost:4000/productos", {
+    headers: getAuthHeaders(),
+  }); 
   if (!res.ok) throw new Error("Error al obtener productos"); 
   const data = await res.json(); 
   console.log("Datos recibidos del backend:", data); 
@@ -32,7 +35,9 @@ export async function getProductosEnAlta() {
 }
 
 export async function getProductoById(idProd: number): Promise<Producto> {
-  const res = await fetch(`http://localhost:4000/productos/${idProd}`);
+  const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
+    headers: getAuthHeaders(),
+  });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || "Error al obtener producto");
   return data as Producto;
@@ -81,8 +86,11 @@ export const buscarProducto = async (nombreProdBuscado: string, admin: boolean) 
   try {
     const res = await fetch(`http://localhost:4000/productos/buscarProductoPorNombre`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombreProdBuscado, admin }),
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        nombreProdBuscado,
+        admin,
+      }),
     });
 
     const data = await res.json();

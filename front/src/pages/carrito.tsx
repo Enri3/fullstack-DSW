@@ -21,6 +21,7 @@ type ProductoCarrito = {
   idProd: number;
   nombreProd: string;
   precioProd: number;
+  precioFinalProd?: number;
   cantidad: number;
   urlImg: string;
   stock: number;
@@ -31,6 +32,15 @@ export default function MostrarCarrito() {
   const { notificacion, mostrarError } = usarNotificacion();
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [productos, setProductos] = useState<ProductoCarrito[]>([]);
+
+  const obtenerPrecioUnitario = (producto: ProductoCarrito): number => {
+    const precioFinal = Number(producto.precioFinalProd);
+    if (!Number.isNaN(precioFinal) && precioFinal > 0) {
+      return precioFinal;
+    }
+
+    return Number(producto.precioProd);
+  };
   
 
   const obtenerIdCliente = (): number => {
@@ -176,7 +186,7 @@ export default function MostrarCarrito() {
   }
 
   const totalUnidades = productos.reduce((acc, p) => acc + p.cantidad, 0);
-  const totalPrecio = productos.reduce((acc, p) => acc + p.cantidad * p.precioProd, 0);
+  const totalPrecio = productos.reduce((acc, p) => acc + p.cantidad * obtenerPrecioUnitario(p), 0);
 
 
   return (
@@ -198,7 +208,7 @@ export default function MostrarCarrito() {
                 <div key={producto.idProd} className="tarjeta-producto-carrito">
                   <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
                   <h3>{producto.nombreProd}</h3>
-                  <p className="precio">${producto.precioProd}</p>
+                  <p className="precio">${obtenerPrecioUnitario(producto)}</p>
                   <div className="botones-carrito">
                     <button onClick={() => void handleRestar(producto)}>-</button>
                     <span className="cantidad">{producto.cantidad}</span>
