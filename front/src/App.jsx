@@ -25,6 +25,7 @@ import MedioDePago from "./pages/medioDePago";
 import AdminPedidos from "./pages/admin-pedidos";
 import HistorialPedidos from "./pages/historial-pedidos";
 import DetallePedido from "./pages/detallePedido";
+import DetallePedidoAdmin from "./pages/detallePedidoAdmin";
 import Exito from "./pages/exito";
 import Fracaso from "./pages/fracaso";
 import Pendiente from "./pages/pendiente";
@@ -63,6 +64,7 @@ function App() {
         <Route path="/historial-pedidos" element={<ProtectedRoute><HistorialPedidos /></ProtectedRoute>} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/detallePedido/:idPedido" element={<ProtectedRoute><DetallePedido /></ProtectedRoute>} />
+        <Route path="/admin/detallePedido/:idPedido" element={<ProtectedRoute tipoRequerido={1}><DetallePedidoAdmin /></ProtectedRoute>} />
         <Route path="/cerrar-sesion" element={<ProtectedRoute><CerrarSesion /></ProtectedRoute>} />
         <Route path="/editar-cliente" element={<ProtectedRoute><EditarCliente /></ProtectedRoute>} />
         <Route path="/eliminar-clientes" element={<ProtectedRoute tipoRequerido={1}><EliminarClientes /></ProtectedRoute>} />

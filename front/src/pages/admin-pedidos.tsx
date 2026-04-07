@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import HeaderAdmin from "../components/header_admin";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { usarNotificacion } from "../mensajes/usarNotificacion";
@@ -139,6 +140,14 @@ export default function AdminPedidos() {
                       </p>
                     </div>
                   </div>
+
+                  <Link
+                    to={`/admin/detallePedido/${pedido.idPedido}`}
+                    className="admin-finalizar-btn"
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}
+                  >
+                    Detalle
+                  </Link>
 
                   {vistaActiva === "finalizados" && (
                     <div className="admin-finalizado-detalle">
