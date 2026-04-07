@@ -7,6 +7,7 @@ type Producto = {
   urlImg?: string;
   deleted?: number;
   stock: number;
+  encargo: number;
 
 };
 

@@ -146,6 +146,7 @@ CREATE TABLE `productos` (
   `deleted` tinyint NOT NULL DEFAULT '0',
   `medida` varchar(45) DEFAULT NULL,
   `stock` int NOT NULL DEFAULT '0',
+  `encargo` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`idProd`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -156,7 +157,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,'Bombe',11100.00,'https://i.postimg.cc/Wzcb5NtJ/bombe.png',0,'310',3),(2,'Chiquitin',2900.00,'https://i.postimg.cc/tTx4dZRj/chiquitin.png',1,'42',10),(3,'Lata',4400.00,'https://i.postimg.cc/MH0Z4Cj3/lata.png',0,'90',6),(4,'Lolo',4500.00,'https://i.postimg.cc/pLLVG1Vk/lolo.png',0,'110',3),(5,'Moon',4600.00,'https://i.postimg.cc/Nf4fxwt5/moon.png',0,'105',2),(6,'Whisky sin tapa',6900.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'190',0),(7,'otro',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0),(8,'prueba',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0),(9,'hola',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0),(10,'moon',1500.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'300',0),(11,'nuevo',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0),(13,'aaa',100.00,'/fotosProductos/1774102214502-628689941.png',0,'10',10);
+INSERT INTO `productos` VALUES (1,'Bombe',11100.00,'https://i.postimg.cc/Wzcb5NtJ/bombe.png',0,'310',3,0),(2,'Chiquitin',2900.00,'https://i.postimg.cc/tTx4dZRj/chiquitin.png',1,'42',10,0),(3,'Lata',4400.00,'https://i.postimg.cc/MH0Z4Cj3/lata.png',0,'90',6,0),(4,'Lolo',4500.00,'https://i.postimg.cc/pLLVG1Vk/lolo.png',0,'110',3,0),(5,'Moon',4600.00,'https://i.postimg.cc/Nf4fxwt5/moon.png',0,'105',2,0),(6,'Whisky sin tapa',6900.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'190',0,0),(7,'otro',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(8,'prueba',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(9,'hola',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(10,'moon',1500.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'300',0,0),(11,'nuevo',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(13,'aaa',100.00,'/fotosProductos/1774102214502-628689941.png',0,'10',10,0);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,7 +209,7 @@ CREATE TABLE `tipo_clientes` (
 
 LOCK TABLES `tipo_clientes` WRITE;
 /*!40000 ALTER TABLE `tipo_clientes` DISABLE KEYS */;
-INSERT INTO `tipo_clientes` VALUES (1,'',0),(2,'',0),(3,'',0),(4,'',0);
+INSERT INTO `tipo_clientes` VALUES (1,'admin',0),(2,'inicial',0),(3,'intermedio',5),(4,'premium',10);
 /*!40000 ALTER TABLE `tipo_clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

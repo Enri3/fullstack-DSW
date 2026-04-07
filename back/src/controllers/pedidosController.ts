@@ -267,7 +267,10 @@ export const updateEstado = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    const pedido = await pedidoRepo.findOne({ where: { idPedido: Number(idPedido) } });
+    const pedido = await pedidoRepo.findOne({
+      where: { idPedido: Number(idPedido) },
+      relations: ["pedidoProductos", "pedidoProductos.producto"]
+    });
 
     if (!pedido) {
       res.status(404).json({ error: "Pedido no encontrado" });
@@ -302,6 +305,23 @@ export const updateEstado = async (req: Request, res: Response): Promise<void> =
       const vueltoNumero = Number(vuelto);
       if (!Number.isNaN(vueltoNumero)) {
         dataToMerge.vuelto = vueltoNumero;
+      }
+    }
+
+    if (estadoPedido === "finalizado" && medioPago === "efectivo") {
+      for (const pp of pedido.pedidoProductos) {
+        const producto = pp.producto;
+
+        if (!producto) continue;
+
+        producto.stock = Number(producto.stock) - Number(pp.cantidadProdPed);
+
+        if (producto.stock < 0) {
+          producto.encargo = producto.encargo + Math.abs(producto.stock);
+          producto.stock = 0;
+        }
+
+        await AppDataSource.getRepository("Producto").save(producto);
       }
     }
 
@@ -506,6 +526,7 @@ export const recibirWebhookMP = async (req: Request, res: Response) => {
           producto.stock = Number(producto.stock) - Number(pp.cantidadProdPed);
 
           if (producto.stock < 0) {
+            producto.encargo = producto.encargo + Math.abs(producto.stock);
             producto.stock = 0; 
           }
 

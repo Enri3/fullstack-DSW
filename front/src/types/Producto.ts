@@ -9,6 +9,7 @@ export interface Producto {
   deleted?: number;
   medida?: string;
   stock: number;
+  encargo: number;
 }
 
 

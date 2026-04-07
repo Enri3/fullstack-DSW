@@ -7,6 +7,7 @@ export interface Producto {
   urlImg?: string;
   medida?: string;
   stock: number;
+  encargo?: number;
 }
 
 export interface ProductoConCantidad extends Producto {
