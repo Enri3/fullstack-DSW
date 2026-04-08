@@ -74,7 +74,7 @@ function App() {
         <Route path="/nuevo-descuento" element={<ProtectedRoute tipoRequerido={1}><NuevoDescuento /></ProtectedRoute>} />
         <Route path="/exito/:idPedido" element={<Exito />} />
         <Route path="/fracaso" element={<Fracaso />} />
-        <Route path="/pendiente" element={<Pendiente />} />
+        <Route path="/pendiente/:idPedido" element={<Pendiente />} />
       </Routes>
     </BrowserRouter>
   );

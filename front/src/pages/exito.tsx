@@ -7,6 +7,7 @@ import { getPedidoById } from "../services/pedidosService";
 import type { Pedido } from "../types/Pedido";
 import { buildImageUrl } from "../utils/imageUrl";
 import "../assets/styles/detallePedido.css";
+import Header_sinCarrito from "../components/header_sinCarrito";
 
 type ProductoDetalle = {
   idProd: number;
@@ -82,15 +83,19 @@ export default function Exito() {
 
   return (
     <>
-      <HeaderConPanel cantidad={cantidad} />
+      <Header_sinCarrito />
       <main className="detalle-pedido-main">
         <section className="detalle-pedido-card">
           <div >
             
             <h1>¡Gracias por tu compra! Tu pedido ha sido procesado exitosamente.</h1>
-            <p>Tu número de pedido es: <strong>{pedido?.idPedido}</strong></p>
- 
+            
+             <h3><Link className="link-volver" to="/clienteIngresado">
+                Volver al inicio
+             </Link></h3>
           </div>
+          <br/>
+          <p>Tu número de pedido es: <strong>{pedido?.idPedido}</strong></p>
 
           {loading ? (
             <p className="detalle-pedido-feedback">Cargando detalle...</p>

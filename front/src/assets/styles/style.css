@@ -227,6 +227,16 @@ button:hover{
         .botones-admin button:hover {
                 background-color: var(--marron-boton-hover);
     }
+
+    .link-volver {
+    color: #1c5d99;
+    text-decoration: none;
+    font-weight: 600;
+    }
+
+    .link-volver:hover {
+        text-decoration: underline;
+    }
     .modal-overlay {
         position: fixed;
         top: 0;
