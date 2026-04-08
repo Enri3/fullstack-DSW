@@ -1,12 +1,21 @@
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { AppDataSource } from "../database";
 import { Producto} from "../../../entidades/producto";
-import { calcularPrecioFinalProducto } from "../services/preciosService";
 import jwt from "jsonwebtoken";
+import { calcularPrecioProductoParaCliente } from "../services/productoPrecioService";
 
 const productoRepo = AppDataSource.getRepository(Producto);
 
-function getIdTipoCliFromToken(req: Request): number | undefined {
+function parseId(value: unknown): number | undefined {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    return undefined;
+  }
+
+  return parsed;
+}
+
+function getIdCliFromToken(req: Request): number | undefined {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return undefined;
@@ -18,16 +27,24 @@ function getIdTipoCliFromToken(req: Request): number | undefined {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "clave_secreta_super_segura") as { tipo?: number | string };
-    const tipo = Number(decoded?.tipo);
-    return Number.isNaN(tipo) ? undefined : tipo;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "clave_secreta_super_segura") as { id?: number | string };
+    return parseId(decoded?.id);
   } catch {
     return undefined;
   }
 }
 
-async function mapProductoConPrecioFinal(producto: Producto, idTipoCli?: number) {
-  const precio = await calcularPrecioFinalProducto(Number(producto.precioProd), producto.idProd, idTipoCli);
+function getIdCliFromRequest(req: Request): number | undefined {
+  return (
+    parseId(req.body?.idCli) ??
+    parseId(req.query?.idCli) ??
+    parseId(req.params?.idCli) ??
+    getIdCliFromToken(req)
+  );
+}
+
+async function mapProductoConPrecioFinal(producto: Producto, idCli?: number) {
+  const precio = await calcularPrecioProductoParaCliente(Number(producto.precioProd), producto.idProd, idCli);
 
   return {
     ...producto,
@@ -41,8 +58,8 @@ async function mapProductoConPrecioFinal(producto: Producto, idTipoCli?: number)
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await productoRepo.find();
-    const idTipoCli = getIdTipoCliFromToken(req);
-    const productosConPrecioFinal = await Promise.all(result.map((p) => mapProductoConPrecioFinal(p, idTipoCli)));
+    const idCli = getIdCliFromRequest(req);
+    const productosConPrecioFinal = await Promise.all(result.map((p) => mapProductoConPrecioFinal(p, idCli)));
     res.json(productosConPrecioFinal);
   } catch (error: any) {
     console.error("Error al obtener productos:", error.message || error);
@@ -54,8 +71,8 @@ export const getAllenAlta = async (req: Request, res: Response): Promise<void> =
   try {
     const result = await productoRepo.find();
     const productosEnAlta = result.filter((producto) => Number(producto.deleted ?? 0) === 0);
-    const idTipoCli = getIdTipoCliFromToken(req);
-    const productosConPrecioFinal = await Promise.all(productosEnAlta.map((p) => mapProductoConPrecioFinal(p, idTipoCli)));
+    const idCli = getIdCliFromRequest(req);
+    const productosConPrecioFinal = await Promise.all(productosEnAlta.map((p) => mapProductoConPrecioFinal(p, idCli)));
     res.json(productosConPrecioFinal);
   } catch (error: any) {
     console.error("Error al obtener productos en alta:", error.message || error);
@@ -113,8 +130,8 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const idTipoCli = getIdTipoCliFromToken(req);
-    const productoConPrecioFinal = await mapProductoConPrecioFinal(producto, idTipoCli);
+    const idCli = getIdCliFromRequest(req);
+    const productoConPrecioFinal = await mapProductoConPrecioFinal(producto, idCli);
 
     res.json(productoConPrecioFinal);
   } catch (error: any) {
@@ -240,8 +257,8 @@ export const buscarProducto = async (req: Request, res: Response): Promise<void>
       productos = await query.getMany();
     }
 
-    const tipoCli = getIdTipoCliFromToken(req);
-    const productosConPrecioFinal = await Promise.all(productos.map((p: Producto) => mapProductoConPrecioFinal(p, tipoCli)));
+    const idCli = getIdCliFromRequest(req);
+    const productosConPrecioFinal = await Promise.all(productos.map((p: Producto) => mapProductoConPrecioFinal(p, idCli)));
 
     res.json(productosConPrecioFinal);
 

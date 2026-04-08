@@ -2,11 +2,44 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../database";
 import { Pedido } from "../../../entidades/pedido";
 import { PedidoProducto } from "../../../entidades/pedido_productos";
+import { Producto } from "../../../entidades/producto";
 import { Preference, Payment } from "mercadopago";
 import client from "../config/mercadopago";
+import { calcularPrecioProductoParaCliente } from "../services/productoPrecioService";
 
 const pedidoRepo = AppDataSource.getRepository(Pedido);
 const pedidoProductoRepo = AppDataSource.getRepository(PedidoProducto);
+
+type ProductoConPrecioFinal = Producto & {
+  precioFinalProd: number;
+  porcentajeDescuentoProducto: number;
+  porcentajeDescuentoTipoCliente: number;
+};
+
+async function mapPedidoConPreciosCalculados(pedido: Pedido): Promise<Pedido> {
+  const pedidoProductos = Array.isArray(pedido.pedidoProductos) ? pedido.pedidoProductos : [];
+
+  await Promise.all(
+    pedidoProductos.map(async (pp) => {
+      if (!pp.producto) return;
+
+      const precio = await calcularPrecioProductoParaCliente(
+        Number(pp.producto.precioProd),
+        Number(pp.producto.idProd),
+        Number(pedido.idCli)
+      );
+
+      pp.producto = {
+        ...pp.producto,
+        precioFinalProd: precio.precioFinalProd,
+        porcentajeDescuentoProducto: precio.porcentajeDescuentoProducto,
+        porcentajeDescuentoTipoCliente: precio.porcentajeDescuentoTipoCliente,
+      } as ProductoConPrecioFinal;
+    })
+  );
+
+  return pedido;
+}
 
 export const getAll = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -14,7 +47,8 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
       relations: ["cliente", "pedidoProductos", "pedidoProductos.producto"],
       order: { fechaPedido: "DESC" }
     });
-    res.json(resultado);
+    const resultadoConPrecios = await Promise.all(resultado.map((pedido) => mapPedidoConPreciosCalculados(pedido)));
+    res.json(resultadoConPrecios);
   } catch (error: any) {
     console.error("Error al obtener pedidos:", error.message || error);
     res.status(500).json({ error: "Error al obtener pedidos" });
@@ -35,7 +69,8 @@ export const getByIdCliente = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    res.json(resultado);
+    const resultadoConPrecios = await Promise.all(resultado.map((pedido) => mapPedidoConPreciosCalculados(pedido)));
+    res.json(resultadoConPrecios);
   } catch (error: any) {
     console.error("Error al obtener pedidos del cliente:", error.message || error);
     res.status(500).json({ error: "Error al obtener pedidos del cliente" });
@@ -59,7 +94,8 @@ export const getEnCarritoByIdCliente = async (req: Request, res: Response): Prom
       return;
     }
 
-    res.json(pedido);
+    const pedidoConPrecios = await mapPedidoConPreciosCalculados(pedido);
+    res.json(pedidoConPrecios);
   } catch (error: any) {
     console.error("Error al obtener pedido en carrito del cliente:", error.message || error);
     res.status(500).json({ error: "Error al obtener pedido en carrito" });
@@ -79,7 +115,8 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.json(pedido);
+    const pedidoConPrecios = await mapPedidoConPreciosCalculados(pedido);
+    res.json(pedidoConPrecios);
   } catch (error: any) {
     console.error("Error al obtener pedido por ID:", error.message || error);
     res.status(500).json({ error: "Error al obtener pedido" });
@@ -353,35 +390,42 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
     }
 
 
-    const items = pedido.pedidoProductos.map((pp: any) => {
-      const producto = pp.producto;
+    const items = await Promise.all(
+      pedido.pedidoProductos.map(async (pp: any) => {
+        const producto = pp.producto;
 
-      if (!producto) {
-        throw new Error("Producto no cargado en la relación");
-      }
+        if (!producto) {
+          throw new Error("Producto no cargado en la relación");
+        }
 
-      const precio = Number(producto.precioProd) ;
-      const cantidad = Number(pp.cantidadProdPed);
+        const precioCalculado = await calcularPrecioProductoParaCliente(
+          Number(producto.precioProd),
+          Number(producto.idProd),
+          Number(pedido.idCli)
+        );
+        const precio = Number(precioCalculado.precioFinalProd);
+        const cantidad = Number(pp.cantidadProdPed);
 
-      if (!producto.nombreProd) {
-        throw new Error(`Producto sin nombre (id ${producto.idProd})`);
-      }
+        if (!producto.nombreProd) {
+          throw new Error(`Producto sin nombre (id ${producto.idProd})`);
+        }
 
-      if (isNaN(precio)) {
-        throw new Error(`Precio inválido para producto ${producto.nombreProd}`);
-      }
+        if (isNaN(precio)) {
+          throw new Error(`Precio inválido para producto ${producto.nombreProd}`);
+        }
 
-      if (isNaN(cantidad)) {
-        throw new Error(`Cantidad inválida para producto ${producto.nombreProd}`);
-      }
+        if (isNaN(cantidad)) {
+          throw new Error(`Cantidad inválida para producto ${producto.nombreProd}`);
+        }
 
-      return {
-        id: producto.idProd.toString(),
-        title: producto.nombreProd,
-        quantity: cantidad,
-        unit_price: precio
-      };
-    });
+        return {
+          id: producto.idProd.toString(),
+          title: producto.nombreProd,
+          quantity: cantidad,
+          unit_price: precio
+        };
+      })
+    );
 
 
     const preference = new Preference(client);
