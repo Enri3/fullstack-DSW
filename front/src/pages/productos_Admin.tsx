@@ -21,6 +21,8 @@ type Producto = {
   precioProd: number;
   urlImg?: string;
   deleted?: number;
+  stock: number;
+  encargo: number;
 };
 
 export default function DisplayProductos() {
@@ -148,6 +150,9 @@ export default function DisplayProductos() {
         <p style={{ color: "red", fontWeight: "bold" }}>
           Producto dado de baja
         </p>
+        <p className="stock" style={{ color: "Darkgreen" }} > {producto.stock} unidades disponibles en stock</p>
+        <p className="encargo" style={{ color: "Brown" }} >{producto.encargo} unidades encargadas</p>
+        
 
         <button onClick={() => handleAlta(producto.idProd)}>
           Dar de alta
@@ -161,7 +166,10 @@ export default function DisplayProductos() {
             <img src={buildImageUrl(producto.urlImg)} alt={producto.nombreProd} />
             <h3>{producto.nombreProd} - {producto.medida || "N/A"} grs</h3>
             <p className="precio">${producto.precioProd}</p>
-          </div>
+            <p className="stock" style={{ color: "Darkgreen" }} > {producto.stock} unidades disponibles en stock</p>
+            <p className="encargo" style={{ color: "Brown" }} >{producto.encargo} unidades encargadas</p>
+        
+            </div>
         </Link>
 
         <div className="botones-admin">
