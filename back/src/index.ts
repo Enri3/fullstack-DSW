@@ -8,6 +8,9 @@ import fs from "fs";
 import { AppDataSource } from "./database"; 
 import "reflect-metadata";
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import swaggerSpec from "./swagger";
+
+const swaggerUi = require("swagger-ui-express");
 
 import productosRoutes from "./routes/productos";
 import authRoutes from "./routes/auth";
@@ -40,6 +43,12 @@ AppDataSource.initialize()
   .then(() => {
     console.log("Base de datos conectada con TypeORM");
 
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.get("/api-docs.json", (_req: Request, res: Response): void => {
+      res.setHeader("Content-Type", "application/json");
+      res.send(swaggerSpec);
+    });
+
   
     app.use("/productos", productosRoutes);
     app.use("/auth", authRoutes);
@@ -47,7 +56,7 @@ AppDataSource.initialize()
     app.use("/descuentos", descuentosRoutes);
     app.use("/pedidos", pedidosRoutes);
 
-    app.use((req: Request, res: Response): void => {
+    app.use((_req: Request, res: Response): void => {
       res.status(404).json({ message: "Ruta no encontrada" });
     });
 
