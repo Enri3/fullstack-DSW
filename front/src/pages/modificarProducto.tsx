@@ -16,6 +16,7 @@ export default function ModificarProducto() {
     medida: "",
     precioProd: "",
     stock: "",
+    encargo: ""
   });
   const [imagen, setImagen] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,7 @@ export default function ModificarProducto() {
           medida: data.medida || "",
           precioProd: data.precioProd?.toString() || "",
           stock: data.stock?.toString() || "",
+          encargo: data.encargo?.toString() || ""
         });
       } catch (err) {
         console.error(err);
@@ -144,6 +146,11 @@ export default function ModificarProducto() {
                 onChange={handleChange}
               />
             </div>
+            {inputs.encargo && parseInt(inputs.encargo) > 0 && (
+              <p style={{ color: "red", fontWeight: "bold" }}>
+                * Hay {inputs.encargo} unidades en encargo, que se restaran de las disponibles en stock
+              </p>
+            )}
 
             <div className="item-formulario">
               <label htmlFor="imagen">Nueva imagen (opcional):</label>

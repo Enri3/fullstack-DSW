@@ -172,7 +172,12 @@ export const update = async (req: Request, res: Response): Promise<void> => {
     producto.nombreProd = nombreProd;
     producto.medida = medida;
     producto.precioProd = precioNum;
+    if(producto.encargo >0){
+    producto.stock = (stockNum - producto.encargo) > 0 ? (stockNum - producto.encargo) : 0;
+    producto.encargo=(producto.encargo- stockNum) > 0 ? (producto.encargo- stockNum) : 0;}
+    else{
     producto.stock = stockNum;
+    }
 
     if (file) {
       producto.urlImg = `/fotosProductos/${file.filename}`;
