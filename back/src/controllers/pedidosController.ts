@@ -437,8 +437,8 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
         back_urls: {
           //las urls hay que escribirlas como dice el ngrok en el puerto de FRONT
           success: `https://barb-illtempered-nakia.ngrok-free.dev/exito/${pedido.idPedido}`,
-          failure: `https://barb-illtempered-nakia.ngrok-free.dev/fracaso/${pedido.idPedido}`,
-          //pending: "https://barb-illtempered-nakia.ngrok-free.dev/pendiente/${pedido.idPedido}",
+          failure: `https://barb-illtempered-nakia.ngrok-free.dev/fracaso`,
+          pending: "https://barb-illtempered-nakia.ngrok-free.dev/pendiente/${pedido.idPedido}",
         },
         //auto_return NO va cuando estoy trabajando en prueba
         auto_return: "approved",
