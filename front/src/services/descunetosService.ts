@@ -55,14 +55,14 @@ export const getAllProductos = async () => {
   }
 };
 
-export const buscarDescuentoFiltro = async (nomProdBuscados: string) => {
+export const buscarDescuentoFiltro = async (filtro: { idProd?: string | number; nombreProd?: string }) => {
   try {
     const res = await fetch(`${API_URL}/buscDescFilt`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ nomProdBuscados }),
+      body: JSON.stringify(filtro),
     });
 
     const data = await res.json();

@@ -20,10 +20,10 @@ export default function BuscadorDescuento({ onResultados, setLoading }: Buscador
     return () => clearTimeout(delayDebounce);
   }, [termino]);
 
-  const handleBuscar = async (nomProds: string) => {
+  const handleBuscar = async (nombreProd: string) => {
     try {
       setLoading(true);
-      const data = await buscarDescuentoFiltro(nomProds);
+      const data = await buscarDescuentoFiltro({ nombreProd });
       onResultados(Array.isArray(data) ? data : [data]);
     } catch (err) {
       console.error("Error al buscar descuento:", err);

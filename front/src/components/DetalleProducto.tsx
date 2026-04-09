@@ -49,8 +49,8 @@ export default function Detalle() {
     try {
       setLoading(true);
       if (!producto) return;
-  
-      const data = await buscarDescuentoFiltro(producto.nombreProd);
+
+      const data = await buscarDescuentoFiltro({ idProd: producto.idProd });
       console.log("Descuentos recibidos:", data);
   
       setResultados(Array.isArray(data) ? data : [data]);
@@ -102,8 +102,8 @@ export default function Detalle() {
                     <tr key={`${d.idProd}-${d.idDesc}`}>
 
                       <td>Descuento: {d.porcentaje}%</td>
-                      <td>Desde:{new Date(d.fechaDesde).toLocaleDateString()}</td>
-                      <td>Hasta:{new Date(d.fechaHasta).toLocaleDateString()}</td>
+                      <td>Desde: {new Date(d.fechaDesde.replace(/-/g, '/')).toLocaleDateString()}</td>
+                      <td>Hasta: {new Date(d.fechaHasta.replace(/-/g, '/')).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -15,8 +15,8 @@ import BuscadorDescuento from "../components/buscadorDescuento";
 type DescuentoPorIdMap = Record<number, {
   idDesc: number;
   porcentaje: number;
-  fechaDesde: Date;
-  fechaHasta: Date;
+  fechaDesde: string | Date;
+  fechaHasta: string | Date;
   productos: DescuentoEncontrado[];
 }>;
 
@@ -36,8 +36,8 @@ export default function Descuentos() {
   const [descuentoEnModal, setDescuentoEnModal] = useState<{
     idDesc: number;
     porcentaje: number;
-    fechaDesde: Date;
-    fechaHasta: Date;
+    fechaDesde: string | Date;
+    fechaHasta: string | Date;
     productos: DescuentoEncontrado[];
   } | null>(null);
 
@@ -67,10 +67,15 @@ export default function Descuentos() {
     setModalProductosVisible(true);
   };
 
+  const formatearFecha = (valor: string | Date) => {
+    const fecha = valor instanceof Date ? valor : new Date(valor.replace(/-/g, '/'));
+    return fecha.toLocaleDateString();
+  };
+
   const fetchDescuentos = async () => {
     try {
       setLoading(true);
-      const data = await buscarDescuentoFiltro("");
+      const data = await buscarDescuentoFiltro({});
       setDescuentos(Array.isArray(data) ? data : [data]);
     } catch (err) {
       console.error("Error al obtener Descuento:", err);
@@ -194,8 +199,8 @@ export default function Descuentos() {
                                  </td>
                                   
                        <td>{itemDescuento.porcentaje} %</td>
-                      <td>{new Date(itemDescuento.fechaDesde).toLocaleDateString()}</td>
-                      <td>{new Date(itemDescuento.fechaHasta).toLocaleDateString()}</td>
+                      <td>{formatearFecha(itemDescuento.fechaDesde)}</td>
+                      <td>{formatearFecha(itemDescuento.fechaHasta)}</td>
                                  <td>
                                   <button
                                     type="button"
@@ -242,7 +247,7 @@ export default function Descuentos() {
              <div className="modal-confirmacion" onClick={(e) => e.stopPropagation()}>
                <h2>Productos del descuento #{descuentoEnModal.idDesc}</h2>
                <p>
-                 <strong>{descuentoEnModal.porcentaje}%</strong> | Desde {new Date(descuentoEnModal.fechaDesde).toLocaleDateString()} hasta {new Date(descuentoEnModal.fechaHasta).toLocaleDateString()}
+                 <strong>{descuentoEnModal.porcentaje}%</strong> | Desde {formatearFecha(descuentoEnModal.fechaDesde)} hasta {formatearFecha(descuentoEnModal.fechaHasta)}
                </p>
 
                <div style={{ 

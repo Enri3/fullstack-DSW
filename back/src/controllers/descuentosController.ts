@@ -118,7 +118,7 @@ export const addDescuento = async (req:Request, res:Response): Promise<void> => 
 
 export const buscarDescuentoFiltro = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { nomProdBuscados } = req.body; 
+    const { idProd, nombreProd } = req.body; 
 
     const productoDescuentoRepository = AppDataSource.getRepository(ProductoDescuento);
 
@@ -127,11 +127,14 @@ export const buscarDescuentoFiltro = async (req: Request, res: Response): Promis
       .innerJoinAndSelect("pd.producto", "producto")
       .innerJoinAndSelect("pd.descuento", "descuento")
       .where("producto.deleted = 0")
-      .andWhere("descuento.fechaDesde <= CURRENT_DATE")
+      //para no mostrar descuentos futuros descomentar la siguiente línea:
+      //.andWhere("descuento.fechaDesde <= CURRENT_DATE")
       .andWhere("descuento.fechaHasta >= CURRENT_DATE");
 
-    if (nomProdBuscados && String(nomProdBuscados).trim() !== "") {
-      const filtro = nomProdBuscados.trim().toLowerCase();
+    if (idProd !== undefined && idProd !== null && String(idProd).trim() !== "") {
+      qb = qb.andWhere("descuento.fechaDesde <= CURRENT_DATE").andWhere("producto.idProd = :idProd", { idProd: Number(idProd) });
+    } else if (nombreProd && String(nombreProd).trim() !== "") {
+      const filtro = String(nombreProd).trim().toLowerCase();
       qb = qb.andWhere("LOWER(producto.nombreProd) LIKE :filtro", { filtro: `%${filtro}%` });
     }
 
