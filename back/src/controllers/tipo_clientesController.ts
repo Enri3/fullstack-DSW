@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../database";
-import { TipoCliente } from "../../../entidades/tipo-cliente";
+import { TipoCliente } from "../../entidades/tipo-cliente";
 
 export const getNombreTipo = async (req: Request, res: Response): Promise<void> => {
   const { idTipoCli } = req.params;

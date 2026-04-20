@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../database"; 
-import { Descuento } from "../../../entidades/descuento";
-import { ProductoDescuento } from "../../../entidades/productos_descuentos"
-import { Producto } from "../../../entidades/producto";
+import { Descuento } from "../../entidades/descuento";
+import { ProductoDescuento } from "../../entidades/productos_descuentos"
+import { Producto } from "../../entidades/producto";
 import { In } from "typeorm"; 
 
 function normalizeDateOnly(input: unknown): string {

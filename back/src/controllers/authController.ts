@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { AppDataSource } from "../database";
-import { Cliente } from "../../../entidades/cliente";
+import { Cliente } from "../../entidades/cliente";
 import axios from "axios";
 
 const clienteRepo = AppDataSource.getRepository(Cliente);
