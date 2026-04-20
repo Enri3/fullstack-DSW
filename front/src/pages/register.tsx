@@ -4,6 +4,7 @@ import Header_sinCarrito from "../components/header_sinCarrito";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
+import { URL_BACK } from "../services/apiConfig";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -43,7 +44,8 @@ export default function Register() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/auth/register", {
+      const API_URL = `${URL_BACK}/auth`;
+      const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
