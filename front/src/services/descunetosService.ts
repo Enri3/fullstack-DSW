@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:4000/descuentos"; 
+const URL_BACK = process.env.URL_BACK!.replace(/\/$/, "");
+const API_URL = `${URL_BACK}/descuentos`;
 import type { Descuento, DescuentoConProductos as DescuentoP } from "../types/Descuentos";
 
 function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit {

@@ -24,7 +24,7 @@ const app: Application = express();
 app.set("port", process.env.PORT ? parseInt(process.env.PORT) : 4000);
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.URL_FRONT,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));

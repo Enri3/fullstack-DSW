@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:4000/tipo_usuarios";
+const URL_BACK = process.env.URL_BACK!.replace(/\/$/, "");
+const API_URL = `${URL_BACK}/tipo_usuarios`;
 
 interface GetNombreTipo {
   id: number;

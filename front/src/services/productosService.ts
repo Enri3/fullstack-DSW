@@ -11,6 +11,9 @@ type Producto = {
 
 };
 
+const URL_BACK = process.env.URL_BACK!.replace(/\/$/, "");
+const API_URL = `${URL_BACK}/productos`;
+
 function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit {
   const token = localStorage.getItem("token");
   return {
@@ -20,7 +23,7 @@ function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit 
 }
 
 export async function getProductos() { 
-  const res = await fetch("http://localhost:4000/productos", {
+  const res = await fetch(`${API_URL}`, {
     headers: getAuthHeaders(),
   }); 
   if (!res.ok) throw new Error("Error al obtener productos"); 
@@ -36,7 +39,7 @@ export async function getProductosEnAlta() {
 }
 
 export async function getProductoById(idProd: number): Promise<Producto> {
-  const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
+  const res = await fetch(`${API_URL}/${idProd}`, {
     headers: getAuthHeaders(),
   });
   const data = await res.json();
@@ -60,7 +63,7 @@ export async function updateProducto(
     options.body = JSON.stringify(producto);
   }
 
-  const res = await fetch(`http://localhost:4000/productos/update/${idProd}`, {
+  const res = await fetch(`${API_URL}/update/${idProd}`, {
     ...options,
   });
   const data = await res.json();
@@ -69,14 +72,14 @@ export async function updateProducto(
 }
 
 export async function eliminarProducto(idProd: string | number): Promise<void> {
-  const res = await fetch(`http://localhost:4000/productos/${idProd}`, {
+  const res = await fetch(`${API_URL}/${idProd}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
   if (!res.ok) throw new Error("Error al eliminar producto");
 }
 export async function darDeAltaProducto(idProd: string | number): Promise<void> {
-  const res = await fetch(`http://localhost:4000/productos/darDeAlta/${idProd}`, {
+  const res = await fetch(`${API_URL}/darDeAlta/${idProd}`, {
     method: "PUT",
     headers: getAuthHeaders(),
   });
@@ -85,7 +88,7 @@ export async function darDeAltaProducto(idProd: string | number): Promise<void> 
 
 export const buscarProducto = async (nombreProdBuscado: string, admin: boolean) => {
   try {
-    const res = await fetch(`http://localhost:4000/productos/buscarProductoPorNombre`, {
+    const res = await fetch(`${API_URL}/buscarProductoPorNombre`, {
       method: "POST",
       headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({

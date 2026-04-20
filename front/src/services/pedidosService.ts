@@ -1,7 +1,8 @@
 import type { Pedido } from "../types/Pedido";
 import type { PedidoProducto } from "../types/PedidoProducto";
 
-const API_URL = "http://localhost:4000/pedidos";
+const URL_BACK = process.env.URL_BACK!.replace(/\/$/, "");
+const API_URL = `${URL_BACK}/pedidos`;
 
 type PedidoProductoPayload = Pick<PedidoProducto, "idProd" | "cantidadProdPed">;
 
