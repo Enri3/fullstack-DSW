@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../database";
-import { Producto} from "../../entidades/producto";
+import { Producto} from "../entidades/producto";
 import jwt from "jsonwebtoken";
 import { calcularPrecioProductoParaCliente } from "../services/productoPrecioService";
 

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../database";
-import { Pedido } from "../../entidades/pedido";
-import { PedidoProducto } from "../../entidades/pedido_productos";
-import { Producto } from "../../entidades/producto";
+import { Pedido } from "../entidades/pedido";
+import { PedidoProducto } from "../entidades/pedido_productos";
+import { Producto } from "../entidades/producto";
 import { Preference, Payment } from "mercadopago";
 import client from "../config/mercadopago";
 import { calcularPrecioProductoParaCliente } from "../services/productoPrecioService";

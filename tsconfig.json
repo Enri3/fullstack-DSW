@@ -9,5 +9,5 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true
   },
-  "include": ["back/entidades/**/*.ts"]
+  "include": ["back/src/entidades/**/*.ts"]
 }

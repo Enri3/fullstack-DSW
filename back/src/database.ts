@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
-import { Producto} from "../entidades/producto";
-import { Cliente} from "../entidades/cliente";
-import { Descuento} from "../entidades/descuento";
-import { ProductoDescuento} from "../entidades/productos_descuentos"
-import { TipoCliente } from "../entidades/tipo-cliente";
-import { Pedido } from "../entidades/pedido";
-import { PedidoProducto } from "../entidades/pedido_productos";
+import { Producto} from "./entidades/producto";
+import { Cliente} from "./entidades/cliente";
+import { Descuento} from "./entidades/descuento";
+import { ProductoDescuento} from "./entidades/productos_descuentos"
+import { TipoCliente } from "./entidades/tipo-cliente";
+import { Pedido } from "./entidades/pedido";
+import { PedidoProducto } from "./entidades/pedido_productos";
 import "reflect-metadata";
 
 

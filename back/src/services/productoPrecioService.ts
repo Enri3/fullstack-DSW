@@ -1,7 +1,7 @@
 import { AppDataSource } from "../database";
-import { Cliente } from "../../entidades/cliente";
-import { ProductoDescuento } from "../../entidades/productos_descuentos";
-import { TipoCliente } from "../../entidades/tipo-cliente";
+import { Cliente } from "../entidades/cliente";
+import { ProductoDescuento } from "../entidades/productos_descuentos";
+import { TipoCliente } from "../entidades/tipo-cliente";
 
 type PrecioProductoCalculado = {
   precioBaseProd: number;
