@@ -23,7 +23,7 @@ function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit 
 }
 
 export async function getProductos() { 
-  const res = await fetch("https://backvivelas.up.railway.app/productos", {
+  const res = await fetch(`${API_URL}`, {
     headers: getAuthHeaders(),
   }); 
   if (!res.ok) throw new Error("Error al obtener productos"); 
