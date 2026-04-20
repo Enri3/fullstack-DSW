@@ -11,7 +11,7 @@ type Producto = {
 
 };
 
-const URL_BACK = process.env.URL_BACK!.replace(/\/$/, "");
+import { URL_BACK } from "./apiConfig";
 const API_URL = `${URL_BACK}/productos`;
 
 function getAuthHeaders(extraHeaders: Record<string, string> = {}): HeadersInit {

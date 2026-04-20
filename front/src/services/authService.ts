@@ -1,4 +1,4 @@
-const URL_BACK = (process.env.URL_BACK || "http://localhost:4000").replace(/\/$/, "");
+import { URL_BACK } from "./apiConfig";
 const API_URL = `${URL_BACK}/auth`;
 
 interface LoginCredenciales {

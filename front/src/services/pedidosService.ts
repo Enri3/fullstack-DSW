@@ -1,7 +1,7 @@
 import type { Pedido } from "../types/Pedido";
 import type { PedidoProducto } from "../types/PedidoProducto";
 
-const URL_BACK = process.env.URL_BACK!.replace(/\/$/, "");
+import { URL_BACK } from "./apiConfig";
 const API_URL = `${URL_BACK}/pedidos`;
 
 type PedidoProductoPayload = Pick<PedidoProducto, "idProd" | "cantidadProdPed">;
