@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
-import { obtenerCantidadCarrito } from "../services/cartService";
+import { obtenerCantidadCarrito, reiniciarCarrito } from "../services/cartService";
 import { getPedidoById } from "../services/pedidosService";
 import type { Pedido } from "../types/Pedido";
 import { buildImageUrl } from "../utils/imageUrl";
 import "../assets/styles/detallePedido.css";
-import Header_sinCarrito from "../components/header_sinCarrito";
 
 type ProductoDetalle = {
   idProd: number;
@@ -36,6 +35,7 @@ export default function Exito() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    reiniciarCarrito();
     setCantidad(obtenerCantidadCarrito());
   }, []);
 
@@ -83,7 +83,7 @@ export default function Exito() {
 
   return (
     <>
-      <Header_sinCarrito />
+      <HeaderConPanel cantidad={cantidad} />
       <main className="detalle-pedido-main">
         <section className="detalle-pedido-card">
           <div >

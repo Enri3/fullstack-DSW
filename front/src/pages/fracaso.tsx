@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import "../assets/styles/detallePedido.css";
-import Header_sinCarrito from "../components/header_sinCarrito";
 
 
 
@@ -12,10 +12,14 @@ export default function Fracaso() {
 
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
 
+  useEffect(() => {
+    setCantidad(obtenerCantidadCarrito());
+  }, []);
+
 
   return (
     <>
-      <Header_sinCarrito />
+      <HeaderConPanel cantidad={cantidad} />
       <main className="detalle-pedido-main">
         <section className="detalle-pedido-card">
           <div >

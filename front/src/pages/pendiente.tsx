@@ -7,7 +7,6 @@ import { getPedidoById } from "../services/pedidosService";
 import type { Pedido } from "../types/Pedido";
 import { buildImageUrl } from "../utils/imageUrl";
 import "../assets/styles/detallePedido.css";
-import Header_sinCarrito from "../components/header_sinCarrito";
 
 type ProductoDetalle = {
   idProd: number;
@@ -83,7 +82,7 @@ export default function Pendiente() {
 
   return (
     <>
-      <Header_sinCarrito />
+      <HeaderConPanel cantidad={cantidad} />
       <main className="detalle-pedido-main">
         <section className="detalle-pedido-card">
           <div >

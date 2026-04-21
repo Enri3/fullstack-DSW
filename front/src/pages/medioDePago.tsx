@@ -23,7 +23,7 @@ export default function MedioDePago() {
   const state = (location.state || {}) as MedioPagoState;
   const { notificacion, mostrarError, mostrarExito } = usarNotificacion();
 
-  const [cantidad] = useState(obtenerCantidadCarrito());
+  const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
   const [medioPago, setMedioPago] = useState<MedioPago | null>(null);
   const [montoEfectivo, setMontoEfectivo] = useState("");
   const esRetiroEnLocal = state.formaEntrega === "retiro";
@@ -110,6 +110,7 @@ export default function MedioDePago() {
         return;
       }
       reiniciarCarrito();
+      setCantidad(obtenerCantidadCarrito());
       mostrarExito("¡Pago registrado y pedido realizado correctamente!");
       setTimeout(() => navigate("/clienteIngresado"), 4000);
     } catch (error) {
