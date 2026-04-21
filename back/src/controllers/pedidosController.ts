@@ -430,20 +430,21 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
 
     const preference = new Preference(client);
    
+    const URL_FRONT = process.env.URL_FRONT!.replace(/\/$/, "");
     const response = await preference.create({
       body: {
         items,
         external_reference: pedido.idPedido.toString(),
         back_urls: {
           //las urls hay que escribirlas como dice el ngrok en el puerto de FRONT
-          success: `https://barb-illtempered-nakia.ngrok-free.dev/exito/${pedido.idPedido}`,
-          failure: `https://barb-illtempered-nakia.ngrok-free.dev/fracaso`,
-          pending: "https://barb-illtempered-nakia.ngrok-free.dev/pendiente/${pedido.idPedido}",
+          success: `${URL_FRONT}/exito/${pedido.idPedido}`,
+          failure: `${URL_FRONT}/fracaso`,
+          pending: `${URL_FRONT}/pendiente/${pedido.idPedido}`,
         },
         //auto_return NO va cuando estoy trabajando en prueba
         auto_return: "approved",
         //la url hay que escribirlas como dice el ngrok en el puerto de BACK
-        notification_url: "https://barb-illtempered-nakia.ngrok-free.dev/pedidos/webhook",
+        notification_url: `${URL_FRONT}/pedidos/webhook`,
       }
     });
 

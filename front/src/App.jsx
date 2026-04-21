@@ -72,9 +72,9 @@ function App() {
         <Route path="/gestion-descuentos" element={<ProtectedRoute tipoRequerido={1}><Descuentos /></ProtectedRoute>} />
         <Route path="/cambiar-password" element={<ProtectedRoute><CambiarPassword /></ProtectedRoute>} />
         <Route path="/nuevo-descuento" element={<ProtectedRoute tipoRequerido={1}><NuevoDescuento /></ProtectedRoute>} />
-        <Route path="/exito/:idPedido" element={<Exito />} />
-        <Route path="/fracaso" element={<Fracaso />} />
-        <Route path="/pendiente/:idPedido" element={<Pendiente />} />
+        <Route path="/exito/:idPedido" element={<ProtectedRoute><Exito /></ProtectedRoute>} />
+        <Route path="/fracaso" element={<ProtectedRoute><Fracaso /></ProtectedRoute>} />
+        <Route path="/pendiente/:idPedido" element={<ProtectedRoute><Pendiente /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
