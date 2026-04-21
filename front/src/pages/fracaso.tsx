@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import HeaderConPanel from "../components/header_conBotonPanel";
 import Footer from "../components/footer";
 import { obtenerCantidadCarrito } from "../services/cartService";
+import { updatePedidoEstado } from "../services/pedidosService";
 import "../assets/styles/detallePedido.css";
 
 
@@ -11,10 +12,35 @@ export default function Fracaso() {
 
 
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
+  const location = useLocation();
 
   useEffect(() => {
     setCantidad(obtenerCantidadCarrito());
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const idPedidoParam = params.get("external_reference") || params.get("idPedido");
+
+    if (!idPedidoParam) {
+      return;
+    }
+
+    const idPedido = Number(idPedidoParam);
+    if (Number.isNaN(idPedido)) {
+      return;
+    }
+
+    const restaurarPedido = async () => {
+      try {
+        await updatePedidoEstado(idPedido, "enCarrito");
+      } catch (error) {
+        console.error("No se pudo restaurar el pedido a enCarrito:", error);
+      }
+    };
+
+    void restaurarPedido();
+  }, [location.search]);
 
 
   return (

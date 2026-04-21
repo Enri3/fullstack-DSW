@@ -430,7 +430,7 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
 
     const preference = new Preference(client);
    
-    const URL_FRONT = process.env.URL_FRONT!.replace(/\/$/, "");
+    const URL_FRONT = process.env.URL_MP!.replace(/\/$/, "");
     const response = await preference.create({
       body: {
         items,
@@ -512,7 +512,7 @@ export const recibirWebhookMP = async (req: Request, res: Response) => {
       }
 
       if (estado === "rejected" || estado === "cancelled") {
-        pedido.estadoPedido = "cancelado";
+        pedido.estadoPedido = "enCarrito";
       }
 
       await pedidoRepo.save(pedido);
