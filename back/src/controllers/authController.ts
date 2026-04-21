@@ -73,7 +73,13 @@ export const registrarCliente = async (req: Request, res: Response): Promise<voi
 
     await clienteRepo.save(nuevo);
 
-    res.json({ message: "Cliente registrado con éxito" });
+    const token = jwt.sign(
+      { id: nuevo.idCli, nombreCli: nuevo.nombreCli, tipo: nuevo.idTipoCli },
+      process.env.JWT_SECRET || "clave_secreta_super_segura",
+      { expiresIn: "2h" }
+    );
+
+    res.json({ message: "Cliente registrado con éxito", token, cliente: nuevo });
 
   } catch (error: any) {
     console.error("Error en registrarCliente:", error.message || error);

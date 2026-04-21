@@ -61,14 +61,24 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        navigate("/login", {
-          state: {
-            mensaje: {
-              texto: "¡Te registraste correctamente! Ahora podés iniciar sesión.",
-              tipo: "success",
+        if (data?.token && data?.cliente) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("cliente", JSON.stringify(data.cliente));
+
+          navigate("/clienteIngresado", {
+            state: {
+              mensaje: {
+                texto: "¡Te registraste correctamente!",
+                tipo: "success",
+              },
             },
-          },
-        });
+          });
+        } else {
+          setMensaje({
+            texto: "Registro exitoso, pero no se pudo iniciar sesión automáticamente.",
+            tipo: "info",
+          });
+        }
       } else {
         setMensaje({
           texto: data.message || "Error al registrarse",
