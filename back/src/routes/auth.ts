@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { buscarClienteFiltro, getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword } from "../controllers/authController";
+import { buscarClienteFiltro, getAllClientes, registrarCliente, loginCliente, editarCliente, eliminarClientes, cambiarPassword, cambiarTipoClientes } from "../controllers/authController";
 import { verificarToken } from "../middleware/authMiddleware";
 
 const router = Router();
@@ -147,6 +147,8 @@ router.put("/edit", verificarToken, editarCliente);
  *         description: Error interno del servidor
  */
 router.delete("/eliminar-multiple", verificarToken, eliminarClientes);
+
+router.put("/cambiar-tipo-multiple", verificarToken, cambiarTipoClientes);
 
 /**
  * @swagger

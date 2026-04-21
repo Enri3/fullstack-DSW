@@ -75,6 +75,34 @@ export const deleteMultipleClientes = async (ids: number[]) => {
   }
 };
 
+export const cambiarTipoMultipleClientes = async (ids: number[], idTipoCli: number) => {
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch(`${API_URL}/cambiar-tipo-multiple`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ ids, idTipoCli }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Error al cambiar el tipo de cliente");
+    }
+
+    return data;
+
+  } catch (error: any) {
+    console.error("Error en cambiarTipoMultipleClientes:", error);
+    throw error;
+  }
+};
+
 export const cambiarPassword = async (idCli: number, passwordAnterior: string, passwordNueva: string) => {
 
   const token = localStorage.getItem("token");

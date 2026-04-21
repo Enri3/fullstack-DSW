@@ -2,6 +2,26 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../database";
 import { TipoCliente } from "../entidades/tipo-cliente";
 
+const tipoClienteRepository = AppDataSource.getRepository(TipoCliente);
+
+export const getTiposClientes = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const tipos = await tipoClienteRepository.find({
+      select: ["idTipoCli", "nombreTipo"],
+      order: { idTipoCli: "ASC" },
+    });
+
+    res.json(tipos);
+  } catch (error) {
+    const mensaje = error instanceof Error ? error.message : String(error);
+    console.error("Error en getTiposClientes:", mensaje);
+    res.status(500).json({
+      message: "Error al obtener los tipos de cliente",
+      detalle: mensaje,
+    });
+  }
+};
+
 export const getNombreTipo = async (req: Request, res: Response): Promise<void> => {
   const { idTipoCli } = req.params;
 
@@ -11,8 +31,6 @@ export const getNombreTipo = async (req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const tipoClienteRepository = AppDataSource.getRepository(TipoCliente);
-
     const tipo = await tipoClienteRepository.findOne({
       where: { idTipoCli: Number(idTipoCli) },
     });
@@ -23,11 +41,12 @@ export const getNombreTipo = async (req: Request, res: Response): Promise<void> 
     }
 
     res.json({ nombreTipoCli: tipo.nombreTipo });
-  } catch (error: any) {
-    console.error("Error en getNombreTipoCliente:", error.message || error);
+  } catch (error) {
+    const mensaje = error instanceof Error ? error.message : String(error);
+    console.error("Error en getNombreTipoCliente:", mensaje);
     res.status(500).json({
       message: "Error al obtener el tipo de cliente",
-      detalle: error.message,
+      detalle: mensaje,
     });
   }
 };

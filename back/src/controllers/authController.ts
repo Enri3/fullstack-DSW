@@ -11,7 +11,7 @@ export const getAllClientes = async (req: Request, res: Response): Promise<void>
   try {
     const clientes = await clienteRepo
       .createQueryBuilder("cliente")
-      .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion"])
+      .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion", "cliente.idTipoCli"])
       .where("cliente.idTipoCli != :tipo", { tipo: 1 })
       .getMany();
 
@@ -187,6 +187,32 @@ export const eliminarClientes = async (req: Request, res: Response): Promise<voi
   }
 };
 
+export const cambiarTipoClientes = async (req: Request, res: Response): Promise<void> => {
+  const { ids, idTipoCli } = req.body;
+
+  const idTipoClienteNumerico = Number(idTipoCli);
+  if (!ids || !Array.isArray(ids) || ids.length === 0 || Number.isNaN(idTipoClienteNumerico)) {
+    res.status(400).json({ message: "Debe enviar ids e idTipoCli validos" });
+    return;
+  }
+
+  try {
+    const result = await clienteRepo
+      .createQueryBuilder()
+      .update(Cliente)
+      .set({ idTipoCli: idTipoClienteNumerico })
+      .whereInIds(ids)
+      .execute();
+
+    const afectados = result.affected || 0;
+    res.json({ message: `Se actualizo el tipo de ${afectados} clientes correctamente.` });
+  } catch (error) {
+    const mensaje = error instanceof Error ? error.message : String(error);
+    console.error("Error al cambiar tipo de clientes:", mensaje);
+    res.status(500).json({ message: "Error al cambiar tipo de clientes" });
+  }
+};
+
 export const cambiarPassword = async (req: Request, res: Response): Promise<void> => {
   const { idCli, passwordAnterior, passwordNueva } = req.body;
 
@@ -226,13 +252,13 @@ export const buscarClienteFiltro = async (req: Request, res: Response): Promise<
     if (!criterioFiltro || criterioFiltro.trim() === "") {
       clientes = await clienteRepo
         .createQueryBuilder("cliente")
-        .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion"])
+        .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion", "cliente.idTipoCli"])
         .where("cliente.idTipoCli != :tipo", { tipo: 1 })
         .getMany();
     } else {
       clientes = await clienteRepo
         .createQueryBuilder("cliente")
-        .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion"])
+        .select(["cliente.idCli", "cliente.nombreCli", "cliente.apellido", "cliente.email", "cliente.direccion", "cliente.idTipoCli"])
         .where("cliente.idTipoCli != :tipo", { tipo: 1 })
         .andWhere("(cliente.nombreCli LIKE :q OR cliente.email LIKE :q)", { q: `%${criterioFiltro}%` })
         .getMany();

@@ -1,7 +1,9 @@
 import { Router } from "express";
-import { getNombreTipo } from "../controllers/tipo_clientesController";
+import { getNombreTipo, getTiposClientes } from "../controllers/tipo_clientesController";
 
 const router = Router();
+
+router.get("/", getTiposClientes);
 
 /**
  * @swagger

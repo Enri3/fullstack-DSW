@@ -5,6 +5,33 @@ interface GetNombreTipo {
   id: number;
 }
 
+export interface TipoClienteOption {
+  idTipoCli: number;
+  nombreTipo: string;
+}
+
+export const getTiposClientes = async (): Promise<TipoClienteOption[]> => {
+  try {
+    const response = await fetch(`${API_URL}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Error al obtener los tipos de cliente");
+    }
+
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Error en getTiposClientes:", error);
+    throw error;
+  }
+};
+
 export const getNombreTipo = async (idTipoCli : Number) => {
   try {
     const response = await fetch(`${API_URL}/obtener/${idTipoCli}`, {
