@@ -430,7 +430,7 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
 
     const preference = new Preference(client);
    
-    const URL_FRONT = process.env.URL_MP!.replace(/\/$/, "");
+    const URL_FRONT = process.env.URL_FRONT!.replace(/\/$/, "");
     const response = await preference.create({
       body: {
         items,
