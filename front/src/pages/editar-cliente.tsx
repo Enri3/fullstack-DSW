@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import type { Cliente } from "../types/Cliente";
 import { clienteVacio } from "../types/Cliente";
 import MensajeAlerta from "../components/mensajesAlerta";
+import { URL_BACK } from "../services/apiConfig";
 
 export default function EditarCliente() {
   const [cantidad, setCantidad] = useState(obtenerCantidadCarrito());
@@ -36,7 +37,7 @@ export default function EditarCliente() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:4000/auth/edit", {
+      const res = await fetch(`${URL_BACK}/auth/edit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -6,6 +6,7 @@ import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import { Link } from "react-router-dom";
 import { usarNotificacion } from "../mensajes/usarNotificacion";
+import { URL_BACK } from "../services/apiConfig";
 
 
 export default function NuevoProducto() {
@@ -54,7 +55,7 @@ export default function NuevoProducto() {
         formData.append("imagen", imagen);
       }
 
-      const response = await fetch("http://localhost:4000/productos", {
+      const response = await fetch(`${URL_BACK}/productos`, {
         method: "POST",
         body: formData,
       });

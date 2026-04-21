@@ -17,7 +17,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://localhost:4000",
+      url: process.env.VITE_URL_BACK,
       description: "Servidor local"
     }
   ],

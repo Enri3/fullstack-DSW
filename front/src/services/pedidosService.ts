@@ -198,7 +198,7 @@ export async function hidratarCarritoDesdePedidoEnCarrito(idCli: number): Promis
 }
 
 export async function crearPreferencia(idPedido: number): Promise<{ id: string }> {
-  const res = await fetch(`http://localhost:4000/pedidos/crear-preferencia/${idPedido}`, {
+  const res = await fetch(`${API_URL}/crear-preferencia/${idPedido}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

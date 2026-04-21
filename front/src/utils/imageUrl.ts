@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:4000";
+import { URL_BACK } from "../services/apiConfig";
 
 export function buildImageUrl(urlImg?: string): string {
   if (!urlImg) return "/placeholder.png";
@@ -8,8 +8,8 @@ export function buildImageUrl(urlImg?: string): string {
   }
 
   if (urlImg.startsWith("/")) {
-    return `${API_BASE_URL}${urlImg}`;
+    return `${URL_BACK}${urlImg}`;
   }
 
-  return `${API_BASE_URL}/${urlImg}`;
+  return `${URL_BACK}/${urlImg}`;
 }
