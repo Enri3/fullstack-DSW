@@ -61,6 +61,15 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
+.admin-activity {
+    grid-template-columns: 1fr;
+}
+
+.admin-recent-orders {
+    width: 90%;
+    margin: 0 auto;
+}
+
 .admin-recent-orders p {
     margin: 5px 0;
     padding: 8px 0;
@@ -102,6 +111,14 @@
     margin-bottom: 8px;
 }
 
+.pedido-detalles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+}
+
 .pedido-id {
     font-weight: 600;
     color: var(--oscuro);
@@ -119,14 +136,12 @@
 .pedido-cliente {
     color: var(--oscuro);
     font-weight: 500;
-    margin-bottom: 6px;
     font-size: 15px;
 }
 
 .pedido-fecha {
     color: #666;
     font-size: 13px;
-    margin-bottom: 4px;
 }
 
 .pedido-monto {
@@ -140,6 +155,10 @@
 @media (max-width: 992px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr); 
+    }
+
+    .pedido-detalles {
+        gap: 12px;
     }
 }
 

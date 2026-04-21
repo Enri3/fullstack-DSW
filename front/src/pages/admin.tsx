@@ -121,14 +121,16 @@ export default function Admin() {
                         {obtenerTextoEstado(pedido.estadoPedido)}
                       </span>
                     </div>
-                    <div className="pedido-cliente">
-                      <strong>{pedido.cliente?.nombreCli} {pedido.cliente?.apellido}</strong>
-                    </div>
-                    <div className="pedido-fecha">
-                      {new Date(pedido.fechaPedido).toLocaleDateString()}
-                    </div>
-                    <div className="pedido-monto">
-                      ${pedido.montoTotal}
+                    <div className="pedido-detalles">
+                      <div className="pedido-cliente">
+                        <strong>{pedido.cliente?.nombreCli} {pedido.cliente?.apellido}</strong>
+                      </div>
+                      <div className="pedido-fecha">
+                        {new Date(pedido.fechaPedido).toLocaleDateString()}
+                      </div>
+                      <div className="pedido-monto">
+                        ${pedido.montoTotal}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -138,13 +140,6 @@ export default function Admin() {
             )}
 
             <Link to="/admin/pedidos" className="view-all">Ver todos los pedidos</Link>
-          </section>
-
-          <section className="account-details admin-settings">
-            <h2>Configuración</h2>
-            <a href="/admin/ajustes" className="btn-secondary">Ajustes Generales</a>
-            <a href="/admin/usuarios" className="btn-secondary">Gestionar Usuarios Admin</a>
-            <p className="admin-member-since">Miembro desde: 01/01/2020</p>
           </section>
         </div>
       </div>

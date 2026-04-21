@@ -137,7 +137,12 @@ export default function ClienteIngresado() {
                   <div key={pedido.idPedido} className="pedido-item">
                     <div className="pedido-header">
                       <span className="pedido-id">Pedido #{pedido.idPedido}</span>
-                      <span className={`pedido-estado ${pedido.estadoPedido?.toLowerCase()}`}>
+                      <span
+                        className="pedido-estado"
+                        style={{
+                          backgroundColor: pedido.estadoPedido === "envio" ? "#4caf50" : "#ff9800"
+                        }}
+                      >
                         {obtenerTextoEstado(pedido.estadoPedido || "")}
                       </span>
                     </div>
