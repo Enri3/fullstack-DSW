@@ -436,14 +436,14 @@ export const crearPreferencia = async (req: Request, res: Response): Promise<voi
         items,
         external_reference: pedido.idPedido.toString(),
         back_urls: {
-          //las urls hay que escribirlas como dice el ngrok en el puerto de FRONT
+          
           success: `${URL_FRONT}/exito/${pedido.idPedido}`,
           failure: `${URL_FRONT}/fracaso`,
           pending: `${URL_FRONT}/pendiente/${pedido.idPedido}`,
         },
-        //auto_return NO va cuando estoy trabajando en prueba
+        
         auto_return: "approved",
-        //la url hay que escribirlas como dice el ngrok en el puerto de BACK
+        
         notification_url: `${URL_FRONT}/pedidos/webhook`,
       }
     });

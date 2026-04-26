@@ -46,11 +46,54 @@
 
 
 @media (max-width: 768px) {
-  .carrousel-container { max-width: 90%; }
+  .carrousel-container { max-width: 90%; 
+  margin: 20px auto;}
   .btn-anterior,
   .btn-siguiente {
     font-size: 2rem;
     padding: 0.3rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #productos-container-display {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    padding: 0 8px;
+  }
+
+  .tarjeta-producto-display,
+  .tarjeta-add {
+    max-width: 100%;
+    min-width: 120px;
+    padding: 8px;
+  }
+
+  .tarjeta-producto-display h3,
+  .tarjeta-add h3 {
+    font-size: 14px;
+  }
+
+  .tarjeta-producto-display p,
+  .tarjeta-add p {
+    font-size: 13px;
+  }
+
+  .botones {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .botones button {
+    width: 100%;
+    padding: 8px;
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  #productos-container-display {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 }
 
