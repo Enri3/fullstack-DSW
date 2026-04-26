@@ -7,6 +7,7 @@ import "../assets/styles/style.css";
 import { Link } from "react-router-dom";
 import { usarNotificacion } from "../mensajes/usarNotificacion";
 import { URL_BACK } from "../services/apiConfig";
+import { crearProducto } from "../services/productosService";
 
 
 export default function NuevoProducto() {
@@ -54,18 +55,7 @@ export default function NuevoProducto() {
       if (imagen) {
         formData.append("imagen", imagen);
       }
-
-      const response = await fetch(`${URL_BACK}/productos`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        mostrarError(data.error || "Error en el servidor");
-        return;
-      }
+    await crearProducto(formData);
 
       mostrarExito("Producto agregado correctamente!");
       setInputs({ nombreProd: "", medida: "", precioProd: "" , stock: ""});

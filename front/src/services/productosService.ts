@@ -46,6 +46,16 @@ export async function getProductoById(idProd: number): Promise<Producto> {
   if (!res.ok) throw new Error(data.error || "Error al obtener producto");
   return data as Producto;
 }
+export async function crearProducto(formData: FormData): Promise<Producto> {
+  const res = await fetch(`${API_URL}`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: formData,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al crear producto");
+  return data as Producto;
+}
 
 export async function updateProducto(
   idProd: string | number,
