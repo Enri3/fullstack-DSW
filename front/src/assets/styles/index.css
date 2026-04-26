@@ -42,15 +42,27 @@
 }
 
 .tarjeta-producto-display button,
+.tarjeta-producto-display a.boton-alta,
 .tarjeta-add button {
   background-color: var(--marron-boton, #7a624a);
   color: #ffffff;
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-align: center;
+  border: unset;
 }
 
 .tarjeta-producto-display button:hover,
+.tarjeta-producto-display a.boton-alta:hover,
 .tarjeta-add button:hover {
   background-color: var(--marron-boton-hover, #6b5636);
 }
+
+
 .tarjeta-add {
   max-width: 300px;
   padding: 10px;

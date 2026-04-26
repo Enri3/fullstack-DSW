@@ -207,25 +207,110 @@ button:hover{
         color: var(--principal);
     }
     .botones-admin {
-        display: flex;     
-        gap: 10px;           
-        flex-wrap: nowrap;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
         justify-content: center;
     }
-       
-        .botones-admin button {
-        flex: 1;               
-        padding: 10px 20px;     
-                width: auto;
-                background-color: var(--marron-boton);
-                color: var(--principal);
-            }
-        .botones-admin link {
-        flex: 1;    
-           padding: 10px 20px;     
-        width: auto;  }
-        .botones-admin button:hover {
-                background-color: var(--marron-boton-hover);
+
+    .botones-admin button,
+    .botones-admin a {
+        flex: 1;
+        padding: 5px 10px;
+        width: auto;
+        background-color: var(--oscuro);
+        color: var(--principal);
+        text-align: center;
+        border: unset;
+        border-radius: 5px;
+        font-size: 20px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .botones-admin a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .botones-admin button:hover,
+    .botones-admin a:hover {
+        background-color: var(--click);
+    }
+
+   
+    .boton-admin {
+        background-color: var(--oscuro);
+        color: var(--principal);
+        border: unset;
+        border-radius: 5px;
+        font-size: 20px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .boton-admin:hover {
+        background-color: var(--click);
+    }
+
+
+    .boton-alta {
+        background-color: var(--oscuro);
+        color: var(--principal);
+        border: unset;
+        border-radius: 5px;
+        font-size: 20px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .boton-alta:hover {
+        background-color: var(--click);
+    }
+
+    a.boton-alta {
+    display: inline-block;
+    background-color: var(--oscuro);
+    color: var(--principal);
+    border: unset;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+    a.boton-alta:hover {
+        background-color: var(--click);
+        color: var(--principal);
+    }
+    @media (max-width: 480px) {
+        .botones-admin {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .botones-admin button,
+        .botones-admin a {
+            width: 100%;
+            font-size: 18px;
+            padding: 8px 10px;
+        }
+
+        .boton-admin {
+            width: 100%;
+            font-size: 18px;
+            padding: 8px 10px;
+        }
+
+        .boton-alta {
+            width: 100%;
+            font-size: 18px;
+            padding: 8px 10px;
+        }
     }
 
     .link-volver {

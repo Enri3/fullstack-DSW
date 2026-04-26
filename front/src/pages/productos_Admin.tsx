@@ -154,7 +154,7 @@ export default function DisplayProductos() {
         <p className="encargo" style={{ color: "Brown" }} >{producto.encargo} unidades encargadas</p>
         
 
-        <button onClick={() => handleAlta(producto.idProd)}>
+        <button className="boton-alta" onClick={() => handleAlta(producto.idProd)}>
           Dar de alta
         </button>
       </div>
@@ -172,14 +172,14 @@ export default function DisplayProductos() {
             </div>
         </Link>
 
-        <div className="botones-admin">
-          <Link to={`/modificarProducto/${producto.idProd}`}>
-            <button>Modificar</button>
-          </Link>
-          <button onClick={() => handleEliminar(producto.idProd)}>
-            Dar de baja
-          </button>
-        </div>
+      <div className="botones-admin">
+        <Link to={`/modificarProducto/${producto.idProd}`} className="boton-alta">
+          Modificar
+        </Link>
+        <button className="boton-alta" onClick={() => handleEliminar(producto.idProd)}>
+          Dar de baja
+        </button>
+      </div>
       </>
     )}
 
