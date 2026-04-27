@@ -49,7 +49,7 @@ export async function getProductoById(idProd: number): Promise<Producto> {
 export async function crearProducto(formData: FormData): Promise<Producto> {
   const res = await fetch(`${API_URL}`, {
     method: "POST",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(), 
     body: formData,
   });
   const data = await res.json();
