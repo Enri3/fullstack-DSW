@@ -1,3 +1,10 @@
+/* Agrupador para info y botones dentro de la tarjeta */
+.tarjeta-producto-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 8px;
+}
 .carrito-main {
     min-height: 70vh;
     padding-top: 14px;
@@ -147,6 +154,137 @@
     align-items: center;
     justify-content: space-between;
     margin: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.contenedor-botones button {
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .carrito-main {
+        padding: 10px;
+    }
+
+    #productos-container-carrito {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    .tarjeta-producto-carrito {
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .tarjeta-producto-carrito img {
+        height: 80px;
+    }
+
+    .tarjeta-producto-info {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .botones-carrito {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+        order: 2;
+    }
+
+    
+    .tarjeta-producto-carrito {
+        align-items: flex-start;
+    }
+
+    #totales {
+        max-width: 100%;
+        margin: 20px auto;
+        padding: 20px 15px;
+    }
+
+    #carrito-vacio {
+        max-width: 100%;
+        margin: 20px auto;
+        padding: 40px 15px;
+    }
+
+    .contenedor-botones {
+        width: 100%;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .contenedor-botones button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .lista-scroll-5 {
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
+@media (max-width: 600px) {
+    .tarjeta-producto-carrito {
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .tarjeta-producto-info {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .botones-carrito {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+        order: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .tarjeta-producto-carrito img {
+        height: 70px;
+    }
+
+    .botones-carrito button {
+        width: 30px;
+        height: 26px;
+        font-size: 16px;
+    }
+
+    .botones-carrito .cantidad {
+        min-width: 30px;
+        height: 28px;
+        font-size: 16px;
+    }
+
+    #totales {
+        padding: 15px 10px;
+    }
+
+    #totales h2 {
+        font-size: 1.2em;
+    }
+
+    .contenedor-botones button {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
 }
 
 
