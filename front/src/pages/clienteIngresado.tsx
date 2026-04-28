@@ -55,8 +55,7 @@ export default function ClienteIngresado() {
       try {
         setLoadingPedidos(true);
         const todosLosPedidos = await getPedidosByIdCliente(cliente.idCli);
-        // Mostrar últimos 3 pedidos realizados (envio, retiro, finalizado)
-        // Excluye solo "enCarrito" que es el carrito actual sin confirmar
+
         const pedidosRealizados = todosLosPedidos
           .filter((p) => p.estadoPedido !== "enCarrito")
           .sort((a, b) => new Date(b.fechaPedido).getTime() - new Date(a.fechaPedido).getTime())
@@ -112,11 +111,6 @@ export default function ClienteIngresado() {
             <p>Explorá nuestros productos y comenzá a comprar.</p>
           </Link>
 
-          <Link to="/mis-facturas" className="cta-card cta-invoice">
-            <i className="icon">🧾</i>
-            <h3>Ver Mis Facturas</h3>
-            <p>Accedé y descargá tu historial de pagos.</p>
-          </Link>
           <Link to="/historial-pedidos" className="cta-card cta-history">
             <i className="icon">📦</i>
             <h3>Historial de Pedidos</h3>
