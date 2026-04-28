@@ -146,7 +146,7 @@ export default function Login() {
               required
             />
 
-           <div style={{ margin: "15px 0", display: "flex", justifyContent: "center" }}>
+           <div className="captcha-wrapper">
                 <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey="6LcId4wsAAAAACh1zDxtPNzTFaCmzh89LVrSkJw7"
