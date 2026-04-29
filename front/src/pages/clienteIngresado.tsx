@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
-import logo from "../assets/img/logo.png";
+import HeaderConPanel from "../components/header_conBotonPanel";
 import { getNombreTipo } from "../services/tipo_usuarioService";
 import { agregarAlCarrito, obtenerCantidadCarrito } from "../services/cartService";
 import '../assets/styles/clienteIngresado.css';
@@ -93,7 +92,7 @@ export default function ClienteIngresado() {
 
   return (
     <>
-      <HeaderClienteIngresado cantidad={cantidad} />
+      <HeaderConPanel cantidad={cantidad} />
       {mensaje && <MensajeAlerta tipo={mensaje.tipo} texto={mensaje.texto} />}
 
       <div className="dashboard-container">

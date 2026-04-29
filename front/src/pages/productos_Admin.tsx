@@ -109,7 +109,6 @@ export default function DisplayProductos() {
       )}
       <main>
         <div className="mensaje">
-          <h1>Bienvenido a Vivelas</h1>
           <p>Explora nuestros productos y disfruta de una experiencia única.</p>
         </div>
 
@@ -154,9 +153,14 @@ export default function DisplayProductos() {
         <p className="encargo" style={{ color: "Brown" }} >{producto.encargo} unidades encargadas</p>
         
 
-        <button className="boton-alta" onClick={() => handleAlta(producto.idProd)}>
-          Dar de alta
-        </button>
+        <div className="botones-admin" style={{ marginTop: 8 }}>
+          <Link to={`/modificarProducto/${producto.idProd}`} className="boton-alta">
+            Modificar
+          </Link>
+          <button className="boton-alta" onClick={() => handleAlta(producto.idProd)}>
+            Dar de alta
+          </button>
+        </div>
       </div>
     ) : (
 

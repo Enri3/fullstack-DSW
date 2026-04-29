@@ -97,7 +97,6 @@ export default function DisplayProductos_C() {
       )}
       <main>
         <div className="mensaje">
-          <h1>Bienvenido a Vivelas</h1>
           <p>Explora nuestros productos y disfruta de una experiencia única.</p>
         </div>
         <BuscadorProducto onResultados={setProductos} setLoading={setLoading} onReset={fetchProductos} admin={false} />

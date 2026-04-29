@@ -12,15 +12,27 @@ export default function HeaderAdmin() {
         <Link to="/admin">
           <img src={logo} id="logo" alt="Logo" />
         </Link>
-        
-             <div id="menu">
-                <Link to="/admin">
-                   Panel de Navegación
-                </Link>
-                       
-                <Link to="/cerrar-sesion">Cerrar Sesión</Link>
 
-              </div>
+        <div id="menu">
+          <Link to="/admin">Panel de Navegación</Link>
+          <Link to="/admin/pedidos">Pedidos</Link>
+          <Link to="/productosAdmin">Productos</Link>
+          <Link to="/eliminar-clientes">Clientes</Link>
+          <Link to="/gestion-descuentos">Descuentos</Link>
+          <Link to="/cerrar-sesion">Cerrar Sesión</Link>
+        </div>
+
+        <details className="mobile-nav">
+          <summary>Menú</summary>
+          <div className="mobile-nav-menu">
+            <Link to="/admin">Panel de Navegación</Link>
+            <Link to="/admin/pedidos">Pedidos</Link>
+            <Link to="/productosAdmin">Productos</Link>
+            <Link to="/eliminar-clientes">Clientes</Link>
+            <Link to="/gestion-descuentos">Descuentos</Link>
+            <Link to="/cerrar-sesion">Cerrar Sesión</Link>
+          </div>
+        </details>
 
       </nav>
 
