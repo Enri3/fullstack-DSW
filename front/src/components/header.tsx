@@ -15,10 +15,8 @@ export default function Header({ cantidad }: HeaderProps) {
         <Link to="/">
           <img src={logo} id="logo" alt="Logo" />
         </Link>
-        <div id="menu">
-          
+        <div>
           <Link to="/login">Ingresar</Link>
-          
         </div>
       </nav>
     </header>
