@@ -64,7 +64,7 @@ header nav {
 #menu {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 32px;
 }
 
 .mobile-nav {
@@ -149,9 +149,10 @@ footer {
 
 
 .icono {
-    font-size: 40px;
+    font-size: 1.05em;
     color: var(--icono);
     position: relative;
+    margin-right: 6px;
 }
 
 .icono:hover {

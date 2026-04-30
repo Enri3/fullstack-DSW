@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "../assets/styles/login.css";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
+import HeaderConPanel from "../components/header_conBotonPanel";
 import { obtenerCantidadCarrito } from "../services/cartService";
 import { useNavigate } from "react-router-dom";
 import type { Cliente } from "../types/Cliente";
@@ -79,7 +79,8 @@ export default function EditarCliente() {
 
   return (
     <>
-      <HeaderClienteIngresado cantidad={cantidad} />
+      <HeaderConPanel cantidad={cantidad} />
+
       <div className="login-page">
         <div className="login-container">
           <h2>Editar Perfil</h2>

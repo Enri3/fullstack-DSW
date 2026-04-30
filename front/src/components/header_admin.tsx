@@ -14,23 +14,59 @@ export default function HeaderAdmin() {
         </Link>
 
         <div id="menu">
-          <Link to="/admin">Panel de Navegación</Link>
-          <Link to="/admin/pedidos">Pedidos</Link>
-          <Link to="/productosAdmin">Productos</Link>
-          <Link to="/eliminar-clientes">Clientes</Link>
-          <Link to="/gestion-descuentos">Descuentos</Link>
-          <Link to="/cerrar-sesion">Cerrar Sesión</Link>
+          <Link to="/admin">
+            <i className="material-icons icono">home</i>
+            Inicio
+          </Link>
+          <Link to="/admin/pedidos">
+            <i className="material-icons icono">receipt_long</i>
+            Pedidos
+          </Link>
+          <Link to="/productosAdmin">
+            <i className="material-icons icono">inventory_2</i>
+            Productos
+          </Link>
+          <Link to="/eliminar-clientes">
+            <i className="material-icons icono">group</i>
+            Clientes
+          </Link>
+          <Link to="/gestion-descuentos">
+            <i className="material-icons icono">percent</i>
+            Descuentos
+          </Link>
+          <Link to="/cerrar-sesion">
+            <i className="material-icons icono">logout</i>
+            Cerrar Sesión
+          </Link>
         </div>
 
         <details className="mobile-nav">
           <summary>Menú</summary>
           <div className="mobile-nav-menu">
-            <Link to="/admin">Panel de Navegación</Link>
-            <Link to="/admin/pedidos">Pedidos</Link>
-            <Link to="/productosAdmin">Productos</Link>
-            <Link to="/eliminar-clientes">Clientes</Link>
-            <Link to="/gestion-descuentos">Descuentos</Link>
-            <Link to="/cerrar-sesion">Cerrar Sesión</Link>
+            <Link to="/admin">
+              <i className="material-icons icono">home</i>
+              Inicio
+            </Link>
+            <Link to="/admin/pedidos">
+              <i className="material-icons icono">receipt_long</i>
+              Pedidos
+            </Link>
+            <Link to="/productosAdmin">
+              <i className="material-icons icono">inventory_2</i>
+              Productos
+            </Link>
+            <Link to="/eliminar-clientes">
+              <i className="material-icons icono">group</i>
+              Clientes
+            </Link>
+            <Link to="/gestion-descuentos">
+              <i className="material-icons icono">percent</i>
+              Descuentos
+            </Link>
+            <Link to="/cerrar-sesion">
+              <i className="material-icons icono">logout</i>
+              Cerrar Sesión
+            </Link>
           </div>
         </details>
 
