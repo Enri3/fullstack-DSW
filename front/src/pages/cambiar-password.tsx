@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../assets/styles/login.css";
-import HeaderClienteIngresado from "../components/header_clienteIngresado";
+import HeaderClienteIngresado from "../components/header_conBotonPanel";
 import MensajeAlerta from "../components/mensajesAlerta";
 import { cambiarPassword } from "../services/authService";
 import { obtenerCantidadCarrito } from "../services/cartService";
