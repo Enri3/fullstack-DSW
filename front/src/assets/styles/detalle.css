@@ -82,6 +82,7 @@
 
   .detalle-producto-card {
     width: 100%;
+    box-sizing: border-box;
     flex-direction: column;
   }
 
@@ -94,6 +95,7 @@
 
   .detalle-info {
     padding: 25px;
+    box-sizing: border-box;
   }
 }
 
