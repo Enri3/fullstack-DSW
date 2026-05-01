@@ -51,7 +51,6 @@ export default function DetalleAdmin() {
         {deleted === 1 && (
           <p style={{ color: "red", fontWeight: "bold", margin: 0 }}>Producto dado de baja</p>
         )}
-        <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
           <Link to="/productosAdmin">
               <button className="boton-detalle">Volver</button>
            </Link>
@@ -61,8 +60,6 @@ export default function DetalleAdmin() {
           {deleted !== 1 && (
             <button onClick={handleEliminar} className="boton-detalle">Dar de baja</button>
           )}
-
-        </div>
       </div>
 
       <Footer />
