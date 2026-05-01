@@ -1,28 +1,25 @@
-
-:root {
-    --principal:          #eceada;
-    --click:              #a1a1a1;
-    --icono:              #333;
-    --texto:              #000;
-    --contador:           #d34c4c;
-    --tarjeta:            #cbc9b6;
-    --oscuro:             #342c26;
-    --marron-boton:       #7a624a;
+:root
+{
+    --principal: #eceada;
+    --click: #a1a1a1;
+    --icono: #333;
+    --texto: #000;
+    --contador: #d34c4c;
+    --tarjeta: #cbc9b6;
+    --oscuro: #342c26;
+    --marron-boton: #7a624a;
     --marron-boton-hover: #6b5636;
-}
-
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
 }
 
 html {
     height: 100%;
 }
 
-body {
+#logo{
+    height: 70px;
+}
+
+body{
     background-color: var(--principal);
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin: 0;
@@ -32,134 +29,47 @@ body {
     min-height: 100vh;
 }
 
-h3, p {
-    margin: 5px 0;
+.icono{
+    font-size: 40px;
+    color: var(--icono);
+    position: relative;
+ 
+}
+.icono:hover{
+    color: var(--click);
 }
 
-a {
+header nav{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 40px;
+    font-weight: 550;
+}
+
+#menu{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+a{
     text-decoration: none;
     color: var(--texto);
 }
 
-a:hover {
+a:hover{
     color: var(--click);
 }
-
-
-header {
+h3,p{
+    margin: 5px 0;
+}
+header{
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
     padding: 10px 0;
     width: 100%;
     font-weight: 550;
 }
-
-header nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 40px;
-    font-weight: 550;
-}
-
-#menu {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-}
-
-.mobile-nav {
-    display: none;
-    position: relative;
-}
-
-.mobile-nav summary {
-    list-style: none;
-    cursor: pointer;
-    background-color: var(--oscuro);
-    color: var(--principal);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 16px;
-    font-weight: 600;
-    user-select: none;
-}
-
-.mobile-nav summary::-webkit-details-marker {
-    display: none;
-}
-
-.mobile-nav-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    min-width: 220px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px;
-    background-color: var(--principal);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
-    z-index: 20;
-}
-
-.mobile-nav-menu a {
-    padding: 6px 2px;
-    white-space: nowrap;
-}
-
-#logo {
-    height: 70px;
-}
-
-
-footer {
-    width: 100%;
-    color: var(--texto);
-    text-align: center;
-    padding: 30px 0;
-    box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
-    background-color: var(--principal);
-    margin-top: auto;
-}
-
-#root:has(footer) {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.footer-links-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.footer-links-wrap p {
-    width: 100%;
-    margin-top: 4px;
-}
-
-.footer-separador {
-    color: #8a867b;
-}
-
-
-.icono {
-    font-size: 1.05em;
-    color: var(--icono);
-    position: relative;
-    margin-right: 6px;
-}
-
-.icono:hover {
-    color: var(--click);
-}
-
-#cuenta_carrito {
+#cuenta_carrito{
     background-color: var(--contador);
     border-radius: 100%;
     display: inline-block;
@@ -170,251 +80,56 @@ footer {
     position: absolute;
 }
 
-
-button {
-    background-color: var(--oscuro);
-    cursor: pointer;
-    color: var(--principal);
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    font-size: 20px;
-}
-
-button:hover {
-    background-color: var(--click);
-}
-
-.botones-admin {
+#root:has(footer) {
     display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer{
+    width: 100%;
+    color: var(--texto);
+    text-align: center;
+    padding: 30px 0;
+    box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
+    background-color: var(--principal);
+    margin-top: auto;
+}
+
+.footer-links-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: center;
 }
 
-.botones-admin button,
-.botones-admin a {
-    flex: 1;
-    padding: 5px 10px;
-    background-color: var(--oscuro);
-    color: var(--principal);
-    border: none;
-    border-radius: 5px;
-    font-size: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.footer-separador {
+    color: #8a867b;
 }
 
-.botones-admin button:hover,
-.botones-admin a:hover {
-    background-color: var(--click);
-}
-
-.boton-admin {
-    background-color: var(--oscuro);
-    color: var(--principal);
-    border: none;
-    border-radius: 5px;
-    font-size: 20px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.boton-admin:hover {
-    background-color: var(--click);
-}
-
-.boton-alta {
-    background-color: var(--oscuro);
-    color: var(--principal);
-    border: none;
-    border-radius: 5px;
-    font-size: 20px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.boton-alta:hover {
-    background-color: var(--click);
-}
-
-.link-volver {
-    color: #1c5d99;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.link-volver:hover {
-    text-decoration: underline;
-}
-
-
-.contenedor-formulario {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+.footer-links-wrap p {
     width: 100%;
+    margin-top: 4px;
 }
 
-.tarjeta-formulario {
-    background-color: var(--tarjeta);
-    padding: 40px;
-    border-radius: 12px;
-    width: 350px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.item-formulario label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
-    color: var(--oscuro);
-}
-
-.item-formulario input {
-    width: 100%;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    background-color: var(--principal);
-    color: var(--oscuro);
-    font-weight: bold;
-}
-
-.item-formulario input:hover {
-    background-color: var(--click);
-}
-
-input[type="submit"] {
+button{
     background-color: var(--oscuro);
     cursor: pointer;
     color: var(--principal);
-    border: none;
+    border: unset;
     border-radius: 5px;
     padding: 5px 10px;
+    font-size: 20px;
+    
+ 
 }
 
-input[type="submit"]:hover {
+button:hover{
     background-color: var(--click);
 }
 
-.botones-formulario {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-    color: var(--principal);
-}
-
-
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    z-index: 1001;
-}
-
-.modal-confirmacion {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 32px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    animation: slideIn 0.3s ease-out;
-    z-index: 1001;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.modal-confirmacion h2 {
-    margin: 0 0 12px;
-    font-size: 24px;
-    color: #342c26;
-    font-weight: 600;
-}
-
-.modal-confirmacion p {
-    color: #2a4661;
-    font-size: 15px;
-    line-height: 1.6;
-    margin: 0 0 28px;
-}
-
-.modal-botones {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
-
-.modal-btn-confirmar,
-.modal-btn-cancelar {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    flex: 1;
-}
-
-.modal-btn-confirmar {
-    background: #8b6f47;
-    color: #ffffff;
-}
-
-.modal-btn-confirmar:hover:not(:disabled) {
-    background: #6b5636;
-    box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
-}
-
-.modal-btn-cancelar {
-    background: #f0ede9;
-    color: #2a4661;
-    border: 1px solid #dfe5eb;
-}
-
-.modal-btn-cancelar:hover:not(:disabled) {
-    background: #e5e1db;
-    border-color: #8b6f47;
-}
-
-.modal-btn-confirmar:disabled,
-.modal-btn-cancelar:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-
-.escondido {
+.escondido{
     display: none;
 }
 
@@ -424,55 +139,212 @@ input[type="submit"]:hover {
     color: var(--texto);
 }
 
+.tarjeta-formulario {
+    background-color: var(--tarjeta); 
+    padding:40px;
+    border-radius: 12px;
+    width: 350px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    justify-content: center; 
+    align-items: center;  
+    
+}
 
-@media (max-width: 480px) {
-    header nav {
-        margin: 0 16px;
+    .item-formulario label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color:var(--oscuro);
+      justify-content: center;
+
     }
 
-    #menu {
-        display: none;
+    .item-formulario input{
+      width: 100%;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      background-color: var(--principal);
+      color:var(--oscuro);
+      font-weight: bold;
+      justify-content: center;
     }
 
-    .mobile-nav {
-        display: block;
+    .item-formulario input:hover
+    {
+      background-color: var(--click);
+      justify-content: center;
     }
 
-    .tarjeta-formulario {
+    .preview-imagen-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .preview-imagen-producto {
         width: 100%;
-        padding: 24px 16px;
+        max-width: 220px;
+        height: auto;
+        border: 1px solid var(--marron-boton, #7a624a);
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
 
+    .contenedor-formulario {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        width: 100%;
+    }
+
+    input[type="submit"] {
+        background-color: var(--oscuro);
+        cursor: pointer;
+        color: var(--principal);
+        border: unset;
+        border-radius: 5px;
+        padding: 5px 10px;
+        justify-content: center;
+    }
+
+    input[type="submit"]:hover {
+    background-color: var(--click);
+    }
+
+
+    .botones-formulario {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+        color: var(--principal);
+    }
     .botones-admin {
-        flex-direction: column;
-        gap: 8px;
+        display: flex;     
+        gap: 10px;           
+        flex-wrap: nowrap;
+        justify-content: center;
     }
-
-    .botones-admin button,
-    .botones-admin a {
+       
+        .botones-admin button {
+        flex: 1;               
+        padding: 10px 20px;     
+                width: auto;
+                background-color: var(--marron-boton);
+                color: var(--principal);
+            }
+        .botones-admin link {
+        flex: 1;    
+           padding: 10px 20px;     
+        width: auto;  }
+        .botones-admin button:hover {
+                background-color: var(--marron-boton-hover);
+    }
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        font-size: 18px;
-        padding: 8px 10px;
-    }
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        }
 
-    .boton-admin,
-    .boton-alta {
-        width: 100%;
-        font-size: 18px;
-        padding: 8px 10px;
-    }
+        .modal {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        z-index: 1001;
+        }
 
-    .modal-botones {
-        flex-direction: column;
-    }
-}
+        .modal-confirmacion {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 32px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        animation: slideIn 0.3s ease-out;
+        z-index: 1001;
+        }
 
-@media (max-width: 768px) {
-    .mobile-nav {
-        display: block;
-    }
+        @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        }
 
-    #menu {
-        display: none;
-    }
-}
+        .modal-confirmacion h2 {
+        margin: 0 0 12px 0;
+        font-size: 24px;
+        color: #342c26;
+        font-weight: 600;
+        }
+
+        .modal-confirmacion p {
+        color: #2a4661;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 0 0 28px 0;
+        }
+
+        .modal-botones {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        }
+
+        .modal-btn-confirmar,
+        .modal-btn-cancelar {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s ease;
+        flex: 1;
+        }
+
+        .modal-btn-confirmar {
+        background: #8B6F47;
+        color: #ffffff;
+        }
+
+        .modal-btn-confirmar:hover:not(:disabled) {
+        background: #6B5636;
+        box-shadow: 0 4px 12px rgba(139, 111, 71, 0.3);
+        }
+
+        .modal-btn-cancelar {
+        background: #f0ede9;
+        color: #2a4661;
+        border: 1px solid #dfe5eb;
+        }
+
+        .modal-btn-cancelar:hover:not(:disabled) {
+        background: #e5e1db;
+        border-color: #8B6F47;
+        }
+
+        .modal-btn-confirmar:disabled,
+        .modal-btn-cancelar:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        }
+
+        
