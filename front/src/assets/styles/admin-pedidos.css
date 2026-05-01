@@ -108,6 +108,10 @@
   width: 15%;
   min-width: 120px;
   margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   transition: all 0.3s ease;
 }
 
