@@ -9,12 +9,44 @@ import { calcularPrecioProductoParaCliente } from "../services/productoPrecioSer
 
 const pedidoRepo = AppDataSource.getRepository(Pedido);
 const pedidoProductoRepo = AppDataSource.getRepository(PedidoProducto);
+const productoRepo = AppDataSource.getRepository(Producto);
 
 type ProductoConPrecioFinal = Producto & {
   precioFinalProd: number;
   porcentajeDescuentoProducto: number;
   porcentajeDescuentoTipoCliente: number;
 };
+
+async function reservarStockProducto(producto: Producto, cantidad: number): Promise<void> {
+  const stockActual = Number(producto.stock);
+  const cantidadSolicitada = Number(cantidad);
+
+  if (Number.isNaN(stockActual) || Number.isNaN(cantidadSolicitada) || cantidadSolicitada <= 0) {
+    return;
+  }
+
+  const stockRestante = stockActual - cantidadSolicitada;
+  producto.stock = stockRestante > 0 ? stockRestante : 0;
+
+  if (stockRestante < 0) {
+    producto.encargo = Number(producto.encargo) + Math.abs(stockRestante);
+  }
+
+  await productoRepo.save(producto);
+}
+
+async function liberarStockProducto(producto: Producto, cantidad: number): Promise<void> {
+  const cantidadLiberada = Number(cantidad);
+
+  if (Number.isNaN(cantidadLiberada) || cantidadLiberada <= 0) {
+    return;
+  }
+
+  producto.stock = Number(producto.stock) + cantidadLiberada;
+  producto.encargo = Math.max(Number(producto.encargo) - cantidadLiberada, 0);
+
+  await productoRepo.save(producto);
+}
 
 async function mapPedidoConPreciosCalculados(pedido: Pedido): Promise<Pedido> {
   const pedidoProductos = Array.isArray(pedido.pedidoProductos) ? pedido.pedidoProductos : [];
@@ -177,6 +209,12 @@ export const create = async (req: Request, res: Response): Promise<void> => {
         }
       });
 
+      const productoDB = await productoRepo.findOne({ where: { idProd: Number(producto.idProd) } });
+      if (!productoDB) {
+        res.status(404).json({ error: "Producto no encontrado" });
+        return;
+      }
+
       if (productoExistente) {
         productoExistente.cantidadProdPed += cantidad;
         await pedidoProductoRepo.save(productoExistente);
@@ -189,6 +227,8 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 
         await pedidoProductoRepo.save(pedidoProducto);
       }
+
+      await reservarStockProducto(productoDB, cantidad);
     }
 
     res.status(201).json({
@@ -254,23 +294,6 @@ export const updateEstado = async (req: Request, res: Response): Promise<void> =
       }
     }
 
-    if (estadoPedido === "finalizado" && medioPago === "efectivo") {
-      for (const pp of pedido.pedidoProductos) {
-        const producto = pp.producto;
-
-        if (!producto) continue;
-
-        producto.stock = Number(producto.stock) - Number(pp.cantidadProdPed);
-
-        if (producto.stock < 0) {
-          producto.encargo = producto.encargo + Math.abs(producto.stock);
-          producto.stock = 0;
-        }
-
-        await AppDataSource.getRepository("Producto").save(producto);
-      }
-    }
-
     pedidoRepo.merge(pedido, dataToMerge);
     await pedidoRepo.save(pedido);
 
@@ -313,14 +336,31 @@ export const updateProductoCantidad = async (req: Request, res: Response): Promi
       where: {
         idPedido: idPedidoNum,
         idProd: idProdNum
-      }
+      },
+      relations: ["producto"]
     });
+
+    const producto = await productoRepo.findOne({ where: { idProd: idProdNum } });
+
+    if (!producto) {
+      res.status(404).json({ error: "Producto no encontrado" });
+      return;
+    }
 
     if (cantidad === 0) {
       if (pedidoProductoExistente) {
+        await liberarStockProducto(producto, Number(pedidoProductoExistente.cantidadProdPed));
         await pedidoProductoRepo.remove(pedidoProductoExistente);
       }
     } else if (pedidoProductoExistente) {
+      const diferencia = cantidad - Number(pedidoProductoExistente.cantidadProdPed);
+
+      if (diferencia > 0) {
+        await reservarStockProducto(producto, diferencia);
+      } else if (diferencia < 0) {
+        await liberarStockProducto(producto, Math.abs(diferencia));
+      }
+
       pedidoProductoExistente.cantidadProdPed = cantidad;
       await pedidoProductoRepo.save(pedidoProductoExistente);
     } else {
@@ -329,6 +369,7 @@ export const updateProductoCantidad = async (req: Request, res: Response): Promi
         idProd: idProdNum,
         cantidadProdPed: cantidad
       });
+      await reservarStockProducto(producto, cantidad);
       await pedidoProductoRepo.save(nuevoPedidoProducto);
     }
 
@@ -359,11 +400,22 @@ export const deletePedido = async (req: Request, res: Response): Promise<void> =
   try {
     const { idPedido } = req.params;
 
-    const pedido = await pedidoRepo.findOne({ where: { idPedido: Number(idPedido) } });
+    const pedido = await pedidoRepo.findOne({
+      where: { idPedido: Number(idPedido) },
+      relations: ["pedidoProductos", "pedidoProductos.producto"]
+    });
 
     if (!pedido) {
       res.status(404).json({ error: "Pedido no encontrado" });
       return;
+    }
+
+    if (pedido.estadoPedido !== "finalizado") {
+      for (const pp of pedido.pedidoProductos) {
+        if (pp.producto) {
+          await liberarStockProducto(pp.producto, Number(pp.cantidadProdPed));
+        }
+      }
     }
 
     await pedidoRepo.remove(pedido);
