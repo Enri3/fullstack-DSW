@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.45, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 9.6.0, for Win64 (x86_64)
 --
--- Host: localhost    Database: vivelas
+-- Host: shinkansen.proxy.rlwy.net    Database: railway
 -- ------------------------------------------------------
--- Server version	8.0.45
+-- Server version	9.4.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -33,7 +33,7 @@ CREATE TABLE `clientes` (
   `idTipoCli` int NOT NULL,
   PRIMARY KEY (`idCli`),
   UNIQUE KEY `IDX_3cd5652ab34ca1a0a2c7a25531` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,'lauti','ponce','amenabar','lauti@gmail.com','$2b$10$FwgRBHhMpMkci9wVM3YX3Omg3NIUJa/Kc1w3zpfWV9exNnFqAk7Ba','2025-10-10 14:15:55',2),(2,'el pepe ','jaja','9dejulio','lauti03@gmail.com','$2b$10$vqsAtQpHQWLeBEBKqaJiK.mW7C2qWASumtYiAJ5jst3ByQITpGt2m','2025-10-10 14:45:08',2),(3,'aaa','aaa','aaa','aaa@gmail.com','$2b$10$yINt.xYriHanb6tb83qKCOtARqCSsBxlGjEqw2OEa6tOwmz3Hxlhm','2025-10-10 15:34:17',3),(4,'pepe','pepe','pepe','pepe@gmail.com','$2b$10$D.G/ajWDF07sw6.S/HGkLecDFCKt/aHjH3QwoAVR8cCF6dT2951e.','2025-10-10 18:02:19',4),(5,'Victoria','Caracchi','a','vickypau1d@gmail.com','$2b$10$b8PAe9spelRTgKL7rh8hgu.uhk6FfmmHxBLMVoGC.zg/ZXEucVnWy','2026-03-21 13:42:04',1);
+INSERT INTO `clientes` VALUES (1,'Enrico','Reschini','Moreno 1250','ereschini06@gmail.com','$2b$10$2tBH62WTfmRZgCb.Sot3neyOan6qNorT4m2eUqNe4Wj9hPhB.AaRK','2026-04-06 23:24:01',1),(18,'Victoria','Caracchi','Vertiz 272','vickypau1d@gmail.com','$2b$10$G8XB9FieQKyu.TChEw6fb.eJ.qfyC3GAFcqNtjNne7xgc2/XtHG9.','2026-05-07 17:42:04',1),(19,'Lautaro','Ponce','Amenábar 2444','lautaroponce03@gmail.com','$2b$10$l9S7VcwZrznnLk3T/9beRO0i29HJA4ArjSdqTUT7GYzPAmX0E8VUO','2026-05-07 17:43:51',1),(20,'admin','admin','Zeballos 1341','admin@admin.com','$2b$10$D8zgI.qcEw9JfJpsg.XIw.7b9ydwqw.aOr5QpWJNOkgEWF6WRRXRi','2026-05-07 17:45:45',1);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +59,7 @@ CREATE TABLE `descuentos` (
   `fechaDesde` date NOT NULL,
   `fechaHasta` date NOT NULL,
   PRIMARY KEY (`idDesc`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +68,6 @@ CREATE TABLE `descuentos` (
 
 LOCK TABLES `descuentos` WRITE;
 /*!40000 ALTER TABLE `descuentos` DISABLE KEYS */;
-INSERT INTO `descuentos` VALUES (1,10.00,'2025-10-14','2026-01-01'),(2,15.00,'2025-10-14','2026-01-01'),(3,20.00,'2025-10-14','2026-01-01'),(4,25.00,'2025-10-14','2026-01-01');
 /*!40000 ALTER TABLE `descuentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +91,7 @@ CREATE TABLE `pedidos` (
   PRIMARY KEY (`idPedido`),
   KEY `FK_99d99882ba54e6bb488c973305d` (`idCli`),
   CONSTRAINT `FK_99d99882ba54e6bb488c973305d` FOREIGN KEY (`idCli`) REFERENCES `clientes` (`idCli`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +147,7 @@ CREATE TABLE `productos` (
   `stock` int NOT NULL DEFAULT '0',
   `encargo` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`idProd`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +156,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,'Bombe',11100.00,'https://i.postimg.cc/Wzcb5NtJ/bombe.png',0,'310',3,0),(2,'Chiquitin',2900.00,'https://i.postimg.cc/tTx4dZRj/chiquitin.png',1,'42',10,0),(3,'Lata',4400.00,'https://i.postimg.cc/MH0Z4Cj3/lata.png',0,'90',6,0),(4,'Lolo',4500.00,'https://i.postimg.cc/pLLVG1Vk/lolo.png',0,'110',3,0),(5,'Moon',4600.00,'https://i.postimg.cc/Nf4fxwt5/moon.png',0,'105',2,0),(6,'Whisky sin tapa',6900.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'190',0,0),(7,'otro',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(8,'prueba',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(9,'hola',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(10,'moon',1500.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'300',0,0),(11,'nuevo',200.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'100',0,0),(13,'aaa',100.00,'/fotosProductos/1774102214502-628689941.png',0,'10',10,0);
+INSERT INTO `productos` VALUES (1,'Bombe',11100.00,'https://i.postimg.cc/Wzcb5NtJ/bombe.png',0,'310',3,0),(2,'Chiquitin',2900.00,'https://i.postimg.cc/tTx4dZRj/chiquitin.png',0,'42',10,0),(3,'Lata',4400.00,'https://i.postimg.cc/MH0Z4Cj3/lata.png',0,'90',6,0),(4,'Lolo',4500.00,'https://i.postimg.cc/pLLVG1Vk/lolo.png',0,'110',3,0),(5,'Moon',4600.00,'https://i.postimg.cc/Nf4fxwt5/moon.png',0,'105',2,0),(6,'Whisky sin tapa',6900.00,'https://i.postimg.cc/kgYJkFBC/whisky.png',0,'190',0,0);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,7 +183,6 @@ CREATE TABLE `productos_descuentos` (
 
 LOCK TABLES `productos_descuentos` WRITE;
 /*!40000 ALTER TABLE `productos_descuentos` DISABLE KEYS */;
-INSERT INTO `productos_descuentos` VALUES (1,1),(2,1),(3,2);
 /*!40000 ALTER TABLE `productos_descuentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,4 +220,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-21 11:15:33
+-- Dump completed on 2026-05-07 15:01:51
