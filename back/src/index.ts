@@ -71,3 +71,5 @@ AppDataSource.initialize()
 
 
 const client = new MercadoPagoConfig({ accessToken: process.env.YOUR_ACCESS_TOKEN || "" });
+
+export default app;
