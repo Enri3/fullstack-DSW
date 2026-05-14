@@ -126,7 +126,7 @@ export const buscarDescuentoFiltro = async (req: Request, res: Response): Promis
       .createQueryBuilder("pd")
       .innerJoinAndSelect("pd.producto", "producto")
       .innerJoinAndSelect("pd.descuento", "descuento")
-      .where("producto.deleted = 0")
+      .where("producto.deleted = false")
       //para no mostrar descuentos futuros descomentar la siguiente línea:
       //.andWhere("descuento.fechaDesde <= CURRENT_DATE")
       .andWhere("descuento.fechaHasta >= CURRENT_DATE");

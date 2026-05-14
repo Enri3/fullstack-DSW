@@ -70,7 +70,7 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
 export const getAllenAlta = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await productoRepo.find();
-    const productosEnAlta = result.filter((producto) => Number(producto.deleted ?? 0) === 0);
+    const productosEnAlta = result.filter((producto) => producto.deleted === false);
     const idCli = getIdCliFromRequest(req);
     const productosConPrecioFinal = await Promise.all(productosEnAlta.map((p) => mapProductoConPrecioFinal(p, idCli)));
     res.json(productosConPrecioFinal);

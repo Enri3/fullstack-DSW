@@ -5,7 +5,7 @@ type Producto = {
   precioProd: number;
   precioFinalProd?: number;
   urlImg?: string;
-  deleted?: number;
+  deleted?: boolean;
   stock: number;
   encargo: number;
 
@@ -35,7 +35,7 @@ export async function getProductos() {
 export async function getProductosEnAlta() {
   const data = await getProductos();
   const productos = Array.isArray(data) ? data : [];
-  return productos.filter((p) => Number(p.deleted ?? 0) === 0);
+  return productos.filter((p) => p.deleted === false);
 }
 
 export async function getProductoById(idProd: number): Promise<Producto> {

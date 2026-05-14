@@ -20,7 +20,7 @@ type Producto = {
   medida?: string;
   precioProd: number;
   urlImg?: string;
-  deleted?: number;
+  deleted?: boolean;
   stock: number;
   encargo: number;
 };
@@ -72,7 +72,7 @@ export default function DisplayProductos() {
       setProductos((prev) =>
         prev.map((p) =>
           p.idProd === productoAEliminar.idProd
-            ? { ...p, deleted: 1 }
+            ? { ...p, deleted: true }
             : p
         )
       );
@@ -92,7 +92,7 @@ export default function DisplayProductos() {
       setProductos((prev) =>
         prev.map((p) =>
           p.idProd === producto.idProd
-            ? { ...p, deleted: 0 }
+            ? { ...p, deleted: false }
             : p
         )
       );
@@ -137,7 +137,7 @@ export default function DisplayProductos() {
           {!loading && productos.length > 0 && productos.map((producto) => (
   <div key={producto.idProd} className="tarjeta-producto-display">
 
-    {producto.deleted === 1 ? (
+    {producto.deleted ? (
 
       <div >
         <Link to="/detalleAdmin" state={{ idProd: producto.idProd, nombreProd: producto.nombreProd, deleted: producto.deleted }}>

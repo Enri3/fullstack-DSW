@@ -13,7 +13,7 @@ export default function DetalleAdmin() {
   const { notificacion, mostrarError } = usarNotificacion();
   const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as { idProd?: number | string; nombreProd?: string; deleted?: number } | null;
+  const state = location.state as { idProd?: number | string; nombreProd?: string; deleted?: boolean } | null;
   const idProd = state?.idProd;
   const nombreProducto = state?.nombreProd || "Producto";
   const deleted = state?.deleted;
@@ -48,7 +48,7 @@ export default function DetalleAdmin() {
       <Detalle />
 
       <div className="botones-detalle">
-        {deleted === 1 && (
+        {deleted === true && (
           <p style={{ color: "red", fontWeight: "bold", margin: 0 }}>Producto dado de baja</p>
         )}
           <Link to="/productosAdmin">
@@ -57,7 +57,7 @@ export default function DetalleAdmin() {
           <Link to={`/modificarProducto/${idProd}`} >
             <button className="boton-detalle">Modificar</button>
           </Link>
-          {deleted !== 1 && (
+          {deleted !== true && (
             <button onClick={handleEliminar} className="boton-detalle">Dar de baja</button>
           )}
       </div>

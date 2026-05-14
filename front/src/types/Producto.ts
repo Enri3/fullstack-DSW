@@ -6,7 +6,7 @@ export interface Producto {
   porcentajeDescuentoProducto?: number;
   porcentajeDescuentoTipoCliente?: number;
   urlImg?: string;
-  deleted?: number;
+  deleted?: boolean;
   medida?: string;
   stock: number;
   encargo: number;
