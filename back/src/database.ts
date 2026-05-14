@@ -13,9 +13,14 @@ import "reflect-metadata";
 
 dotenv.config();
 
-export const AppDataSource = new DataSource({
+const isLocal = process.env.ENVIRONMENT === "local";
+
+export const AppDataSource = new DataSource(
+  isLocal
+    ?
+  {
   type: "mysql",
-  host: process.env.HOST || "localhost",
+  host: process.env.DATABASE_URL || "localhost",
   port: Number(process.env.DB_PORT) || 3306,
   username: process.env.USER || "root",
   password: process.env.PASSWORD || "",
@@ -23,4 +28,11 @@ export const AppDataSource = new DataSource({
   synchronize: true, 
   logging: false,
   entities: [Producto, Cliente, Descuento, ProductoDescuento, TipoCliente, Pedido, PedidoProducto], 
-});
+  }
+:{
+  type: "postgres",
+  url: process.env.DATABASE_URL || "localhost",
+  synchronize: true,
+  logging: false,
+  entities: [Producto, Cliente, Descuento, ProductoDescuento, TipoCliente, Pedido, PedidoProducto],
+  });

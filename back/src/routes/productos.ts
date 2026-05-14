@@ -8,14 +8,10 @@ import { buscarProducto, getAll,getAllenAlta, getById, create, update, deletePro
 
 const router = Router();
 
-import os from "os";
-
-const fotosDir = process.env.NODE_ENV === "production"
-    ? path.resolve(os.tmpdir(), "fotosProductos")
-    : path.resolve(process.cwd(), "..", "entidades", "fotosProductos");
+const fotosDir = path.resolve(process.cwd(), "..", "entidades", "fotosProductos");
 
 if (!fs.existsSync(fotosDir)) {
-    fs.mkdirSync(fotosDir, { recursive: true });
+	fs.mkdirSync(fotosDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
