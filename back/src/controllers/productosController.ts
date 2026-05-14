@@ -70,7 +70,7 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
 export const getAllenAlta = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await productoRepo.find();
-    const productosEnAlta = result.filter((producto) => Number(producto.deleted ?? 0) === 0);
+    const productosEnAlta = result.filter((producto) => producto.deleted === false);
     const idCli = getIdCliFromRequest(req);
     const productosConPrecioFinal = await Promise.all(productosEnAlta.map((p) => mapProductoConPrecioFinal(p, idCli)));
     res.json(productosConPrecioFinal);
@@ -107,7 +107,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
       medida: medida || null,
       precioProd: precioNum,
       urlImg: file ? `/fotosProductos/${file.filename}` : "",
-      deleted: 0,
+      deleted: false,
       stock: stockNum
     });
 
@@ -203,7 +203,7 @@ export const deleteProd = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    producto.deleted = 1;
+    producto.deleted = true;
     await productoRepo.save(producto);
 
     res.json({ message: "Producto eliminado correctamente" });
@@ -223,7 +223,7 @@ export const darDeAlta = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    producto.deleted = 0;
+    producto.deleted = false;
     await productoRepo.save(producto);
 
     res.json({ message: "Producto dado de alta correctamente" });
@@ -244,7 +244,7 @@ export const buscarProducto = async (req: Request, res: Response): Promise<void>
 
       productos = admin
         ? await productoRepo.find() 
-        : await productoRepo.find({ where: { deleted: 0 } });
+        : await productoRepo.find({ where: { deleted: false } });
 
     } else {
 
@@ -256,7 +256,7 @@ export const buscarProducto = async (req: Request, res: Response): Promise<void>
 
       
       if (!admin) {
-        query = query.andWhere("producto.deleted = 0");
+        query = query.andWhere("producto.deleted = false");
       }
 
       productos = await query.getMany();

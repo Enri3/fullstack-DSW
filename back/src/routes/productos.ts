@@ -9,6 +9,7 @@ import { buscarProducto, getAll,getAllenAlta, getById, create, update, deletePro
 const router = Router();
 
 const fotosDir = path.resolve(process.cwd(), "..", "entidades", "fotosProductos");
+
 if (!fs.existsSync(fotosDir)) {
 	fs.mkdirSync(fotosDir, { recursive: true });
 }

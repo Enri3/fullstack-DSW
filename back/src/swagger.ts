@@ -142,7 +142,7 @@ const swaggerDefinition = {
           porcentajeDescuentoProducto: { type: "number", format: "float", example: 10 },
           porcentajeDescuentoTipoCliente: { type: "number", format: "float", example: 2 },
           urlImg: { type: "string", example: "/fotosProductos/1700000000000-123456789.jpg" },
-          deleted: { type: "integer", example: 0 },
+          deleted: { type: "boolean", example: false },
           stock: { type: "integer", example: 10 }
         },
         required: ["idProd", "nombreProd", "precioProd", "stock"]

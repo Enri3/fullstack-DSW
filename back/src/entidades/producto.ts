@@ -17,8 +17,8 @@ export class Producto {
   @Column({ name: "urlImg", length: 256, nullable: true })
   urlImg!: string;
 
-  @Column({ type: "tinyint", default: 0 })
-  deleted!: number;
+  @Column({ type: "boolean", default: false })
+  deleted!: boolean;
 
   @Column({ length: 45, nullable: true })
   medida!: string;
