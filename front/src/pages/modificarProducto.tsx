@@ -7,7 +7,6 @@ import { usarNotificacion } from "../mensajes/usarNotificacion";
 import "../assets/styles/index.css";
 import "../assets/styles/style.css";
 import { getProductoById, updateProducto } from "../services/productosService";
-import { buildImageUrl } from "../utils/imageUrl";
 
 export default function ModificarProducto() {
   const { idProd } = useParams<{ idProd: string }>();
@@ -20,8 +19,6 @@ export default function ModificarProducto() {
     encargo: ""
   });
   const [imagen, setImagen] = useState<File | null>(null);
-  const [imagenInicial, setImagenInicial] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
 
@@ -41,9 +38,6 @@ export default function ModificarProducto() {
           stock: data.stock?.toString() || "",
           encargo: data.encargo?.toString() || ""
         });
-        const url = data.urlImg ? buildImageUrl(data.urlImg) : null;
-        setImagenInicial(url);
-        setPreviewUrl(url);
       } catch (err) {
         console.error(err);
         mostrarError("No se pudo conectar con el servidor.");
@@ -53,20 +47,6 @@ export default function ModificarProducto() {
     };
     cargarProducto();
   }, [idProd]);
-
-  useEffect(() => {
-    if (!imagen) {
-      setPreviewUrl(imagenInicial);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(imagen);
-    setPreviewUrl(objectUrl);
-
-    return () => {
-      URL.revokeObjectURL(objectUrl);
-    };
-  }, [imagen, imagenInicial]);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,21 +161,12 @@ export default function ModificarProducto() {
                 accept="image/*"
                 onChange={(e) => setImagen(e.target.files?.[0] || null)}
               />
-              {previewUrl && (
-                <div className="preview-imagen-wrap">
-                  <img
-                    src={previewUrl}
-                    alt={`Vista previa de ${inputs.nombreProd || "producto"}`}
-                    className="preview-imagen-producto"
-                  />
-                </div>
-              )}
             </div>
 
             <div className="botones-formulario">
               <button type="submit">Guardar Cambios</button>
               <Link to="/productosAdmin">
-                <button type="button">Volver</button>
+                <button type="button">Salir</button>
               </Link>
             </div>
           </form>
