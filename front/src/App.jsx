@@ -43,7 +43,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ScrollToTop />
 
       <Routes>
@@ -76,7 +76,7 @@ function App() {
         <Route path="/fracaso" element={<ProtectedRoute><Fracaso /></ProtectedRoute>} />
         <Route path="/pendiente/:idPedido" element={<ProtectedRoute><Pendiente /></ProtectedRoute>} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
