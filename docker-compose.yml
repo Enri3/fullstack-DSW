@@ -1,0 +1,27 @@
+services:
+
+  backend:
+    build: ./back
+    container_name: vivelas-back
+    env_file:
+      - ./back/.env
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    networks:
+      - homelab
+
+  frontend:
+    build: ./front
+    container_name: vivelas-front
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true
